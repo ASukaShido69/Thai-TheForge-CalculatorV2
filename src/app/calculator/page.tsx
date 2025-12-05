@@ -140,12 +140,30 @@ const TRAIT_TRANSLATIONS: Record<string, Record<'th' | 'en', string>> = {
   'Bonus Movement Speed': { th: '⚡ โบนัสความเร็ว', en: '⚡ Bonus Movement Speed' },
   'Weapon Damage': { th: '⚔️ ความเสียหายอาวุธ', en: '⚔️ Weapon Damage' },
   'Health': { th: '❤️ พลังชีวิต', en: '❤️ Health' },
-  'Burn Damage on Weapons with': { th: '🔥 ความเสียหายการเผาไหม้บนอาวุธ', en: '🔥 Burn Damage on Weapons' },
-  'chance': { th: '🎯 โอกาส', en: '🎯 Chance' },
-  'AOE Explosion on Weapons with': { th: '💣 การระเบิดพื้นที่บนอาวุธ', en: '💣 AOE Explosion on Weapons' },
-  'to Burn Enemy when Damage is Taken.': { th: '🔥 เผาศัตรูเมื่อได้รับความเสียหาย', en: '🔥 to Burn Enemy when Damage is Taken' },
+  'Burn Damage on Weapons with': { th: '🔥 ความเสียหายการเผาไหม้บนอาวุธ', en: '🔥 Burn Damage on Weapons with' },
+  'chance': { th: 'โอกาส', en: 'chance' },
+  'AOE Explosion on Weapons with': { th: '💣 การระเบิดพื้นที่บนอาวุธ', en: '💣 AOE Explosion on Weapons with' },
+  'to Burn Enemy when Damage is Taken.': { th: '🔥 เผาศัตรูเมื่อได้รับความเสียหาย', en: '🔥 to Burn Enemy when Damage is Taken.' },
   'Chance to Dodge Damage (Negate Fully)': { th: '🏃 โอกาสในการหลบหนีความเสียหาย', en: '🏃 Chance to Dodge Damage (Negate Fully)' },
 };
+
+function translateTraitLine(line: string, language: 'th' | 'en'): string {
+  // Extract percentage and trait description
+  const match = line.match(/^([-\d.]+)%\s+(.+)$/);
+  if (!match) return line;
+  
+  const percentage = match[1];
+  const description = match[2];
+  
+  // Check if it's a multi-part trait (ends with "with")
+  if (description.endsWith(' with')) {
+    return `${percentage}% ${TRAIT_TRANSLATIONS[description]?.[language] || description}`;
+  }
+  
+  // Translate single descriptions
+  const translatedDesc = TRAIT_TRANSLATIONS[description]?.[language] || description;
+  return `${percentage}% ${translatedDesc}`;
+}
 
 function translateTraitDescription(description: string, language: 'th' | 'en'): string {
   return TRAIT_TRANSLATIONS[description]?.[language] || description;
@@ -519,11 +537,11 @@ const translations = {
     // Weapon types
     "Dagger": "มีดสั้น 🗡️",
     "Straight Sword": "ดาบตรง 🗡️",
-    "Gauntlet": "สนับมือ/ถุงมือ",
-    "Katana": "ดาบคาตานะ",
+    "Gauntlet": "สนับมือ/ถุงมือ 🥊",
+    "Katana": "ดาบคาตานะ 🗡️",
     "Great Sword": "ดาบใหญ่ 🗡️",
     "Great Axe": "ขวานใหญ่ 🪓",
-    "Colossal Sword": "ดาบขนาดยักษ์ ⚔️",
+    "Colossal Sword": "ดาบยักษ์ ⚔️",
     
     // Armor types
     "Light Helmet": "เกราะศีรษะแบบเบา ⛑️",
@@ -1208,21 +1226,11 @@ export default function Calculator() {
                     <div key={idx} className="bg-purple-900/20 border border-purple-500/20 rounded-lg p-3">
                       <div className="text-purple-300 font-bold mb-2 text-sm">{tr.ore}</div>
                       <div className="space-y-1">
-                        {tr.lines.map((l: string, i: number) => {
-                          // Extract percentage and trait name from line
-                          const match = l.match(/^([-\d.]+)%\s+(.+)$/);
-                          if (match) {
-                            const percentage = match[1];
-                            const traitName = match[2];
-                            const translatedTrait = translateTraitDescription(traitName, language as 'th' | 'en');
-                            return (
-                              <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">
-                                {percentage}% {translatedTrait}
-                              </div>
-                            );
-                          }
-                          return <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">{l}</div>;
-                        })}
+                        {tr.lines.map((l: string, i: number) => (
+                          <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">
+                            {translateTraitLine(l, language as 'th' | 'en')}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   ))}
@@ -1537,7 +1545,7 @@ export default function Calculator() {
                                 <div className="font-semibold text-purple-300 mb-0.5">{tr.ore}</div>
                                 {tr.lines && tr.lines.map((line: string, lineIdx: number) => (
                                   <div key={lineIdx} className="text-zinc-400 leading-tight">
-                                    • {line}
+                                    • {translateTraitLine(line, language as 'th' | 'en')}
                                   </div>
                                 ))}
                               </div>

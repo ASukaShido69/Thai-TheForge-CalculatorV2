@@ -7,8 +7,8 @@ export default function DonationForm() {
   const { language } = useLanguage();
   const [isOpen, setIsOpen] = useState(true);
 
-  // Facebook page link
-  const facebookLink = 'https://www.facebook.com/profile.php?id=61578107559971';
+  // TikTok channel link
+  const tiktokLink = 'http://tiktok.com/@subsomboonleo';
   
   if (!isOpen) return null;
 
@@ -36,8 +36,8 @@ export default function DonationForm() {
           </h3>
           <p className="text-sm text-white/90 mt-1">
             {language === 'th' 
-              ? 'ติดตามและสนับสนุนเราบน Facebook' 
-              : 'Follow and support us on Facebook'}
+              ? 'ติดตามและสนับสนุนเราบน TikTok' 
+              : 'Follow and support us on TikTok'}
           </p>
         </div>
 
@@ -46,21 +46,21 @@ export default function DonationForm() {
           {/* Description */}
           <p className="text-sm text-ig-text dark:text-gray-300 leading-relaxed">
             {language === 'th'
-              ? 'ติดตามเพจ Facebook ของเรา เพื่อรับข้อมูลข่าวสาร อัปเดต และกิจกรรมต่างๆ' 
-              : 'Follow our Facebook page for updates, news, and exclusive events'}
+              ? 'ติดตามช่อง TikTok ของเรา เพื่อรับข้อมูลข่าวสาร วิดีโอสอน และเนื้อหาสนุกๆ' 
+              : 'Follow our TikTok channel for tutorials, updates, and fun content'}
           </p>
 
-          {/* Facebook Button */}
+          {/* TikTok Button */}
           <a
-            href={facebookLink}
+            href={tiktokLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full bg-gradient-to-r from-[#1877F2] to-[#0A66C2] hover:opacity-90 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg hover:shadow-xl"
+            className="w-full bg-gradient-to-r from-black via-gray-900 to-black hover:opacity-90 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg hover:shadow-xl"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.68v13.67a2.4 2.4 0 0 1-2.4 2.4 2.4 2.4 0 0 1-2.4-2.4 2.4 2.4 0 0 1 2.4-2.4c.18 0 .37.02.55.05v-3.68a5.8 5.8 0 0 0-.55-.05A5.77 5.77 0 0 0 4 12.6a5.77 5.77 0 0 0 5.77 5.77 5.77 5.77 0 0 0 5.77-5.77V9.5a7.6 7.6 0 0 0 4.58 1.53V7.13a4.85 4.85 0 0 1-.36-.04z"/>
             </svg>
-            <span>{language === 'th' ? 'ติดตามบน Facebook' : 'Follow on Facebook'}</span>
+            <span>{language === 'th' ? 'ติดตามบน TikTok' : 'Follow on TikTok'}</span>
           </a>
 
           {/* Thank You Message */}
