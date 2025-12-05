@@ -20,10 +20,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const savedTheme = (localStorage.getItem('theme') as Theme) || 'dark';
     setTheme(savedTheme);
     
-    // Apply theme to DOM
-    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-    document.documentElement.classList.toggle('light', savedTheme === 'light');
+    // Apply theme to DOM immediately and persistently
+    const applyTheme = (t: Theme) => {
+      const html = document.documentElement;
+      if (t === 'dark') {
+        html.classList.add('dark');
+        html.classList.remove('light');
+      } else {
+        html.classList.add('light');
+        html.classList.remove('dark');
+      }
+    };
     
+    applyTheme(savedTheme);
     setMounted(true);
   }, []);
 
@@ -32,9 +41,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     
-    // Update DOM immediately
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    document.documentElement.classList.toggle('light', newTheme === 'light');
+    // Update DOM immediately with both classes to ensure proper switching
+    const html = document.documentElement;
+    if (newTheme === 'dark') {
+      html.classList.add('dark');
+      html.classList.remove('light');
+    } else {
+      html.classList.add('light');
+      html.classList.remove('dark');
+    }
   };
 
   // Prevent flash by not rendering until mounted

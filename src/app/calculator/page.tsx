@@ -132,6 +132,43 @@ const weaponOdds: OddsData = weaponOddsRaw;
 const armorOdds: OddsData = armorOddsRaw;
 const forgeData: ForgeData = forgeDataRaw as ForgeData;
 
+// --- Trait Translation Dictionary ---
+const TRAIT_TRANSLATIONS: Record<string, Record<'th' | 'en', string>> = {
+  'Weapon Damage': { th: '⚔️ ความเสียหายอาวุธ', en: '⚔️ Weapon Damage' },
+  'Health': { th: '❤️ พลังชีวิต', en: '❤️ Health' },
+  'Defense': { th: '🛡️ ป้องกัน', en: '🛡️ Defense' },
+  'Armor Defense': { th: '🛡️ ความป้องกันเกราะ', en: '🛡️ Armor Defense' },
+  'Critical Chance': { th: '💥 โอกาสวิกฤต', en: '💥 Critical Chance' },
+  'Critical Damage': { th: '💥 ความเสียหายวิกฤต', en: '💥 Critical Damage' },
+  'Speed': { th: '⚡ ความเร็ว', en: '⚡ Speed' },
+  'Accuracy': { th: '🎯 ความแม่นยำ', en: '🎯 Accuracy' },
+  'Evasion': { th: '🏃 การหลบ', en: '🏃 Evasion' },
+  'Fire Resistance': { th: '🔥 ความต้านทานไฟ', en: '🔥 Fire Resistance' },
+  'Fire Damage': { th: '🔥 ความเสียหายไฟ', en: '🔥 Fire Damage' },
+  'Ice Resistance': { th: '❄️ ความต้านทานน้ำแข็ง', en: '❄️ Ice Resistance' },
+  'Ice Damage': { th: '❄️ ความเสียหายน้ำแข็ง', en: '❄️ Ice Damage' },
+  'Lightning Resistance': { th: '⚡ ความต้านทานฟ้าผ่า', en: '⚡ Lightning Resistance' },
+  'Lightning Damage': { th: '⚡ ความเสียหายฟ้าผ่า', en: '⚡ Lightning Damage' },
+  'Poison Resistance': { th: '☠️ ความต้านทานพิษ', en: '☠️ Poison Resistance' },
+  'Poison Damage': { th: '☠️ ความเสียหายพิษ', en: '☠️ Poison Damage' },
+  'Holy Resistance': { th: '✨ ความต้านทานเทพศักดิ์', en: '✨ Holy Resistance' },
+  'Holy Damage': { th: '✨ ความเสียหายเทพศักดิ์', en: '✨ Holy Damage' },
+  'Dark Resistance': { th: '🌑 ความต้านทานมืด', en: '🌑 Dark Resistance' },
+  'Dark Damage': { th: '🌑 ความเสียหายมืด', en: '🌑 Dark Damage' },
+  'Lifesteal': { th: '🧛 ดูดชีวิต', en: '🧛 Lifesteal' },
+  'Regeneration': { th: '🌿 ฟื้นฟู', en: '🌿 Regeneration' },
+  'Mana Regeneration': { th: '💎 ฟื้นฟู Mana', en: '💎 Mana Regeneration' },
+  'Shield Bonus': { th: '🔰 โบนัส Shield', en: '🔰 Shield Bonus' },
+  'Stamina Bonus': { th: '💪 โบนัส Stamina', en: '💪 Stamina Bonus' },
+  'Luck Bonus': { th: '🍀 โบนัส โชค', en: '🍀 Luck Bonus' },
+  'Experience Bonus': { th: '📈 โบนัส ประสบการณ์', en: '📈 Experience Bonus' },
+  'Gold Bonus': { th: '💰 โบนัส ทอง', en: '💰 Gold Bonus' },
+};
+
+function translateTraitDescription(description: string, language: 'th' | 'en'): string {
+  return TRAIT_TRANSLATIONS[description]?.[language] || description;
+}
+
 // --- Helper Functions ---
 function calculateCombinedMultiplier(selectedOres: Record<string, number>) {
   let totalMultiplier = 0, totalCount = 0;
@@ -1189,9 +1226,21 @@ export default function Calculator() {
                     <div key={idx} className="bg-purple-900/20 border border-purple-500/20 rounded-lg p-3">
                       <div className="text-purple-300 font-bold mb-2 text-sm">{tr.ore}</div>
                       <div className="space-y-1">
-                        {tr.lines.map((l: string, i: number) => (
-                          <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">{l}</div>
-                        ))}
+                        {tr.lines.map((l: string, i: number) => {
+                          // Extract percentage and trait name from line
+                          const match = l.match(/^([-\d.]+)%\s+(.+)$/);
+                          if (match) {
+                            const percentage = match[1];
+                            const traitName = match[2];
+                            const translatedTrait = translateTraitDescription(traitName, language as 'th' | 'en');
+                            return (
+                              <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">
+                                {percentage}% {translatedTrait}
+                              </div>
+                            );
+                          }
+                          return <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">{l}</div>;
+                        })}
                       </div>
                     </div>
                   ))}
