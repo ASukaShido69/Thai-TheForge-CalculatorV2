@@ -1,19 +1,12 @@
 import type { Metadata } from 'next';
-import { Prompt, Inter } from 'next/font/google';
+import { Mali } from 'next/font/google';
 import './globals.css';
 import { ClientProviders } from '@/components/ClientProviders';
 
-const prompt = Prompt({
+const mali = Mali({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin', 'thai'],
-  variable: '--font-prompt',
-  display: 'swap',
-});
-
-const inter = Inter({
-  weight: ['300', '400', '500', '600', '700'],
-  subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-mali',
   display: 'swap',
 });
 
@@ -39,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="th" suppressHydrationWarning>
-      <body className={`${prompt.variable} ${inter.variable} font-thai antialiased`}>
+      <body className={`${mali.variable} font-mali antialiased`}>
         <ClientProviders>
           {children}
         </ClientProviders>
