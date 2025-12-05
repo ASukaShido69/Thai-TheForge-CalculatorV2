@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Mali } from 'next/font/google';
 import './globals.css';
 import { ClientProviders } from '@/components/ClientProviders';
+import { Analytics } from "@vercel/analytics/next"
 
 const mali = Mali({
   weight: ['300', '400', '500', '600', '700'],
