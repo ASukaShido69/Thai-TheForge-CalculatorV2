@@ -143,7 +143,7 @@
         "traitType": "Armor",
         "traits": [
             {
-                "description": "Vitality",
+                "description": "💪 Vitality",
                 "maxStat": 30,
                 "type": "Armor"
             }
@@ -167,7 +167,7 @@
         "traitType": "Weapon",
         "traits": [
             {
-                "description": "Crit Chance on Weapons",
+                "description": "💥 Crit Chance on Weapons",
                 "maxStat": 20,
                 "type": "Weapon"
             }
@@ -179,7 +179,7 @@
         "traitType": "Armor",
         "traits": [
             {
-                "description": "max HP AOE Damage on Armor",
+                "description": "⚡ max HP AOE Damage on Armor",
                 "maxStat": 5,
                 "type": "Armor"
             }
@@ -191,7 +191,7 @@
         "traitType": "Armor",
         "traits": [
             {
-                "description": "Vitality",
+                "description": "💪 Vitality",
                 "maxStat": 15,
                 "type": "Armor"
             }
@@ -203,11 +203,11 @@
         "traitType": "All",
         "traits": [
             {
-                "description": "Weapon Damage",
+                "description": "⚔️ Weapon Damage",
                 "maxStat": 15
             },
             {
-                "description": "Health",
+                "description": "❤️ Health",
                 "maxStat": -10
             }
         ]
@@ -218,11 +218,11 @@
         "traitType": "Weapon",
         "traits": [
             {
-                "description": "Burn Damage on Weapons with",
+                "description": "🔥 Burn Damage on Weapons with",
                 "maxStat": 20
             },
             {
-                "description": "chance",
+                "description": "🎯 chance",
                 "maxStat": 30
             }
         ]
@@ -233,11 +233,11 @@
         "traitType": "Weapon",
         "traits": [
             {
-                "description": "AOE Explosion on Weapons with",
+                "description": "💣 AOE Explosion on Weapons with",
                 "maxStat": 50
             },
             {
-                "description": "chance",
+                "description": "🎯 chance",
                 "maxStat": 35
             }
         ]
@@ -248,7 +248,7 @@
         "traitType": "Armor",
         "traits": [
             {
-                "description": "Bonus Movement Speed",
+                "description": "⚡ Bonus Movement Speed",
                 "maxStat": 15,
                 "type": "Armor"
             }
@@ -260,7 +260,7 @@
         "traitType": "Armor",
         "traits": [
             {
-                "description": "to Burn Enemy when Damage is Taken.",
+                "description": "🔥 to Burn Enemy when Damage is Taken.",
                 "maxStat": 25,
                 "type": "Armor"
             }
@@ -272,7 +272,7 @@
         "traitType": "Armor",
         "traits": [
             {
-                "description": "Chance to Dodge Damage (Negate Fully)",
+                "description": "🏃 Chance to Dodge Damage (Negate Fully)",
                 "maxStat": 15,
                 "type": "Armor"
             }

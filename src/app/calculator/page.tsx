@@ -132,43 +132,6 @@ const weaponOdds: OddsData = weaponOddsRaw;
 const armorOdds: OddsData = armorOddsRaw;
 const forgeData: ForgeData = forgeDataRaw as ForgeData;
 
-// --- Trait Translation Dictionary (from actual ores.json traits) ---
-const TRAIT_TRANSLATIONS: Record<string, Record<'th' | 'en', string>> = {
-  'Vitality': { th: '💪 ความแข็งแกร่ง', en: '💪 Vitality' },
-  'Crit Chance on Weapons': { th: '💥 โอกาสคริติคอล', en: '💥 Crit Chance on Weapons' },
-  'max HP AOE Damage on Armor': { th: '⚡ ความเสียหายพื้นที่บนเกราะ', en: '⚡ max HP AOE Damage on Armor' },
-  'Bonus Movement Speed': { th: '⚡ โบนัสความเร็ว', en: '⚡ Bonus Movement Speed' },
-  'Weapon Damage': { th: '⚔️ ความเสียหายอาวุธ', en: '⚔️ Weapon Damage' },
-  'Health': { th: '❤️ พลังชีวิต', en: '❤️ Health' },
-  'Burn Damage on Weapons with': { th: '🔥 ความเสียหายการเผาไหม้บนอาวุธ', en: '🔥 Burn Damage on Weapons with' },
-  'chance': { th: 'โอกาส', en: 'chance' },
-  'AOE Explosion on Weapons with': { th: '💣 การระเบิดพื้นที่บนอาวุธ', en: '💣 AOE Explosion on Weapons with' },
-  'to Burn Enemy when Damage is Taken.': { th: '🔥 เผาศัตรูเมื่อได้รับความเสียหาย', en: '🔥 to Burn Enemy when Damage is Taken.' },
-  'Chance to Dodge Damage (Negate Fully)': { th: '🏃 โอกาสในการหลบหนีความเสียหาย', en: '🏃 Chance to Dodge Damage (Negate Fully)' },
-};
-
-function translateTraitLine(line: string, language: 'th' | 'en'): string {
-  // Extract percentage and trait description
-  const match = line.match(/^([-\d.]+)%\s+(.+)$/);
-  if (!match) return line;
-  
-  const percentage = match[1];
-  const description = match[2];
-  
-  // Check if it's a multi-part trait (ends with "with")
-  if (description.endsWith(' with')) {
-    return `${percentage}% ${TRAIT_TRANSLATIONS[description]?.[language] || description}`;
-  }
-  
-  // Translate single descriptions
-  const translatedDesc = TRAIT_TRANSLATIONS[description]?.[language] || description;
-  return `${percentage}% ${translatedDesc}`;
-}
-
-function translateTraitDescription(description: string, language: 'th' | 'en'): string {
-  return TRAIT_TRANSLATIONS[description]?.[language] || description;
-}
-
 // --- Helper Functions ---
 function calculateCombinedMultiplier(selectedOres: Record<string, number>) {
   let totalMultiplier = 0, totalCount = 0;
@@ -514,7 +477,7 @@ const translations = {
     empty: "ว่างเปล่า ⬜",
     damage: "ค่าความเสียหายโดยประมาณ (Damage) 💥",
     defense: "ค่าการป้องกันโดยประมาณ (Defense) 🛡️",
-    price: "ราคา / มูลค่า 💰",
+    price: "ราคา / มูลค่า โดยประมาณ 💰",
     backToHome: "กลับสู่หน้าหลัก 🏠",
     favoriteOres: "แร่ที่ชื่นชอบ ❤️",
     addToFavorites: "เพิ่มในรายการแร่ที่ชื่นชอบ ➕",
@@ -1228,7 +1191,7 @@ export default function Calculator() {
                       <div className="space-y-1">
                         {tr.lines.map((l: string, i: number) => (
                           <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">
-                            {translateTraitLine(l, language as 'th' | 'en')}
+                            {l}
                           </div>
                         ))}
                       </div>
@@ -1545,7 +1508,7 @@ export default function Calculator() {
                                 <div className="font-semibold text-purple-300 mb-0.5">{tr.ore}</div>
                                 {tr.lines && tr.lines.map((line: string, lineIdx: number) => (
                                   <div key={lineIdx} className="text-zinc-400 leading-tight">
-                                    • {translateTraitLine(line, language as 'th' | 'en')}
+                                    • {line}
                                   </div>
                                 ))}
                               </div>
