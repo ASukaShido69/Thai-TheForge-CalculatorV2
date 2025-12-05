@@ -132,37 +132,19 @@ const weaponOdds: OddsData = weaponOddsRaw;
 const armorOdds: OddsData = armorOddsRaw;
 const forgeData: ForgeData = forgeDataRaw as ForgeData;
 
-// --- Trait Translation Dictionary ---
+// --- Trait Translation Dictionary (from actual ores.json traits) ---
 const TRAIT_TRANSLATIONS: Record<string, Record<'th' | 'en', string>> = {
+  'Vitality': { th: '💪 ความแข็งแกร่ง', en: '💪 Vitality' },
+  'Crit Chance on Weapons': { th: '💥 โอกาสคริติคอล', en: '💥 Crit Chance on Weapons' },
+  'max HP AOE Damage on Armor': { th: '⚡ ความเสียหายพื้นที่บนเกราะ', en: '⚡ max HP AOE Damage on Armor' },
+  'Bonus Movement Speed': { th: '⚡ โบนัสความเร็ว', en: '⚡ Bonus Movement Speed' },
   'Weapon Damage': { th: '⚔️ ความเสียหายอาวุธ', en: '⚔️ Weapon Damage' },
   'Health': { th: '❤️ พลังชีวิต', en: '❤️ Health' },
-  'Defense': { th: '🛡️ ป้องกัน', en: '🛡️ Defense' },
-  'Armor Defense': { th: '🛡️ ความป้องกันเกราะ', en: '🛡️ Armor Defense' },
-  'Critical Chance': { th: '💥 โอกาสวิกฤต', en: '💥 Critical Chance' },
-  'Critical Damage': { th: '💥 ความเสียหายวิกฤต', en: '💥 Critical Damage' },
-  'Speed': { th: '⚡ ความเร็ว', en: '⚡ Speed' },
-  'Accuracy': { th: '🎯 ความแม่นยำ', en: '🎯 Accuracy' },
-  'Evasion': { th: '🏃 การหลบ', en: '🏃 Evasion' },
-  'Fire Resistance': { th: '🔥 ความต้านทานไฟ', en: '🔥 Fire Resistance' },
-  'Fire Damage': { th: '🔥 ความเสียหายไฟ', en: '🔥 Fire Damage' },
-  'Ice Resistance': { th: '❄️ ความต้านทานน้ำแข็ง', en: '❄️ Ice Resistance' },
-  'Ice Damage': { th: '❄️ ความเสียหายน้ำแข็ง', en: '❄️ Ice Damage' },
-  'Lightning Resistance': { th: '⚡ ความต้านทานฟ้าผ่า', en: '⚡ Lightning Resistance' },
-  'Lightning Damage': { th: '⚡ ความเสียหายฟ้าผ่า', en: '⚡ Lightning Damage' },
-  'Poison Resistance': { th: '☠️ ความต้านทานพิษ', en: '☠️ Poison Resistance' },
-  'Poison Damage': { th: '☠️ ความเสียหายพิษ', en: '☠️ Poison Damage' },
-  'Holy Resistance': { th: '✨ ความต้านทานเทพศักดิ์', en: '✨ Holy Resistance' },
-  'Holy Damage': { th: '✨ ความเสียหายเทพศักดิ์', en: '✨ Holy Damage' },
-  'Dark Resistance': { th: '🌑 ความต้านทานมืด', en: '🌑 Dark Resistance' },
-  'Dark Damage': { th: '🌑 ความเสียหายมืด', en: '🌑 Dark Damage' },
-  'Lifesteal': { th: '🧛 ดูดชีวิต', en: '🧛 Lifesteal' },
-  'Regeneration': { th: '🌿 ฟื้นฟู', en: '🌿 Regeneration' },
-  'Mana Regeneration': { th: '💎 ฟื้นฟู Mana', en: '💎 Mana Regeneration' },
-  'Shield Bonus': { th: '🔰 โบนัส Shield', en: '🔰 Shield Bonus' },
-  'Stamina Bonus': { th: '💪 โบนัส Stamina', en: '💪 Stamina Bonus' },
-  'Luck Bonus': { th: '🍀 โบนัส โชค', en: '🍀 Luck Bonus' },
-  'Experience Bonus': { th: '📈 โบนัส ประสบการณ์', en: '📈 Experience Bonus' },
-  'Gold Bonus': { th: '💰 โบนัส ทอง', en: '💰 Gold Bonus' },
+  'Burn Damage on Weapons with': { th: '🔥 ความเสียหายการเผาไหม้บนอาวุธ', en: '🔥 Burn Damage on Weapons' },
+  'chance': { th: '🎯 โอกาส', en: '🎯 Chance' },
+  'AOE Explosion on Weapons with': { th: '💣 การระเบิดพื้นที่บนอาวุธ', en: '💣 AOE Explosion on Weapons' },
+  'to Burn Enemy when Damage is Taken.': { th: '🔥 เผาศัตรูเมื่อได้รับความเสียหาย', en: '🔥 to Burn Enemy when Damage is Taken' },
+  'Chance to Dodge Damage (Negate Fully)': { th: '🏃 โอกาสในการหลบหนีความเสียหาย', en: '🏃 Chance to Dodge Damage (Negate Fully)' },
 };
 
 function translateTraitDescription(description: string, language: 'th' | 'en'): string {
