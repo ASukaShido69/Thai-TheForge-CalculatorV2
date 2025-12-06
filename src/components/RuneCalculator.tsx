@@ -435,38 +435,38 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - Mobile Optimized */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center group"
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center group"
         title={t('rune.calculator')}
       >
-        <SparklesIcon className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+        <SparklesIcon className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform" />
       </button>
 
-      {/* Modal - Center */}
+      {/* Modal - Responsive */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-zinc-900 via-purple-900/20 to-zinc-900 rounded-2xl border border-purple-500/30 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 pb-24 sm:pb-4 overflow-y-auto">
+          <div className="bg-gradient-to-br from-zinc-900 via-purple-900/20 to-zinc-900 rounded-2xl border border-purple-500/30 w-full max-w-4xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl my-auto">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-purple-500/20 sticky top-0 bg-zinc-900/50 backdrop-blur-xl">
-              <h2 className="text-2xl font-bold text-purple-400 flex items-center gap-2">
-                <SparklesIcon className="w-6 h-6" />
-                {t('rune.calculator')}
+            <div className="flex items-center justify-between p-3 sm:p-6 border-b border-purple-500/20 sticky top-0 bg-zinc-900/50 backdrop-blur-xl z-10 gap-2">
+              <h2 className="text-lg sm:text-2xl font-bold text-purple-400 flex items-center gap-2 min-w-0">
+                <SparklesIcon className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+                <span className="truncate">{t('rune.calculator')}</span>
               </h2>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-zinc-400 hover:text-white transition-colors"
+                className="text-zinc-400 hover:text-white transition-colors flex-shrink-0"
               >
-                <CloseIcon className="w-6 h-6" />
+                <CloseIcon className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
 
-            <div className="p-6 space-y-6">
+            <div className="p-3 sm:p-6 space-y-4 sm:space-y-6">
               {/* Tabs */}
-              <div className="flex gap-4 border-b border-purple-500/20">
+              <div className="flex gap-2 sm:gap-4 border-b border-purple-500/20 overflow-x-auto">
                 <button
-                  className={`px-4 py-2 font-semibold border-b-2 transition-all ${
+                  className={`px-3 sm:px-4 py-2 font-semibold border-b-2 transition-all text-xs sm:text-base whitespace-nowrap ${
                     !showRuneInfo
                       ? 'border-purple-500 text-purple-400'
                       : 'border-transparent text-zinc-400 hover:text-zinc-200'
@@ -476,7 +476,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                   {t('rune.calculator')}
                 </button>
                 <button
-                  className={`px-4 py-2 font-semibold border-b-2 transition-all ${
+                  className={`px-3 sm:px-4 py-2 font-semibold border-b-2 transition-all text-xs sm:text-base whitespace-nowrap ${
                     showRuneInfo
                       ? 'border-purple-500 text-purple-400'
                       : 'border-transparent text-zinc-400 hover:text-zinc-200'
