@@ -200,7 +200,9 @@ function getItemChancesWithTraits(selectedOres: Record<string, number>, craftTyp
     for (let i = 0; i < oreData.traits.length; i++) {
       const t1 = oreData.traits[i];
       if (typeof t1.maxStat !== "number") continue;
-      let line = `${(transferredFraction * t1.maxStat).toFixed(2)}% ${t1.description}`;
+      const percentage = (transferredFraction * t1.maxStat).toFixed(2);
+      let description = t1.description;
+      let mergedPercentage = null;
       
       // Don't merge AOE Explosion - keep it separate from chance
       const isAOEExplosion = t1.description.includes("💣 AOE Explosion");
@@ -210,9 +212,17 @@ function getItemChancesWithTraits(selectedOres: Record<string, number>, craftTyp
       
       if (shouldMerge) {
         const t2 = oreData.traits[i + 1];
-        line += ` ${(transferredFraction * t2.maxStat).toFixed(2)}% ${t2.description}`;
+        mergedPercentage = (transferredFraction * t2.maxStat).toFixed(2);
+        description += ` ${t2.description}`;
         i++;
       }
+      
+      // Store as object to preserve data for translation
+      const line = {
+        percentage,
+        description,
+        mergedPercentage
+      };
       oreTraitParts.push(line);
     }
     if (oreTraitParts.length) traits.push({ ore: oreName, lines: oreTraitParts });
@@ -1320,10 +1330,16 @@ export default function Calculator() {
                         <div className="text-purple-300 font-bold text-xs sm:text-sm">{tr.ore}</div>
                       </div>
                       <div className="space-y-2">
-                        {tr.lines.map((l: string, i: number) => {
+                        {tr.lines.map((lineData: any, i: number) => {
                           const oreData = ores[tr.ore];
                           const trait = oreData?.traits?.[i];
                           const maxStat = trait?.maxStat ?? 0;
+                          
+                          // Handle both string (old format) and object (new format) for backward compatibility
+                          const isOldFormat = typeof lineData === 'string';
+                          const percentage = isOldFormat ? null : lineData.percentage;
+                          const description = isOldFormat ? lineData : lineData.description;
+                          const mergedPercentage = isOldFormat ? null : lineData.mergedPercentage;
                           
                           return (
                             <div key={i} className="space-y-1 border-b border-purple-500/15 pb-1.5 last:border-0 last:pb-0">
@@ -1331,7 +1347,8 @@ export default function Calculator() {
                                 {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
                               </div>
                               <div className="text-[9px] sm:text-[11px] text-purple-200 font-medium leading-relaxed ml-2">
-                                {t(l)}
+                                {percentage !== null ? `${percentage}%` : ''} {t(description)}
+                                {mergedPercentage !== null ? ` ${mergedPercentage}%` : ''}
                               </div>
                               {maxStat !== 0 && (
                                 <div className="text-[8px] sm:text-[10px] text-purple-300/70 flex items-center gap-2 ml-2">
@@ -1664,10 +1681,16 @@ export default function Calculator() {
                             {build.results.traits.map((tr: any, idx: number) => (
                               <div key={idx} className="border-l-2 border-purple-500/60 pl-2 py-1">
                                 <div className="font-semibold text-purple-300 mb-1.5 text-[8px] uppercase">{tr.ore}</div>
-                                {tr.lines && tr.lines.map((line: string, lineIdx: number) => {
+                                {tr.lines && tr.lines.map((lineData: any, lineIdx: number) => {
                                   const oreData = ores[tr.ore];
                                   const trait = oreData?.traits?.[lineIdx];
                                   const maxStat = trait?.maxStat ?? 0;
+                                  
+                                  // Handle both string (old format) and object (new format) for backward compatibility
+                                  const isOldFormat = typeof lineData === 'string';
+                                  const percentage = isOldFormat ? null : lineData.percentage;
+                                  const description = isOldFormat ? lineData : lineData.description;
+                                  const mergedPercentage = isOldFormat ? null : lineData.mergedPercentage;
                                   
                                   return (
                                     <div key={lineIdx} className="space-y-1 text-[8px] mb-1.5 last:mb-0">
@@ -1675,7 +1698,8 @@ export default function Calculator() {
                                         {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
                                       </div>
                                       <div className="text-zinc-400 leading-snug ml-2">
-                                        • {t(line)}
+                                        • {percentage !== null ? `${percentage}%` : ''} {t(description)}
+                                        {mergedPercentage !== null ? ` ${mergedPercentage}%` : ''}
                                       </div>
                                     </div>
                                   );
@@ -1772,7 +1796,7 @@ export default function Calculator() {
                     <span className="text-green-400 font-bold text-xs sm:text-sm flex-shrink-0">{(build.predictedChance! * 100).toFixed(1)}% {language === 'th' ? 'โอกาส' : 'Chance'}</span>
                   </div>
                 </div>
-              )}}
+              )}
 
               {/* Traits */}
               {build.results?.traits && build.results.traits.length > 0 && (
@@ -1785,10 +1809,16 @@ export default function Calculator() {
                       <div key={idx} className="space-y-2 pb-3 border-b border-purple-500/20 last:border-0 last:pb-0">
                         <div className="font-bold text-purple-300 text-xs sm:text-base">{tr.ore}</div>
                         <div className="space-y-1 sm:space-y-2 ml-2">
-                          {tr.lines && tr.lines.map((line: string, lineIdx: number) => {
+                          {tr.lines && tr.lines.map((lineData: any, lineIdx: number) => {
                             const oreData = ores[tr.ore];
                             const trait = oreData?.traits?.[lineIdx];
                             const maxStat = trait?.maxStat ?? 0;
+                            
+                            // Handle both string (old format) and object (new format) for backward compatibility
+                            const isOldFormat = typeof lineData === 'string';
+                            const percentage = isOldFormat ? null : lineData.percentage;
+                            const description = isOldFormat ? lineData : lineData.description;
+                            const mergedPercentage = isOldFormat ? null : lineData.mergedPercentage;
                             
                             return (
                               <div key={lineIdx} className="space-y-0.5">
@@ -1796,7 +1826,8 @@ export default function Calculator() {
                                   {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
                                 </div>
                                 <div className="text-purple-200 text-xs sm:text-sm font-medium">
-                                  {t(line)}
+                                  {percentage !== null ? `${percentage}%` : ''} {t(description)}
+                                  {mergedPercentage !== null ? ` ${mergedPercentage}%` : ''}
                                 </div>
                               </div>
                             );
