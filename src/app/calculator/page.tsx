@@ -202,7 +202,10 @@ function getItemChancesWithTraits(selectedOres: Record<string, number>, craftTyp
       if (typeof t1.maxStat !== "number") continue;
       let line = `${(transferredFraction * t1.maxStat).toFixed(2)}% ${t1.description}`;
       
-      const shouldMerge = t1.description.trim().match(/(with|of|for|per|to|in)$/i)
+      // Don't merge AOE Explosion - keep it separate from chance
+      const isAOEExplosion = t1.description.includes("💣 AOE Explosion");
+      const shouldMerge = !isAOEExplosion
+        && t1.description.trim().match(/(with|of|for|per|to|in)$/i)
         && oreData.traits[i + 1] && typeof oreData.traits[i + 1].maxStat === "number";
       
       if (shouldMerge) {
@@ -409,6 +412,20 @@ function getPossibleItemImagesWithChances(categoryName: string, categoryChance: 
         categoryKey: item.categoryKey
       };
     });
+  }
+}
+
+function getItemImageByName(itemName: string, craftType: "Weapon" | "Armor"): string | null {
+  if (craftType === "Weapon") {
+    const weaponByCategory = getWeaponItemsByCategory();
+    const allItems = Object.values(weaponByCategory).flat();
+    const item = allItems.find(i => i.name === itemName);
+    return item?.image || null;
+  } else {
+    const armorByCategory = getArmorItemsByCategory();
+    const allItems = Object.values(armorByCategory).flat();
+    const item = allItems.find(i => i.name === itemName);
+    return item?.image || null;
   }
 }
 
@@ -1291,33 +1308,33 @@ export default function Calculator() {
 
             {/* Active Traits */}
             {results && results.traits && results.traits.length > 0 && (
-              <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-6">
-                <h3 className="text-purple-400 font-bold mb-4 text-center uppercase tracking-wider text-sm">
+              <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-3 sm:p-6">
+                <h3 className="text-purple-400 font-bold mb-3 sm:mb-4 text-center uppercase tracking-wider text-xs sm:text-sm">
                   {t('activeTraits')}
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {results.traits.map((tr: any, idx: number) => (
-                    <div key={idx} className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 border border-purple-500/30 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-3">
+                    <div key={idx} className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 border border-purple-500/30 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
-                        <div className="text-purple-300 font-bold text-sm">{tr.ore}</div>
+                        <div className="text-purple-300 font-bold text-xs sm:text-sm">{tr.ore}</div>
                       </div>
-                      <div className="space-y-3">
+                      <div className="space-y-2">
                         {tr.lines.map((l: string, i: number) => {
                           const oreData = ores[tr.ore];
                           const trait = oreData?.traits?.[i];
                           const maxStat = trait?.maxStat ?? 0;
                           
                           return (
-                            <div key={i} className="space-y-2 border-b border-purple-500/15 pb-2 last:border-0 last:pb-0">
-                              <div className="text-[10px] text-purple-300/80 font-semibold">
+                            <div key={i} className="space-y-1 border-b border-purple-500/15 pb-1.5 last:border-0 last:pb-0">
+                              <div className="text-[9px] sm:text-[10px] text-purple-300/80 font-semibold">
                                 {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
                               </div>
-                              <div className="text-[11px] text-purple-200 font-medium leading-relaxed ml-2">
+                              <div className="text-[9px] sm:text-[11px] text-purple-200 font-medium leading-relaxed ml-2">
                                 {t(l)}
                               </div>
                               {maxStat !== 0 && (
-                                <div className="text-[10px] text-purple-300/70 flex items-center gap-2 ml-2">
+                                <div className="text-[8px] sm:text-[10px] text-purple-300/70 flex items-center gap-2 ml-2">
                                   <span className="text-purple-400">{language === 'th' ? 'สูงสุด:' : 'Max:'}</span>
                                   <span className="font-semibold text-purple-400">{Math.abs(maxStat).toFixed(2)}</span>
                                 </div>
@@ -1660,12 +1677,6 @@ export default function Calculator() {
                                       <div className="text-zinc-400 leading-snug ml-2">
                                         • {t(line)}
                                       </div>
-                                      {maxStat !== 0 && (
-                                        <div className="text-purple-300/70 flex items-center gap-1 ml-2">
-                                          <span className="font-medium">{language === 'th' ? 'สูงสุด:' : 'Max:'}</span>
-                                          <span className="text-purple-400 font-semibold">{Math.abs(maxStat)}</span>
-                                        </div>
-                                      )}
                                     </div>
                                   );
                                 })}
@@ -1689,13 +1700,13 @@ export default function Calculator() {
         if (!build) return null;
         
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-            <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-purple-500/30 p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm">
+            <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-purple-500/30 p-4 sm:p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
               {/* Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex-1">
-                  <h2 className="text-2xl font-bold text-white mb-2">{build.name}</h2>
-                  <div className="flex flex-wrap gap-3">
+              <div className="flex items-start justify-between mb-4 sm:mb-6 gap-2">
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-lg sm:text-2xl font-bold text-white mb-2 break-words">{build.name}</h2>
+                  <div className="flex flex-wrap gap-2">
                     <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/30">
                       {t(build.craftType)}
                     </span>
@@ -1713,63 +1724,80 @@ export default function Calculator() {
               </div>
 
               {/* Ore Composition */}
-              <div className="mb-6 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                <h3 className="text-purple-400 font-bold mb-3 text-sm uppercase tracking-wider">
+              <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
+                <h3 className="text-purple-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider">
                   {language === 'th' ? 'องค์ประกอบของแร่' : 'Ore Composition'}
                 </h3>
-                <div className="space-y-2">
-                  {build.slots.filter(s => s !== null).map((slot, idx) => (
-                    <div key={idx} className="flex items-center justify-between text-sm">
-                      <span className="text-zinc-300 font-medium">{slot?.name}</span>
-                      <span className="text-purple-400 font-bold">×{slot?.count}</span>
-                    </div>
-                  ))}
+                <div className="space-y-1.5">
+                  {build.slots.filter(s => s !== null).map((slot, idx) => {
+                    const oreImage = getOreImagePath(slot?.name || '');
+                    return (
+                      <div key={idx} className="flex items-center justify-between text-xs sm:text-sm gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          {oreImage && (
+                            <div className="relative w-6 h-6 sm:w-8 sm:h-8 rounded-lg border border-purple-500/30 overflow-hidden bg-zinc-800/50 flex-shrink-0">
+                              <Image src={addImageVersion(oreImage)} alt={slot?.name || ''} fill className="object-cover" />
+                            </div>
+                          )}
+                          <span className="text-zinc-300 font-medium truncate">{slot?.name}</span>
+                        </div>
+                        <span className="text-purple-400 font-bold flex-shrink-0">×{slot?.count}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Predicted Item */}
               {build.predictedItem && (
-                <div className="mb-6 p-4 bg-green-900/30 rounded-lg border border-green-500/30">
-                  <h3 className="text-green-400 font-bold mb-3 text-sm uppercase tracking-wider">
+                <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-900/30 rounded-lg border border-green-500/30">
+                  <h3 className="text-green-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider">
                     {language === 'th' ? 'ไอเทมที่คาดว่าจะได้' : 'Predicted Item'}
                   </h3>
-                  <div className="flex justify-between items-center">
-                    <span className="text-white font-semibold text-lg">{t(build.predictedItem)}</span>
-                    <span className="text-green-400 font-bold">{(build.predictedChance! * 100).toFixed(1)}% {language === 'th' ? 'โอกาส' : 'Chance'}</span>
+                  <div className="flex justify-between items-center gap-3 flex-wrap">
+                    <div className="flex items-center gap-2 min-w-0">
+                      {(() => {
+                        const itemImage = getItemImageByName(build.predictedItem, build.craftType);
+                        if (itemImage) {
+                          return (
+                            <div className="relative w-8 h-8 sm:w-12 sm:h-12 rounded-lg border border-green-500/30 overflow-hidden bg-zinc-800/50 flex-shrink-0">
+                              <Image src={addImageVersion(itemImage)} alt={build.predictedItem} fill className="object-contain p-1" />
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
+                      <span className="text-white font-semibold text-xs sm:text-base truncate">{t(build.predictedItem)}</span>
+                    </div>
+                    <span className="text-green-400 font-bold text-xs sm:text-sm flex-shrink-0">{(build.predictedChance! * 100).toFixed(1)}% {language === 'th' ? 'โอกาส' : 'Chance'}</span>
                   </div>
                 </div>
-              )}
+              )}}
 
               {/* Traits */}
               {build.results?.traits && build.results.traits.length > 0 && (
-                <div className="mb-6 p-4 bg-gradient-to-br from-purple-900/30 to-purple-800/20 rounded-lg border border-purple-500/30">
-                  <h3 className="text-purple-400 font-bold mb-4 text-sm uppercase tracking-wider">
+                <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-br from-purple-900/30 to-purple-800/20 rounded-lg border border-purple-500/30">
+                  <h3 className="text-purple-400 font-bold mb-3 text-xs sm:text-sm uppercase tracking-wider">
                     {t('activeTraits')}
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {build.results.traits.map((tr: any, idx: number) => (
-                      <div key={idx} className="space-y-3 pb-4 border-b border-purple-500/20 last:border-0">
-                        <div className="font-bold text-purple-300 text-lg">{tr.ore}</div>
-                        <div className="space-y-2 ml-2">
+                      <div key={idx} className="space-y-2 pb-3 border-b border-purple-500/20 last:border-0 last:pb-0">
+                        <div className="font-bold text-purple-300 text-xs sm:text-base">{tr.ore}</div>
+                        <div className="space-y-1 sm:space-y-2 ml-2">
                           {tr.lines && tr.lines.map((line: string, lineIdx: number) => {
                             const oreData = ores[tr.ore];
                             const trait = oreData?.traits?.[lineIdx];
                             const maxStat = trait?.maxStat ?? 0;
                             
                             return (
-                              <div key={lineIdx} className="space-y-1">
-                                <div className="text-sm text-purple-300/80 font-semibold">
+                              <div key={lineIdx} className="space-y-0.5">
+                                <div className="text-xs sm:text-sm text-purple-300/80 font-semibold">
                                   {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
                                 </div>
-                                <div className="text-purple-200 text-sm font-medium">
+                                <div className="text-purple-200 text-xs sm:text-sm font-medium">
                                   {t(line)}
                                 </div>
-                                {maxStat !== 0 && (
-                                  <div className="text-sm text-purple-300/70 flex items-center gap-2">
-                                    <span className="font-semibold">{language === 'th' ? 'สูงสุด:' : 'Max:'}</span>
-                                    <span className="text-purple-400 font-bold">{Math.abs(maxStat)}</span>
-                                  </div>
-                                )}
                               </div>
                             );
                           })}
@@ -1781,19 +1809,19 @@ export default function Calculator() {
               )}
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-4 border-t border-zinc-700">
+              <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-zinc-700">
                 <button
                   onClick={() => {
                     loadBuildToCalculator(build);
                     setShowBuildInfo(null);
                   }}
-                  className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-semibold transition-all"
+                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-semibold transition-all text-xs sm:text-base"
                 >
                   {language === 'th' ? 'โหลดโครงสร้าง' : 'Load Build'}
                 </button>
                 <button
                   onClick={() => setShowBuildInfo(null)}
-                  className="flex-1 px-4 py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg font-semibold transition-colors"
+                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg font-semibold transition-colors text-xs sm:text-base"
                 >
                   {t('cancel')}
                 </button>
