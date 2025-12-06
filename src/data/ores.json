@@ -197,7 +197,7 @@
         "traitType": "Armor",
         "traits": [
             {
-                "description": "💪 Vitality",
+                "description": "💪 Extra defense on Armor",
                 "maxStat": 15,
                 "type": "Armor"
             }
@@ -333,6 +333,12 @@
         "traits": []
     },
     "Vooite Ore": {
+        "rarity": null,
+        "multiplier": 0.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Fichillium": {
         "rarity": null,
         "multiplier": 0.0,
         "traitType": null,

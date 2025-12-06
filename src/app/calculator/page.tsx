@@ -571,7 +571,7 @@ const translations = {
     "Heavy Chestplate": "เกราะอกแบบหนัก 🛡️",
     
     // Trait descriptions
-    "💪 Extra defense on Armor": "💪 เพิ่มเกราะ (สูงสุด 30%)",
+    "💪 Extra defense on Armor": "💪 เพิ่มเกราะ (สูงสุด 15-30%)",
     "15% poison for 5s when below 35% HP": "สร้างความเสียหายพิษ 15% ศัตรูเดินหนี เป็นเวลา 5 วินาที ทำให้ศัตรูหวาดกลัว มีคูลดาวน์ 15 วินาที และจะทำงานเมื่อพลังชีวิตต่ำกว่า 15%",
     "🟢 15% Poison Damage when Below 35% HP": "🟢 ความเสียหายพิษเมื่อพลังชีวิตต่ำกว่า 35% ศัตรูเดินหนี เป็นเวลา 5 วินาที มีคูลดาวน์ 15 วินาที (สูงสุด 15%)",
     "💥 Crit Chance on Weapons": "💥 โอกาสคริติคอลของอาวุธ (สูงสุด 20%)",
@@ -636,7 +636,7 @@ const translations = {
     "Heavy Chestplate": "Heavy Chestplate",
     
     // Trait descriptions
-    "💪 Extra defense on Armor": "💪 Extra defense on Armor (Max 15)",
+    "💪 Extra defense on Armor": "💪 Extra defense on Armor (Max 15-30%)",
     "🟢 Poison Damage when Below 35% HP": "🟢 Poison Damage when Below 35% HP (Max 15%)",
     "💥 Crit Chance on Weapons": "💥 Crit Chance on Weapons (Max 20%)",
     "⚡ max HP AOE Damage on Armor": "⚡ max HP AOE Damage on Armor (Max 5%)",
