@@ -19,6 +19,8 @@ type Rune = {
   id: string;
   name: string;
   type: string;
+  rarity?: string;
+  obtainment?: string;
   traits: Trait[];
 };
 
@@ -437,6 +439,12 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                         <h3 className="text-sm sm:text-base font-semibold text-cyan-300 mb-2">
                           {t('rune.selectTraits')} - {selectedRune.name}
                         </h3>
+                        {selectedRune.obtainment && (
+                          <p className="text-[11px] sm:text-xs text-zinc-400 mb-3 flex items-center gap-1">
+                            <span className="text-purple-300">📍 {t('rune.obtainedFrom')}:</span>
+                            <span className="text-zinc-300 break-words whitespace-normal">{selectedRune.obtainment}</span>
+                          </p>
+                        )}
                         <div className="flex flex-wrap gap-2">
                           {selectedRune.traits
                             .filter(t => t.minValue !== null && t.maxValue !== null)

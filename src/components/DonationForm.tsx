@@ -32,11 +32,11 @@ export default function DonationForm() {
         <div className="bg-gradient-thai p-4 text-white pr-12">
           <h3 className="text-lg font-bold flex items-center gap-2">
             <span className="text-2xl">💝</span>
-            {language === 'th' ? 'สนับสนุนเรา' : 'Support Us'}
+            {language === 'th' ? 'สนับสนุนผม คนที่หล่อเท่' : 'Support Us'}
           </h3>
           <p className="text-sm text-white/90 mt-1">
             {language === 'th' 
-              ? 'ติดตามและสนับสนุนเราบน TikTok' 
+              ? 'ด้วยการติดตามและสนับสนุนเราบน TikTok' 
               : 'Follow and support us on TikTok'}
           </p>
         </div>
@@ -46,7 +46,7 @@ export default function DonationForm() {
           {/* Description */}
           <p className="text-sm text-ig-text dark:text-gray-300 leading-relaxed">
             {language === 'th'
-              ? 'ติดตามช่อง TikTok ของเรา เพื่อรับข้อมูลข่าวสาร วิดีโอสอน และเนื้อหาสนุกๆ' 
+              ? 'ติดตามช่อง TikTok ของผมหน่อยนะค้าบเพื่อกำลัวใจเล็กๆน้อยๆ' 
               : 'Follow our TikTok channel for tutorials, updates, and fun content'}
           </p>
 
