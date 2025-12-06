@@ -500,19 +500,34 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                             const currentValue = traitValues[trait.name] ?? trait.minValue ?? 0;
                             const maxVal = trait.maxValue ?? 100;
                             const minVal = trait.minValue ?? 0;
+                            const hasProcChance = (trait as any).procChance;
 
                             return (
-                              <div key={trait.name} className="p-3 bg-zinc-800/50 rounded-lg border border-zinc-700/50 space-y-2">
-                                <div className="flex items-center justify-between gap-2 flex-wrap">
-                                  <label className="font-medium text-xs sm:text-sm text-zinc-100 flex-1 min-w-0 break-words">
-                                    {trait.name}
-                                  </label>
-                                  <span className="text-purple-400 font-semibold text-xs sm:text-sm flex-shrink-0">
-                                    {currentValue}
-                                    {trait.unit ? ` ${trait.unit}` : ''}
-                                  </span>
-                                </div>
+                              <div key={trait.name} className="p-3 bg-gradient-to-r from-purple-900/40 to-pink-900/40 rounded-lg border border-purple-500/40 space-y-2 backdrop-blur-sm">
+                                <div className="flex items-start justify-between gap-2">
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                      <label className="font-semibold text-xs sm:text-sm text-purple-200 break-words">
+                                        {trait.name}
+                                      </label>
+                                      <span className="text-[9px] sm:text-[10px] text-purple-400/70 font-medium whitespace-nowrap">
+                                        ({minVal}-{maxVal}{trait.unit})
+                                      </span>
+                                    </div>
+                                    {hasProcChance && (
+                                      <div className="text-[9px] sm:text-[10px] text-cyan-400 font-medium mb-1">
+                                        ⚡ {language === 'th' ? 'โอกาส' : 'Chance'}: {hasProcChance}
+                                      </div>
+                                    )}
                                     <p className="text-xs text-zinc-400 break-words whitespace-normal">{trait.description}</p>
+                                  </div>
+                                  <div className="flex-shrink-0 text-right">
+                                    <span className="text-purple-300 font-bold text-sm sm:text-base">{currentValue}</span>
+                                    {trait.unit && (
+                                      <span className="text-purple-400/80 text-[10px] ml-0.5">{trait.unit}</span>
+                                    )}
+                                  </div>
+                                </div>
 
                                 {minVal !== null && maxVal !== null && (
                                   <>
@@ -559,23 +574,34 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                 const secondary = secondaryTraits.weapon?.find(t => t.id === trait.id);
                                 const isEnabled = !!secondary;
                                 const currentValue = secondary?.value ?? trait.minValue ?? 0;
+                                const hasRange = trait.minValue !== null && trait.maxValue !== null;
 
                                 return (
-                                  <div key={trait.id} className="p-3 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                                    <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
-                                      <button
-                                        onClick={() => handleSecondaryTraitToggle('weapon', trait)}
-                                        className={`px-2 py-1 rounded text-xs font-medium transition-all ${
-                                          isEnabled ? 'bg-cyan-500/20 text-cyan-400' : 'bg-zinc-700/50 text-zinc-400 hover:bg-zinc-700'
-                                        }`}
-                                      >
-                                        {isEnabled ? '✓ ' : '○ '} {trait.name}
-                                      </button>
+                                  <div key={trait.id} className="p-3 bg-gradient-to-r from-red-900/30 to-orange-900/30 rounded-lg border border-red-500/40 backdrop-blur-sm">
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                          <button
+                                            onClick={() => handleSecondaryTraitToggle('weapon', trait)}
+                                            className={`px-2 py-1 rounded text-xs font-medium transition-all ${
+                                              isEnabled ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-zinc-700/50 text-zinc-400 hover:bg-zinc-700'
+                                            }`}
+                                          >
+                                            {isEnabled ? '✓ ' : '○ '} {trait.name}
+                                          </button>
+                                          {hasRange && (
+                                            <span className="text-[9px] text-red-400/70 font-medium whitespace-nowrap">
+                                              ({trait.minValue}-{trait.maxValue}{trait.unit})
+                                            </span>
+                                          )}
+                                        </div>
+                                        <p className="text-xs text-zinc-400 break-words whitespace-normal">{trait.description}</p>
+                                      </div>
                                       {isEnabled && (
-                                        <span className="text-cyan-400 font-semibold text-xs">
-                                          {currentValue}
-                                          {trait.unit ? ` ${trait.unit}` : ''}
-                                        </span>
+                                        <div className="flex-shrink-0 text-right">
+                                          <span className="text-red-300 font-bold text-sm">{currentValue}</span>
+                                          {trait.unit && <span className="text-red-400/80 text-[10px] ml-0.5">{trait.unit}</span>}
+                                        </div>
                                       )}
                                     </div>
                                     {isEnabled && trait.minValue !== null && trait.maxValue !== null && (
@@ -598,7 +624,6 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                         />
                                       </div>
                                     )}
-                                    <p className="text-xs text-zinc-400 mt-1 break-words whitespace-normal">{trait.description}</p>
                                   </div>
                                 );
                               })}
@@ -612,23 +637,34 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                 const secondary = secondaryTraits.armor?.find(t => t.id === trait.id);
                                 const isEnabled = !!secondary;
                                 const currentValue = secondary?.value ?? trait.minValue ?? 0;
+                                const hasRange = trait.minValue !== null && trait.maxValue !== null;
 
                                 return (
-                                  <div key={trait.id} className="p-3 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
-                                    <div className="flex items-center justify-between gap-2 mb-2 flex-wrap">
-                                      <button
-                                        onClick={() => handleSecondaryTraitToggle('armor', trait)}
-                                        className={`px-2 py-1 rounded text-xs font-medium transition-all ${
-                                          isEnabled ? 'bg-blue-500/20 text-blue-400' : 'bg-zinc-700/50 text-zinc-400 hover:bg-zinc-700'
-                                        }`}
-                                      >
-                                        {isEnabled ? '✓ ' : '○ '} {trait.name}
-                                      </button>
+                                  <div key={trait.id} className="p-3 bg-gradient-to-r from-blue-900/30 to-cyan-900/30 rounded-lg border border-blue-500/40 backdrop-blur-sm">
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                          <button
+                                            onClick={() => handleSecondaryTraitToggle('armor', trait)}
+                                            className={`px-2 py-1 rounded text-xs font-medium transition-all ${
+                                              isEnabled ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-zinc-700/50 text-zinc-400 hover:bg-zinc-700'
+                                            }`}
+                                          >
+                                            {isEnabled ? '✓ ' : '○ '} {trait.name}
+                                          </button>
+                                          {hasRange && (
+                                            <span className="text-[9px] text-blue-400/70 font-medium whitespace-nowrap">
+                                              ({trait.minValue}-{trait.maxValue}{trait.unit})
+                                            </span>
+                                          )}
+                                        </div>
+                                        <p className="text-xs text-zinc-400 break-words whitespace-normal">{trait.description}</p>
+                                      </div>
                                       {isEnabled && (
-                                        <span className="text-blue-400 font-semibold text-xs">
-                                          {currentValue}
-                                          {trait.unit ? ` ${trait.unit}` : ''}
-                                        </span>
+                                        <div className="flex-shrink-0 text-right">
+                                          <span className="text-blue-300 font-bold text-sm">{currentValue}</span>
+                                          {trait.unit && <span className="text-blue-400/80 text-[10px] ml-0.5">{trait.unit}</span>}
+                                        </div>
                                       )}
                                     </div>
                                     {isEnabled && trait.minValue !== null && trait.maxValue !== null && (
@@ -651,7 +687,6 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                         />
                                       </div>
                                     )}
-                                    <p className="text-xs text-zinc-400 mt-1 break-words">{trait.description}</p>
                                   </div>
                                 );
                               })}
