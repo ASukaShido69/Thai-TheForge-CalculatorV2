@@ -1789,42 +1789,12 @@ export default function Calculator() {
                     {language === 'th' ? 'ไอเทมที่คาดว่าจะได้' : 'Predicted Item'}
                   </h3>
                   
-                  {/* Item Images */}
-                  {(() => {
-                    const possibleItems = getPossibleItemImagesWithChances(build.predictedItem, build.predictedChance || 0, build.craftType);
-                    if (possibleItems.length > 0) {
-                      return (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-3">
-                          {possibleItems.map((item) => (
-                            <div key={item.image} className="flex flex-col items-center bg-zinc-800/30 rounded-lg p-2 border border-green-500/20">
-                              <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-1">
-                                <Image src={item.image} alt={item.name} fill className="object-contain" />
-                              </div>
-                              <span className="text-[10px] sm:text-xs text-white font-semibold text-center">{item.name}</span>
-                              <span className="text-[9px] text-green-400 font-bold">{item.ratio}</span>
-                            </div>
-                          ))}
-                        </div>
-                      );
-                    }
-                    return null;
-                  })()}
-                  
                   {/* Item Info */}
                   <div className="flex justify-between items-center gap-3 flex-wrap">
-                    <div className="flex items-center gap-2 min-w-0">
-                      {(() => {
-                        const itemImage = getItemImageByName(build.predictedItem, build.craftType);
-                        if (itemImage) {
-                          return (
-                            <div className="relative w-8 h-8 sm:w-12 sm:h-12 rounded-lg border border-green-500/30 overflow-hidden bg-zinc-800/50 flex-shrink-0">
-                              <Image src={addImageVersion(itemImage)} alt={build.predictedItem} fill className="object-contain p-1" />
-                            </div>
-                          );
-                        }
-                        return null;
-                      })()}
-                      <span className="text-white font-semibold text-xs sm:text-base truncate">{t(build.predictedItem)}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-white font-semibold text-xs sm:text-base break-words">
+                        {t(build.predictedItem)} / {build.predictedItem}
+                      </span>
                     </div>
                     <span className="text-green-400 font-bold text-xs sm:text-sm flex-shrink-0">{(build.predictedChance! * 100).toFixed(1)}% {language === 'th' ? 'โอกาส' : 'Chance'}</span>
                   </div>
