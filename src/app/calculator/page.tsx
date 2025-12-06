@@ -1277,7 +1277,38 @@ export default function Calculator() {
                     </div>
                     {selectedRunes.map((runeData, index) => {
                       const runeDataRaw = require('../../data/rune.json');
-                      const runeDataFile = runeDataRaw as { runes: { primary: Array<{ id: string; name: string }> } };
+                      const runeDataFile = runeDataRaw as { 
+                        runes: { 
+                          primary: Array<{ 
+                            id: string; 
+                            name: string;
+                            traits?: Array<{
+                              name: string;
+                              description: string;
+                              minValue: number | null;
+                              maxValue: number | null;
+                              unit: string | null;
+                              procChance?: string;
+                            }>;
+                          }>;
+                          secondary: {
+                            weapon: Array<{
+                              id: string;
+                              name: string;
+                              minValue: number | null;
+                              maxValue: number | null;
+                              unit: string | null;
+                            }>;
+                            armor: Array<{
+                              id: string;
+                              name: string;
+                              minValue: number | null;
+                              maxValue: number | null;
+                              unit: string | null;
+                            }>;
+                          };
+                        } 
+                      };
                       const rune = runeDataFile.runes.primary.find(r => r.id === runeData.runeState.runeId);
                       
                       // Helper function to get translated rune name
