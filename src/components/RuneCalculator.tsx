@@ -113,7 +113,7 @@ const PlusIcon = ({ className = '' }: { className?: string }) => (
 );
 
 interface RuneCalculatorProps {
-  onRuneSelected?: (rune: RuneState) => void;
+  onRuneSelected?: (rune: RuneState, secondaryTraits?: { weapon?: SecondaryTrait[]; armor?: SecondaryTrait[] }) => void;
 }
 
 export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) {
@@ -282,7 +282,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
       setSelectedTraits(saved.runeState.selectedTraits || []);
       setSecondaryTraits(saved.secondaryTraits || {});
       if (onRuneSelected) {
-        onRuneSelected(saved.runeState);
+        onRuneSelected(saved.runeState, saved.secondaryTraits);
       }
     }
   };
