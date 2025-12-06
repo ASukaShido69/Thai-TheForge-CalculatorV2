@@ -503,6 +503,7 @@ const RarityBg: Record<string, string> = {
     "Legendary": "bg-yellow-500/10",
     "Mythical": "bg-red-500/10",
     "Divine": "bg-pink-500/10",
+    "Relic": "bg-yellow-500/10",
     "Unknown": "bg-gray-800/20"
 };
 
