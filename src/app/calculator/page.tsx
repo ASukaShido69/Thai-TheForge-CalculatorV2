@@ -516,6 +516,19 @@ const translations = {
     "Heavy Helmet": "เกราะศีรษะแบบหนัก 👑",
     "Heavy Leggings": "เกราะขาแบบหนัก 🛡️",
     "Heavy Chestplate": "เกราะอกแบบหนัก 🛡️",
+    
+    // Trait descriptions
+    "💪 Extra defense on Armor": "💪 เกราะ",
+    "💥 Crit Chance on Weapons": "💥 โอกาสคริติคอลของอาวุธ",
+    "⚡ max HP AOE Damage on Armor": "⚡ ความเสียหาย AOE สูงสุดของ HP บนเกราะหรือสะท้อน",
+    "⚔️ Weapon Damage": "⚔️ ความเสียหายของอาวุธ",
+    "❤️ Health": "❤️ ชีวิต",
+    "🔥 Burn Damage on Weapons with": "🔥 ความเสียหายเผาไหม้บนอาวุธ",
+    "🎯 chance": "🎯 โอกาส",
+    "💣 AOE Explosion on Weapons with": "💣 โอกาสระเบิด AOE บนอาวุธ",
+    "⚡ Bonus Movement Speed": "⚡ ความเร็วการเคลื่อนที่เพิ่มเติม",
+    "🔥 to Burn Enemy when Damage is Taken.": "🔥 เผาศัตรูเมื่อได้รับความเสียหาย",
+    "🏃 Chance to Dodge Damage (Negate Fully)": "🏃 โอกาสในการหลีกเลี่ยงความเสียหาย (ฮาคิ)",
   },
   en: {
     forgeChances: "Forge Chances",
@@ -563,6 +576,19 @@ const translations = {
     "Heavy Helmet": "Heavy Helmet",
     "Heavy Leggings": "Heavy Leggings",
     "Heavy Chestplate": "Heavy Chestplate",
+    
+    // Trait descriptions
+    "💪 Vitality": "💪 Vitality",
+    "💥 Crit Chance on Weapons": "💥 Crit Chance on Weapons",
+    "⚡ max HP AOE Damage on Armor": "⚡ max HP AOE Damage on Armor",
+    "⚔️ Weapon Damage": "⚔️ Weapon Damage",
+    "❤️ Health": "❤️ Health",
+    "🔥 Burn Damage on Weapons with": "🔥 Burn Damage on Weapons with",
+    "🎯 chance": "🎯 chance",
+    "💣 AOE Explosion on Weapons with": "💣 AOE Explosion on Weapons with",
+    "⚡ Bonus Movement Speed": "⚡ Bonus Movement Speed",
+    "🔥 to Burn Enemy when Damage is Taken.": "🔥 to Burn Enemy when Damage is Taken.",
+    "🏃 Chance to Dodge Damage (Negate Fully)": "🏃 Chance to Dodge Damage (Negate Fully)",
   }
 };
 
@@ -980,6 +1006,77 @@ export default function Calculator() {
               </div>
             )}
 
+            {/* Ores with Traits */}
+            {useMemo(() => {
+              const traitOres = filteredOreNames.filter(oreName => {
+                const data = ores[oreName];
+                return data.traits && data.traits.length > 0;
+              });
+              
+              return traitOres.length > 0 ? (
+                <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <SparklesIcon className="w-4 h-4 text-purple-400" />
+                    <h3 className="font-bold text-purple-300 text-sm">{language === 'th' ? 'แร่ที่มี Trait ✨' : 'Ores with Traits ✨'}</h3>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {traitOres.map(oreName => {
+                      const data = ores[oreName];
+                      const oreImage = getOreImagePath(oreName);
+                      const isFavorite = favoriteOres.includes(oreName);
+                      
+                      return (
+                        <div key={oreName} className="relative group">
+                          <button
+                            onClick={() => addOreToSlot(oreName)}
+                            className={`relative w-full aspect-square border-2 ${RarityColors[data.rarity]} ${RarityBg[data.rarity]} rounded-lg p-1 hover:brightness-125 transition-all overflow-visible`}
+                          >
+                            {oreImage && (
+                              <div className="absolute inset-0 opacity-60">
+                                <Image src={oreImage} alt={oreName} fill className="object-cover" />
+                              </div>
+                            )}
+                            <span className="relative z-10 text-white text-[7px] font-semibold leading-tight drop-shadow-lg block">
+                              {oreName}
+                            </span>
+                            <span className="absolute bottom-0.5 right-0.5 z-10 text-white font-bold text-[9px] drop-shadow-lg">
+                              {data.multiplier}×
+                            </span>
+                            {/* Trait Badge */}
+                            <div className="absolute top-0.5 left-0.5 z-20 bg-purple-500/80 rounded-full w-4 h-4 flex items-center justify-center">
+                              <SparklesIcon className="w-2.5 h-2.5 text-white" />
+                            </div>
+                          </button>
+                          
+                          {/* Trait Tooltip */}
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+                            <div className="bg-zinc-900 border border-purple-500/50 rounded-lg p-2 shadow-lg">
+                              <div className="text-xs font-bold text-purple-300 mb-1">{language === 'th' ? 'Trait:' : 'Traits:'}</div>
+                              {data.traits.map((trait, idx) => (
+                                <div key={idx} className="text-[10px] text-purple-200 leading-snug">
+                                  • {t(trait.description)}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          
+                          <button
+                            onClick={() => toggleFavorite(oreName)}
+                            className="absolute -top-1 -right-1 z-20 w-5 h-5 bg-zinc-900 rounded-full border border-zinc-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <HeartIcon 
+                              className={`w-3 h-3 ${isFavorite ? 'text-yellow-400' : 'text-zinc-500'}`} 
+                              filled={isFavorite} 
+                            />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null;
+            }, [filteredOreNames, language, favoriteOres, t])}
+
             {/* Ore Grid */}
             <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-zinc-800/50 p-4">
               <h3 className="font-bold text-zinc-300 mb-3 text-sm">{t('selectOres')}</h3>
@@ -1191,7 +1288,7 @@ export default function Calculator() {
                       <div className="space-y-1">
                         {tr.lines.map((l: string, i: number) => (
                           <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">
-                            {l}
+                            {t(l)}
                           </div>
                         ))}
                       </div>
@@ -1508,7 +1605,7 @@ export default function Calculator() {
                                 <div className="font-semibold text-purple-300 mb-0.5">{tr.ore}</div>
                                 {tr.lines && tr.lines.map((line: string, lineIdx: number) => (
                                   <div key={lineIdx} className="text-zinc-400 leading-tight">
-                                    • {line}
+                                    • {t(line)}
                                   </div>
                                 ))}
                               </div>
