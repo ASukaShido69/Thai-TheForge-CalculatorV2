@@ -1295,13 +1295,6 @@ export default function Calculator() {
                           'ward_patch': { th: '🛡️ รูนโล่', en: '🛡️ Ward Patch' },
                           'rot_stitch': { th: '🦠 รูนพิษร้าย', en: '🦠 Rot Stitch' },
                         };
-                          'blast_chip': { th: '💣 Blast Chip', en: '💣 Blast Chip' },
-                          'drain_edge': { th: '🩸 Drain Edge', en: '🩸 Drain Edge' },
-                          'briar_notch': { th: '🌿 Briar Notch', en: '🌿 Briar Notch' },
-                          'rage_mark': { th: '😡 Rage Mark', en: '😡 Rage Mark' },
-                          'ward_patch': { th: '🛡️ Ward Patch', en: '🛡️ Ward Patch' },
-                          'rot_stitch': { th: '🦠 Rot Stitch', en: '🦠 Rot Stitch' },
-                        };
                         return runeMap[runeId] ? runeMap[runeId][language] : defaultName;
                       };
 
@@ -1322,7 +1315,7 @@ export default function Calculator() {
                           'Berserk': { th: '😡 ความโกรธ', en: '😡 Berserk' },
                           'Shield': { th: '🛡️ โล่', en: '🛡️ Shield' },
                           'Toxic Veins': { th: '🦠 เส้นเลือดพิษ', en: '🦠 Toxic Veins' },
-                          'Attack Speed': { th: '⚡ ความเร็วโจมตี', en: '⚡ Attack Speed' },                                 ----------------------------  ร็วโจมตี', en: '⚡ Attack Speed' },
+                          'Attack Speed': { th: '⚡ ความเร็วโจมตี', en: '⚡ Attack Speed' },
                           'Lethality': { th: '🗡️ พลังโจมตี', en: '🗡️ Lethality' },
                           'Critical Chance': { th: '🎯 โอกาสคริติคอล', en: '🎯 Critical Chance' },
                           'Critical Damage': { th: '💥 ดาเมจคริติคอล', en: '💥 Critical Damage' },
