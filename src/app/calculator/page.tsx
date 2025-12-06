@@ -116,6 +116,7 @@ type SlotItem = {
 type RuneState = {
   runeId: string;
   traitValues: Record<string, number>;
+  selectedTraits?: string[];
 };
 
 type OresData = Record<string, OreData>;
@@ -975,7 +976,7 @@ export default function Calculator() {
       </div>
 
       {/* Main Container */}
-      <div className="relative z-10 min-h-screen p-4 sm:p-6 max-w-[1800px] mx-auto">
+      <div className="relative z-10 min-h-screen p-4 sm:p-6 pt-16 sm:pt-8 max-w-[1800px] mx-auto">
         
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -1297,30 +1298,30 @@ export default function Calculator() {
                       // Helper function to get translated trait name
                       const getTraitNameTranslated = (traitName: string) => {
                         const traitMap: Record<string, { th: string; en: string }> = {
-                          'Luck': { th: '🍀 โชค', en: '🍀 Luck' },
-                          'Yield': { th: '⛏️ ผลผลิต', en: '⛏️ Yield' },
-                          'Swift Mining': { th: '⚡ ขุดแร่เร็ว', en: '⚡ Swift Mining' },
-                          'Mine Power': { th: '💪 พลังขุด', en: '💪 Mine Power' },
-                          'Ice': { th: '❄️ น้ำแข็ง', en: '❄️ Ice' },
-                          'Burn': { th: '🔥 เผาไหม้', en: '🔥 Burn' },
-                          'Poison': { th: '☠️ พิษ', en: '☠️ Poison' },
-                          'Snow': { th: '🌨️ หิมะ', en: '🌨️ Snow' },
-                          'Explosion': { th: '💣 ระเบิด', en: '💣 Explosion' },
-                          'Heal': { th: '💚 รักษา', en: '💚 Heal' },
-                          'Thorns': { th: '🌿 หนาม', en: '🌿 Thorns' },
-                          'Berserk': { th: '😡 บ้าคลั่ง', en: '😡 Berserk' },
-                          'Shield': { th: '🛡️ โล่', en: '🛡️ Shield' },
-                          'Toxic Veins': { th: '🦠 เส้นพิษ', en: '🦠 Toxic Veins' },
+                          'Luck': { th: '🍀 โชคในการขุด', en: '🍀 Luck' },
+                          'Yield': { th: '⛏️ ปริมาณที่ได้', en: '⛏️ Yield' },
+                          'Swift Mining': { th: '⚡ ขุดแร่เร็วขึ้น', en: '⚡ Swift Mining' },
+                          'Mine Power': { th: '💪 พลังขุด/ดาเมจ', en: '💪 Mine Power' },
+                          'Ice': { th: '❄️ แช่แข็งศัตรู', en: '❄️ Ice' },
+                          'Burn': { th: '🔥 เผาไหม้ต่อเนื่อง', en: '🔥 Burn' },
+                          'Poison': { th: '☠️ พิษสะสม', en: '☠️ Poison' },
+                          'Snow': { th: '🌨️ ลดความเร็ว', en: '🌨️ Snow' },
+                          'Explosion': { th: '💣 ระเบิด AOE', en: '💣 Explosion' },
+                          'Heal': { th: '💚 ฟื้นฟูพลังชีวิต', en: '💚 Heal' },
+                          'Thorns': { th: '🌿 สะท้อนความเสียหาย', en: '🌿 Thorns' },
+                          'Berserk': { th: '😡 บ้าคลั่งเพิ่มดาเมจ', en: '😡 Berserk' },
+                          'Shield': { th: '🛡️ โล่กันดาเมจ', en: '🛡️ Shield' },
+                          'Toxic Veins': { th: '🦠 สะสมพิษแรงขึ้น', en: '🦠 Toxic Veins' },
                           'Attack Speed': { th: '⚡ ความเร็วโจมตี', en: '⚡ Attack Speed' },
-                          'Lethality': { th: '🗡️ ความร้ายแรง', en: '🗡️ Lethality' },
+                          'Lethality': { th: '🗡️ เจาะเกราะ', en: '🗡️ Lethality' },
                           'Critical Chance': { th: '🎯 โอกาสคริติคอล', en: '🎯 Critical Chance' },
-                          'Critical Damage': { th: '💥 ความเสียหายคริติคอล', en: '💥 Critical Damage' },
-                          'Fracture': { th: '🔨 ความเสียหายสตัน', en: '🔨 Fracture' },
-                          'Endurance': { th: '💪 ความอดทน', en: '💪 Endurance' },
-                          'Surge': { th: '⚡ การพุ่ง', en: '⚡ Surge' },
-                          'Vitality': { th: '❤️ พลังชีวิต', en: '❤️ Vitality' },
-                          'Swiftness': { th: '🏃 ความว่องไว', en: '🏃 Swiftness' },
-                          'Phase': { th: '👻 ระยะเวลาไร้ตัว', en: '👻 Phase' },
+                          'Critical Damage': { th: '💥 ดาเมจคริติคอล', en: '💥 Critical Damage' },
+                          'Fracture': { th: '🔨 ทำลายเกราะ/สตัน', en: '🔨 Fracture' },
+                          'Endurance': { th: '💪 พลังป้องกัน', en: '💪 Endurance' },
+                          'Surge': { th: '⚡ ลดคูลดาวน์ Dash', en: '⚡ Surge' },
+                          'Vitality': { th: '❤️ พลังชีวิตสูงสุด', en: '❤️ Vitality' },
+                          'Swiftness': { th: '🏃 ความเร็วเคลื่อนที่', en: '🏃 Swiftness' },
+                          'Phase': { th: '👻 ระยะไร้ตัว/ Dash', en: '👻 Phase' },
                         };
                         const lowerTrait = traitName.toLowerCase();
                         for (const [key, value] of Object.entries(traitMap)) {
@@ -1332,14 +1333,14 @@ export default function Calculator() {
                       };
                       
                       return (
-                        <div key={index} className="p-3 bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-xl border border-purple-500/30">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="text-purple-300 font-semibold text-xs">
+                        <div key={index} className="p-3 sm:p-4 bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-xl border border-purple-500/30">
+                          <div className="flex items-center justify-between mb-2 gap-2 min-w-0">
+                            <h4 className="text-purple-300 font-semibold text-xs sm:text-sm truncate">
                               {index + 1}. {rune ? getRuneNameTranslated(rune.id, rune.name) : 'Unknown'}
                             </h4>
                             <button
                               onClick={() => setSelectedRunes(prev => prev.filter((_, i) => i !== index))}
-                              className="text-red-400 hover:text-red-300 text-xs"
+                              className="text-red-400 hover:text-red-300 text-xs flex-shrink-0"
                             >
                               ✕
                             </button>
@@ -1348,14 +1349,16 @@ export default function Calculator() {
                               {/* Primary Traits */}
                           {Object.entries(runeData.runeState.traitValues).length > 0 && (
                             <div className="mb-2">
-                              <div className="text-[10px] text-purple-400 font-semibold mb-1">
+                              <div className="text-[10px] sm:text-xs text-purple-400 font-semibold mb-1">
                                 {language === 'th' ? 'คุณสมบัติหลัก' : 'Primary Traits'}:
                               </div>
-                              <div className="grid grid-cols-2 gap-1">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                                 {Object.entries(runeData.runeState.traitValues).map(([name, value]) => (
-                                  <div key={name} className="bg-zinc-900/50 p-1 rounded border border-purple-500/20">
-                                    <span className="text-purple-300 text-[10px]">{getTraitNameTranslated(name)}:</span>
-                                    <span className="text-purple-400 ml-1 font-semibold text-[10px]">{value}</span>
+                                  <div key={name} className="bg-zinc-900/60 p-1.5 rounded border border-purple-500/20 flex items-center justify-between gap-2 min-w-0">
+                                    <span className="text-purple-300 text-[10px] sm:text-xs leading-snug break-words whitespace-normal">
+                                      {getTraitNameTranslated(name)}
+                                    </span>
+                                    <span className="text-purple-400 font-semibold text-[10px] sm:text-xs flex-shrink-0">{value}</span>
                                   </div>
                                 ))}
                               </div>
@@ -1367,10 +1370,10 @@ export default function Calculator() {
                             <>
                               {runeData.secondaryTraits.weapon && runeData.secondaryTraits.weapon.length > 0 && (
                                 <div className="mb-2">
-                                  <div className="text-[10px] text-red-400 font-semibold mb-1">⚔️ {language === 'th' ? 'อาวุธ' : 'Weapon'}:</div>
+                                  <div className="text-[10px] sm:text-xs text-red-400 font-semibold mb-1">⚔️ {language === 'th' ? 'อาวุธ' : 'Weapon'}:</div>
                                   <div className="flex flex-wrap gap-1">
                                     {runeData.secondaryTraits.weapon.map((trait, idx) => (
-                                      <div key={idx} className="bg-red-500/20 border border-red-500/30 px-1.5 py-0.5 rounded text-[10px]">
+                                      <div key={idx} className="bg-red-500/20 border border-red-500/30 px-1.5 py-0.5 rounded text-[10px] sm:text-xs leading-snug whitespace-normal break-words">
                                         <span className="text-red-300">{getTraitNameTranslated(trait.name)}:</span>
                                         <span className="text-red-400 ml-1 font-semibold">{trait.value}%</span>
                                       </div>
@@ -1380,10 +1383,10 @@ export default function Calculator() {
                               )}
                               {runeData.secondaryTraits.armor && runeData.secondaryTraits.armor.length > 0 && (
                                 <div>
-                                  <div className="text-[10px] text-blue-400 font-semibold mb-1">🛡️ {language === 'th' ? 'เกราะ' : 'Armor'}:</div>
+                                  <div className="text-[10px] sm:text-xs text-blue-400 font-semibold mb-1">🛡️ {language === 'th' ? 'เกราะ' : 'Armor'}:</div>
                                   <div className="flex flex-wrap gap-1">
                                     {runeData.secondaryTraits.armor.map((trait, idx) => (
-                                      <div key={idx} className="bg-blue-500/20 border border-blue-500/30 px-1.5 py-0.5 rounded text-[10px]">
+                                      <div key={idx} className="bg-blue-500/20 border border-blue-500/30 px-1.5 py-0.5 rounded text-[10px] sm:text-xs leading-snug whitespace-normal break-words">
                                         <span className="text-blue-300">{getTraitNameTranslated(trait.name)}:</span>
                                         <span className="text-blue-400 ml-1 font-semibold">{trait.value}%</span>
                                       </div>

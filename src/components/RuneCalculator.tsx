@@ -138,6 +138,14 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 
+  // ตั้งค่าเริ่มต้นให้ปุ่มอยู่มุมขวาล่าง (ใช้ top/left เพื่อรองรับลากได้จริงทุก device)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const startX = Math.max(16, window.innerWidth - 88);
+    const startY = Math.max(80, window.innerHeight - 140);
+    setPosition({ x: startX, y: startY });
+  }, []);
+
   useEffect(() => {
     const saved = localStorage.getItem('savedRunes');
     if (saved) {
@@ -162,9 +170,11 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
     if (!isDragging) return;
 
     const handleMouseMove = (e: MouseEvent) => {
+      const nextX = e.clientX - dragOffset.x;
+      const nextY = e.clientY - dragOffset.y;
       setPosition({
-        x: e.clientX - dragOffset.x,
-        y: e.clientY - dragOffset.y
+        x: Math.max(8, Math.min(nextX, window.innerWidth - 72)),
+        y: Math.max(60, Math.min(nextY, window.innerHeight - 72))
       });
     };
 
@@ -204,6 +214,11 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
         ? prev.filter(t => t !== traitName)
         : [...prev, traitName]
     );
+    // ถ้าเพิ่งเปิดการเลือก trait ที่ยังไม่มีค่า ให้ใส่ค่าต่ำสุดไว้ก่อน
+    const trait = selectedRune?.traits.find(t => t.name === traitName);
+    if (trait && trait.minValue !== null && traitValues[traitName] === undefined) {
+      setTraitValues(curr => ({ ...curr, [traitName]: trait.minValue! }));
+    }
   };
 
   const handleTraitChange = (traitName: string, value: number) => {
@@ -249,6 +264,14 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
   const handleSaveRune = () => {
     if (!selectedRune || !buildName.trim()) return;
 
+    // บันทึกเฉพาะ Traits หลักที่ติ๊กเลือก
+    const filteredTraitValues: Record<string, number> = {};
+    selectedTraits.forEach(traitName => {
+      if (traitValues[traitName] !== undefined) {
+        filteredTraitValues[traitName] = traitValues[traitName];
+      }
+    });
+
     const filteredSecondary: { weapon?: SecondaryTrait[]; armor?: SecondaryTrait[] } = {};
     if (secondaryTraits.weapon?.some(t => t.value > 0)) {
       filteredSecondary.weapon = secondaryTraits.weapon.filter(t => t.value > 0);
@@ -262,7 +285,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
       name: buildName,
       runeState: {
         runeId: selectedRune.id,
-        traitValues: { ...traitValues },
+        traitValues: filteredTraitValues,
         selectedTraits: [...selectedTraits]
       },
       secondaryTraits: Object.keys(filteredSecondary).length > 0 ? filteredSecondary : undefined,
@@ -318,8 +341,8 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
         onClick={() => !isDragging && setIsOpen(!isOpen)}
         style={{
           position: 'fixed',
-          bottom: isOpen ? 'auto' : `${position.y}px`,
-          right: isOpen ? '24px' : `${position.x}px`,
+          top: `${position.y}px`,
+          left: `${position.x}px`,
           cursor: isDragging ? 'grabbing' : 'grab'
         }}
         className="z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center group"
@@ -454,7 +477,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                   <div className="flex items-start justify-between gap-2">
                                     <div className="flex-1 min-w-0">
                                       <p className="font-medium text-xs sm:text-sm text-zinc-300 break-words">{trait.name}</p>
-                                      <p className="text-xs text-zinc-400 mt-1 break-words">{trait.description}</p>
+                                      <p className="text-xs text-zinc-400 mt-1 break-words whitespace-normal">{trait.description}</p>
                                     </div>
                                     <span className="text-zinc-500 text-xs flex-shrink-0 whitespace-nowrap">ตายตัว</span>
                                   </div>
@@ -479,7 +502,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                     {trait.unit ? ` ${trait.unit}` : ''}
                                   </span>
                                 </div>
-                                <p className="text-xs text-zinc-400 break-words">{trait.description}</p>
+                                    <p className="text-xs text-zinc-400 break-words whitespace-normal">{trait.description}</p>
 
                                 {minVal !== null && maxVal !== null && (
                                   <>
@@ -565,7 +588,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                         />
                                       </div>
                                     )}
-                                    <p className="text-xs text-zinc-400 mt-1 break-words">{trait.description}</p>
+                                    <p className="text-xs text-zinc-400 mt-1 break-words whitespace-normal">{trait.description}</p>
                                   </div>
                                 );
                               })}
