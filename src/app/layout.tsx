@@ -12,28 +12,57 @@ const mali = Mali({
 });
 
 export const metadata: Metadata = {
-  title: 'The Forge Thailand | เดอะฟอร์จ ไทยแลนด์',
-  description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะขั้นสูง สำหรับเกม The Forge - Advanced crafting calculator for The Forge game',
-  keywords: ['The Forge', 'calculator', 'crafting', 'weapon', 'armor', 'ore', 'Thailand', 'forge calculator', 'ore calculator', 'rune calculator'],
+  title: {
+    default: 'The Forge Thailand | เครื่องมือคำนวณการสร้างอาวุธและเกราะ',
+    template: '%s | The Forge Thailand'
+  },
+  description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะอัจฉริยะ รองรับการคำนวณแร่ (Ore Calculator) และรูน (Rune Calculator) แบบมืออาชีพ สำหรับเกม The Forge - Advanced Weapon & Armor Crafting Calculator with Ore and Rune Systems',
+  keywords: [
+    'The Forge',
+    'The Forge Thailand',
+    'The Forge Calculator',
+    'Ore Calculator',
+    'Rune Calculator',
+    'Weapon Calculator',
+    'Armor Calculator',
+    'Crafting Calculator',
+    'เดอะฟอร์จ',
+    'คำนวณแร่',
+    'คำนวณรูน',
+    'คำนวณอาวุธ',
+    'คำนวณเกราะ',
+    'forge game',
+    'ore multiplier',
+    'weapon forge',
+    'armor forge',
+    'rune traits',
+    'Thailand'
+  ],
   authors: [{ name: 'Subsomboon Leo' }],
   creator: 'Subsomboon Leo',
-  publisher: 'The Forge Thailand',
+  publisher: 'The Forge Thailand Community',
+  applicationName: 'The Forge Thailand Calculator',
+  category: 'Gaming Tools',
   icons: {
     icon: [
       { url: '/web.ico', sizes: 'any' },
-      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
-      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
-      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+      { url: '/web.ico', type: 'image/x-icon' },
     ],
+    shortcut: ['/web.ico'],
     apple: [
-      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+      { url: '/web.ico', sizes: '180x180' },
     ],
-    shortcut: '/web.ico',
+    other: [
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        url: '/web.ico',
+      },
+    ],
   },
-  manifest: '/manifest.json',
   openGraph: {
-    title: 'The Forge Thailand | เดอะฟอร์จ ไทยแลนด์',
-    description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะขั้นสูง สำหรับเกม The Forge - Advanced crafting calculator',
+    title: 'The Forge Thailand | เครื่องมือคำนวณการสร้างอาวุธและเกราะอัจฉริยะ',
+    description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะแบบมืออาชีพ รองรับระบบ Ore Calculator และ Rune Calculator พร้อมฟีเจอร์ครบครัน สำหรับเกม The Forge',
     type: 'website',
     locale: 'th_TH',
     alternateLocale: ['en_US'],
@@ -43,21 +72,24 @@ export const metadata: Metadata = {
         url: '/gamethumb.png',
         width: 1200,
         height: 630,
-        alt: 'The Forge Thailand Calculator',
+        alt: 'The Forge Thailand - Advanced Weapon & Armor Calculator',
+        type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The Forge Thailand | เดอะฟอร์จ ไทยแลนด์',
-    description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะขั้นสูง',
+    title: 'The Forge Thailand | เครื่องมือคำนวณอาวุธและเกราะอัจฉริยะ',
+    description: 'คำนวณการสร้างอาวุธและเกราะแบบมืออาชีพ พร้อมระบบ Ore และ Rune Calculator',
     images: ['/gamethumb.png'],
+    creator: '@TheForgeThailand',
   },
   viewport: {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 5,
     userScalable: true,
+    viewportFit: 'cover',
   },
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#fbbf24' },
@@ -67,16 +99,36 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'The Forge TH',
+    startupImage: [
+      {
+        url: '/gamethumb.png',
+        media: '(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)',
+      },
+    ],
+  },
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
   },
   robots: {
     index: true,
     follow: true,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://thai-theforgecalculator.vercel.app',
+    languages: {
+      'th-TH': 'https://thai-theforgecalculator.vercel.app',
+      'en-US': 'https://thai-theforgecalculator.vercel.app',
     },
   },
 };
@@ -91,6 +143,7 @@ export default function RootLayout({
       <body className={`${mali.variable} font-mali antialiased`}>
         <ClientProviders>
           {children}
+          <Analytics />
         </ClientProviders>
       </body>
     </html>
