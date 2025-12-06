@@ -87,6 +87,13 @@ const SparklesIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const InfoIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2"/>
+    <path d="M12 16v-4m0-4h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
+
 // --- Types ---
 type Trait = {
   maxStat: number;
@@ -715,6 +722,7 @@ export default function Calculator() {
   const [buildName, setBuildName] = useState("");
   const [showCompareMode, setShowCompareMode] = useState(false);
   const [selectedBuildsForCompare, setSelectedBuildsForCompare] = useState<string[]>([]);
+  const [showBuildInfo, setShowBuildInfo] = useState<string | null>(null);
   
   const isMobile = useIsMobile();
 
@@ -1002,7 +1010,7 @@ export default function Calculator() {
                         <span className="relative z-10 text-white text-[7px] font-semibold leading-tight drop-shadow-lg block">
                           {oreName}
                         </span>
-                        <span className="absolute bottom-0.5 right-0.5 z-10 text-white font-bold text-[9px] drop-shadow-lg">
+                        <span className="absolute bottom-0.5 right-0.5 z-10 text-white font-bold text-[7px] drop-shadow-lg">
                           {data.multiplier}×
                         </span>
                       </button>
@@ -1045,7 +1053,7 @@ export default function Calculator() {
                             <span className="relative z-10 text-white text-[7px] font-semibold leading-tight drop-shadow-lg block">
                               {oreName}
                             </span>
-                            <span className="absolute bottom-0.5 right-0.5 z-10 text-white font-bold text-[9px] drop-shadow-lg">
+                            <span className="absolute bottom-0.5 right-0.5 z-10 text-white font-bold text-[7px] drop-shadow-lg">
                               {data.multiplier}×
                             </span>
                             {/* Trait Badge */}
@@ -1294,24 +1302,24 @@ export default function Calculator() {
                         <div className="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
                         <div className="text-purple-300 font-bold text-sm">{tr.ore}</div>
                       </div>
-                      <div className="space-y-2.5">
+                      <div className="space-y-3">
                         {tr.lines.map((l: string, i: number) => {
-                          // Extract maxStat value if available
-                          const lineTranslated = t(l);
                           const oreData = ores[tr.ore];
                           const trait = oreData?.traits?.[i];
                           const maxStat = trait?.maxStat ?? 0;
                           
                           return (
-                            <div key={i} className="space-y-1">
-                              <div className="text-[11px] text-purple-200 font-medium leading-relaxed">
-                                {lineTranslated}
+                            <div key={i} className="space-y-2 border-b border-purple-500/15 pb-2 last:border-0 last:pb-0">
+                              <div className="text-[10px] text-purple-300/80 font-semibold">
+                                {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
                               </div>
-                              {/* Show obtained percentage inline */}
+                              <div className="text-[11px] text-purple-200 font-medium leading-relaxed ml-2">
+                                {t(l)}
+                              </div>
                               {maxStat !== 0 && (
-                                <div className="text-[10px] text-purple-300/70 flex justify-between items-center px-1">
-                                  <span>{language === 'th' ? 'ได้รับ:' : 'Obtained:'}</span>
-                                  <span className="font-semibold text-purple-400">{(maxStat).toFixed(2)}%</span>
+                                <div className="text-[10px] text-purple-300/70 flex items-center gap-2 ml-2">
+                                  <span className="text-purple-400">{language === 'th' ? 'สูงสุด:' : 'Max:'}</span>
+                                  <span className="font-semibold text-purple-400">{Math.abs(maxStat).toFixed(2)}</span>
                                 </div>
                               )}
                             </div>
@@ -1384,6 +1392,16 @@ export default function Calculator() {
                                 title={t('loadBuild')}
                               >
                                 ↓
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setShowBuildInfo(build.id);
+                                }}
+                                className="w-6 h-6 flex items-center justify-center rounded bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 transition-colors"
+                                title="Build Information"
+                              >
+                                <InfoIcon className="w-3 h-3" />
                               </button>
                               <button
                                 onClick={(e) => {
@@ -1625,24 +1643,27 @@ export default function Calculator() {
                       {build.results?.traits && build.results.traits.length > 0 && (
                         <div className="bg-gradient-to-br from-purple-500/15 to-purple-600/10 border border-purple-500/40 rounded-lg p-3">
                           <div className="text-xs text-purple-400 font-semibold mb-2 uppercase tracking-wider">{t('traits')}</div>
-                          <div className="text-[9px] text-zinc-300 space-y-2">
+                          <div className="text-[9px] text-zinc-300 space-y-1.5">
                             {build.results.traits.map((tr: any, idx: number) => (
                               <div key={idx} className="border-l-2 border-purple-500/60 pl-2 py-1">
-                                <div className="font-semibold text-purple-300 mb-1">{tr.ore}</div>
+                                <div className="font-semibold text-purple-300 mb-1.5 text-[8px] uppercase">{tr.ore}</div>
                                 {tr.lines && tr.lines.map((line: string, lineIdx: number) => {
                                   const oreData = ores[tr.ore];
                                   const trait = oreData?.traits?.[lineIdx];
                                   const maxStat = trait?.maxStat ?? 0;
                                   
                                   return (
-                                    <div key={lineIdx} className="space-y-0.5">
-                                      <div className="text-zinc-400 leading-snug">
+                                    <div key={lineIdx} className="space-y-1 text-[8px] mb-1.5 last:mb-0">
+                                      <div className="text-purple-300/80 font-semibold">
+                                        {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
+                                      </div>
+                                      <div className="text-zinc-400 leading-snug ml-2">
                                         • {t(line)}
                                       </div>
                                       {maxStat !== 0 && (
-                                        <div className="text-[8px] text-purple-300/70 flex justify-between px-1">
-                                          <span className="font-medium">{language === 'th' ? 'ได้รับ:' : 'Obtained:'}</span>
-                                          <span className="text-purple-400 font-semibold">{(maxStat).toFixed(2)}%</span>
+                                        <div className="text-purple-300/70 flex items-center gap-1 ml-2">
+                                          <span className="font-medium">{language === 'th' ? 'สูงสุด:' : 'Max:'}</span>
+                                          <span className="text-purple-400 font-semibold">{Math.abs(maxStat)}</span>
                                         </div>
                                       )}
                                     </div>
@@ -1661,6 +1682,126 @@ export default function Calculator() {
           </div>
         )}
       </div>
+
+      {/* Build Info Modal */}
+      {showBuildInfo && (() => {
+        const build = savedBuilds.find(b => b.id === showBuildInfo);
+        if (!build) return null;
+        
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl border border-purple-500/30 p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold text-white mb-2">{build.name}</h2>
+                  <div className="flex flex-wrap gap-3">
+                    <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/30">
+                      {t(build.craftType)}
+                    </span>
+                    <span className="inline-block px-3 py-1 rounded-full text-sm font-semibold bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
+                      {build.multiplier?.toFixed(2)}× {language === 'th' ? 'ตัวคูณ' : 'Multiplier'}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowBuildInfo(null)}
+                  className="text-zinc-400 hover:text-white transition-colors"
+                >
+                  <CloseIcon className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Ore Composition */}
+              <div className="mb-6 p-4 bg-zinc-800/50 rounded-lg border border-zinc-700/50">
+                <h3 className="text-purple-400 font-bold mb-3 text-sm uppercase tracking-wider">
+                  {language === 'th' ? 'องค์ประกอบของแร่' : 'Ore Composition'}
+                </h3>
+                <div className="space-y-2">
+                  {build.slots.filter(s => s !== null).map((slot, idx) => (
+                    <div key={idx} className="flex items-center justify-between text-sm">
+                      <span className="text-zinc-300 font-medium">{slot?.name}</span>
+                      <span className="text-purple-400 font-bold">×{slot?.count}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Predicted Item */}
+              {build.predictedItem && (
+                <div className="mb-6 p-4 bg-green-900/30 rounded-lg border border-green-500/30">
+                  <h3 className="text-green-400 font-bold mb-3 text-sm uppercase tracking-wider">
+                    {language === 'th' ? 'ไอเทมที่คาดว่าจะได้' : 'Predicted Item'}
+                  </h3>
+                  <div className="flex justify-between items-center">
+                    <span className="text-white font-semibold text-lg">{t(build.predictedItem)}</span>
+                    <span className="text-green-400 font-bold">{(build.predictedChance! * 100).toFixed(1)}% {language === 'th' ? 'โอกาส' : 'Chance'}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Traits */}
+              {build.results?.traits && build.results.traits.length > 0 && (
+                <div className="mb-6 p-4 bg-gradient-to-br from-purple-900/30 to-purple-800/20 rounded-lg border border-purple-500/30">
+                  <h3 className="text-purple-400 font-bold mb-4 text-sm uppercase tracking-wider">
+                    {t('activeTraits')}
+                  </h3>
+                  <div className="space-y-4">
+                    {build.results.traits.map((tr: any, idx: number) => (
+                      <div key={idx} className="space-y-3 pb-4 border-b border-purple-500/20 last:border-0">
+                        <div className="font-bold text-purple-300 text-lg">{tr.ore}</div>
+                        <div className="space-y-2 ml-2">
+                          {tr.lines && tr.lines.map((line: string, lineIdx: number) => {
+                            const oreData = ores[tr.ore];
+                            const trait = oreData?.traits?.[lineIdx];
+                            const maxStat = trait?.maxStat ?? 0;
+                            
+                            return (
+                              <div key={lineIdx} className="space-y-1">
+                                <div className="text-sm text-purple-300/80 font-semibold">
+                                  {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
+                                </div>
+                                <div className="text-purple-200 text-sm font-medium">
+                                  {t(line)}
+                                </div>
+                                {maxStat !== 0 && (
+                                  <div className="text-sm text-purple-300/70 flex items-center gap-2">
+                                    <span className="font-semibold">{language === 'th' ? 'สูงสุด:' : 'Max:'}</span>
+                                    <span className="text-purple-400 font-bold">{Math.abs(maxStat)}</span>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-4 border-t border-zinc-700">
+                <button
+                  onClick={() => {
+                    loadBuildToCalculator(build);
+                    setShowBuildInfo(null);
+                  }}
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-semibold transition-all"
+                >
+                  {language === 'th' ? 'โหลดโครงสร้าง' : 'Load Build'}
+                </button>
+                <button
+                  onClick={() => setShowBuildInfo(null)}
+                  className="flex-1 px-4 py-3 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg font-semibold transition-colors"
+                >
+                  {t('cancel')}
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Save Dialog Modal */}
       {showSaveDialog && (
