@@ -5,6 +5,8 @@
         "id": "miner_shard",
         "name": "Miner Shard",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Delver, Zombie, Bomber",
         "traits": [
           {
             "name": "Luck",
@@ -40,6 +42,8 @@
         "id": "frost_speck",
         "name": "Frost Speck",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
         "traits": [
           {
             "name": "Ice",
@@ -54,25 +58,15 @@
         "id": "flame_spark",
         "name": "Flame Spark",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Deathaxe Skeleton, Elite Deathaxe Skeleton, Blazing Slime, Reaper",
         "traits": [
           {
             "name": "Burn",
-            "description": "Deals fire damage per second",
-            "damagePercent": {
-              "minValue": 5,
-              "maxValue": 10,
-              "unit": "% of weapon damage"
-            },
-            "duration": {
-              "minValue": 1,
-              "maxValue": 2,
-              "unit": "seconds"
-            },
-            "procChance": {
-              "minValue": 15,
-              "maxValue": 25,
-              "unit": "%"
-            }
+            "description": "Deals 5-10% of weapon damage as fire per second for 1-2 seconds. 15-25% chance on hit",
+            "minValue": 5,
+            "maxValue": 10,
+            "unit": "% of weapon damage per second"
           }
         ]
       },
@@ -80,25 +74,15 @@
         "id": "venom_crumb",
         "name": "Venom Crumb",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
         "traits": [
           {
             "name": "Poison",
-            "description": "Deals poison damage over time",
-            "damagePercent": {
-              "minValue": null,
-              "maxValue": null,
-              "unit": "% of weapon damage"
-            },
-            "duration": {
-              "minValue": null,
-              "maxValue": null,
-              "unit": "seconds"
-            },
-            "procChance": {
-              "minValue": null,
-              "maxValue": null,
-              "unit": "%"
-            }
+            "description": "Deals poison damage over time. Chance to apply on hit",
+            "minValue": null,
+            "maxValue": null,
+            "unit": null
           }
         ]
       },
@@ -106,25 +90,15 @@
         "id": "chill_dust",
         "name": "Chill Dust",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
         "traits": [
           {
             "name": "Snow",
-            "description": "Slows enemy movement and attack speed",
-            "slowPercent": {
-              "minValue": null,
-              "maxValue": null,
-              "unit": "%"
-            },
-            "duration": {
-              "minValue": null,
-              "maxValue": null,
-              "unit": "seconds"
-            },
-            "procChance": {
-              "minValue": null,
-              "maxValue": null,
-              "unit": "%"
-            }
+            "description": "Slows enemy movement and attack speed. Chance on hit",
+            "minValue": null,
+            "maxValue": null,
+            "unit": null
           }
         ]
       },
@@ -132,20 +106,16 @@
         "id": "blast_chip",
         "name": "Blast Chip",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Bomber",
         "traits": [
           {
             "name": "Explosion",
             "description": "Cause an explosion at location of victim, dealing AOE damage",
-            "damagePercent": {
-              "minValue": 20,
-              "maxValue": 40,
-              "unit": "% of weapon damage"
-            },
-            "procChance": {
-              "minValue": 8,
-              "maxValue": 20,
-              "unit": "%"
-            }
+            "minValue": 20,
+            "maxValue": 40,
+            "unit": "% of weapon damage",
+            "procChance": "8-20%"
           }
         ]
       },
@@ -153,10 +123,12 @@
         "id": "drain_edge",
         "name": "Drain Edge",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Reaper",
         "traits": [
           {
             "name": "Heal",
-            "description": "Heal percentage of physical damage dealt on-hit",
+            "description": "Heal % of physical damage dealt on-hit",
             "minValue": 5,
             "maxValue": 13,
             "unit": "%"
@@ -167,15 +139,15 @@
         "id": "briar_notch",
         "name": "Briar Notch",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Deathaxe Skeleton, Elite Deathaxe Skeleton",
         "traits": [
           {
             "name": "Thorns",
             "description": "Reflect physical damage taken. Maximum damage given limits at 5% max health of user. 0.05 seconds cooldown",
             "minValue": 2,
             "maxValue": 10,
-            "unit": "%",
-            "maxDamageCap": "5% of max health",
-            "cooldown": 0.05
+            "unit": "%"
           }
         ]
       },
@@ -183,26 +155,15 @@
         "id": "rage_mark",
         "name": "Rage Mark",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Elite Rogue Skeleton",
         "traits": [
           {
             "name": "Berserk",
-            "description": "Boosts physical damage and movement speed when health is below 35%",
-            "boost": {
-              "minValue": 12,
-              "maxValue": 26,
-              "unit": "%"
-            },
-            "duration": {
-              "minValue": 4,
-              "maxValue": 7,
-              "unit": "seconds"
-            },
-            "cooldown": {
-              "minValue": 50,
-              "maxValue": 60,
-              "unit": "seconds"
-            },
-            "activationThreshold": "35% health"
+            "description": "Boosts physical damage and movement speed for 4-7 seconds. Has 50-60 seconds cooldown. Activates when health is below 35%",
+            "minValue": 12,
+            "maxValue": 26,
+            "unit": "%"
           }
         ]
       },
@@ -210,20 +171,16 @@
         "id": "ward_patch",
         "name": "Ward Patch",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
         "traits": [
           {
             "name": "Shield",
             "description": "Reduces incoming damage with a chance per hit",
-            "damageReduction": {
-              "minValue": 6,
-              "maxValue": 14,
-              "unit": "%"
-            },
-            "procChance": {
-              "minValue": 5,
-              "maxValue": 15,
-              "unit": "%"
-            }
+            "minValue": 6,
+            "maxValue": 14,
+            "unit": "%",
+            "procChance": "5-15%"
           }
         ]
       },
@@ -231,21 +188,15 @@
         "id": "rot_stitch",
         "name": "Rot Stitch",
         "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
         "traits": [
           {
             "name": "Toxic Veins",
-            "description": "Deals poison damage around the user while health is below 35%",
-            "damagePercent": {
-              "minValue": null,
-              "maxValue": null,
-              "unit": "%"
-            },
-            "cooldown": {
-              "minValue": null,
-              "maxValue": null,
-              "unit": "seconds"
-            },
-            "activationThreshold": "35% health"
+            "description": "Deals poison damage around the user while health is below 35%. Has a cooldown",
+            "minValue": null,
+            "maxValue": null,
+            "unit": null
           }
         ]
       }

@@ -49,30 +49,35 @@ const runeData = runeDataRaw as { runes: { primary: Rune[]; secondary: { weapon:
 
 const translations = {
   th: {
-    'rune.calculator': 'รูนคำนวน',
+    'rune.calculator': 'คำนวณรูน',
     'rune.selectRune': 'เลือกรูน',
-    'rune.editTraits': 'แก้ไขความสามารถหลักหลัก',
-    'rune.secondaryTraits': 'ความสามารถที่สอง',
-    'rune.weaponSecondary': 'ความสามารถจำพวกอาวุธ',
-    'rune.armorSecondary': 'ความสามารถจำพวกเกราะ',
+    'rune.editTraits': 'ปรับความสามารถหลัก',
+    'rune.secondaryTraits': 'คุณสมบัติเสริม',
+    'rune.weaponSecondary': '⚔️ คุณสมบัติอาวุธ',
+    'rune.armorSecondary': '🛡️ คุณสมบัติเกราะ',
     'rune.save': 'บันทึก',
-    'rune.savedRunes': 'รูนที่บันทึก',
+    'rune.savedRunes': 'รูนที่บันทึกไว้',
     'rune.buildName': 'ชื่อ Build',
     'rune.saveBuild': 'บันทึก Build',
     'rune.cancel': 'ยกเลิก',
     'rune.load': 'โหลด',
     'rune.add': 'เพิ่ม',
     'rune.delete': 'ลบ',
-    'rune.noRune': 'ไม่มีรูนที่เลือก',
-    'rune.selectTraits': 'เลือก Traits',
+    'rune.noRune': 'ยังไม่ได้เลือกรูน',
+    'rune.selectTraits': 'เลือกคุณสมบัติ',
+    'rune.rarityRare': 'หายาก',
+    'rune.obtainedFrom': 'ได้จาก',
+    'rune.unobtainable': 'หาไม่ได้ในเกมปัจจุบัน',
+    'rune.primaryTraits': 'คุณสมบัติหลัก',
+    'rune.fixedValue': 'ค่าคงที่',
   },
   en: {
     'rune.calculator': 'Rune Calculator',
     'rune.selectRune': 'Select Rune',
     'rune.editTraits': 'Edit Primary Traits',
     'rune.secondaryTraits': 'Secondary Traits',
-    'rune.weaponSecondary': 'Weapon Traits',
-    'rune.armorSecondary': 'Armor Traits',
+    'rune.weaponSecondary': '⚔️ Weapon Traits',
+    'rune.armorSecondary': '🛡️ Armor Traits',
     'rune.save': 'Save',
     'rune.savedRunes': 'Saved Runes',
     'rune.buildName': 'Build Name',
@@ -83,6 +88,11 @@ const translations = {
     'rune.delete': 'Delete',
     'rune.noRune': 'No Rune Selected',
     'rune.selectTraits': 'Select Traits',
+    'rune.rarityRare': 'Rare',
+    'rune.obtainedFrom': 'Obtained from',
+    'rune.unobtainable': 'Currently Unobtainable',
+    'rune.primaryTraits': 'Primary Traits',
+    'rune.fixedValue': 'Fixed',
   }
 };
 
@@ -479,7 +489,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                       <p className="font-medium text-xs sm:text-sm text-zinc-300 break-words">{trait.name}</p>
                                       <p className="text-xs text-zinc-400 mt-1 break-words whitespace-normal">{trait.description}</p>
                                     </div>
-                                    <span className="text-zinc-500 text-xs flex-shrink-0 whitespace-nowrap">ตายตัว</span>
+                                    <span className="text-zinc-500 text-xs flex-shrink-0 whitespace-nowrap">{t('rune.fixedValue')}</span>
                                   </div>
                                 </div>
                               );
