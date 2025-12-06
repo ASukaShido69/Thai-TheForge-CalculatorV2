@@ -343,5 +343,11 @@
         "multiplier": 0.0,
         "traitType": "All",
         "traits": []
+    },
+    "Slimlite": {
+        "rarity": "Epic",
+        "multiplier": 2.25,
+        "traitType": "All",
+        "traits": []
     }
 }

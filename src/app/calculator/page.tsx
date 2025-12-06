@@ -280,7 +280,7 @@ function getOreImagePath(oreName: string): string | null {
     "Crimson Crystal Ore": "crimson_crystal", "Green Crystal Ore": "green_crystal",
     "Orange Crystal Ore": "orange_crystal", "Blue Crystal Ore": "blue_crystal",
     "Rainbow Crystal Ore": "rainbow_crystal", "Arcane Crystal Ore": "arcane_crystal",
-    "Galaxite Ore": "galaxite", "Fichillium": "Fichillium",
+    "Galaxite Ore": "galaxite", "Fichillium": "Fichillium", "Slimlite": "Slimlite",
   };
 
   const imageName = imageMap[oreName];
