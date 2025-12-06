@@ -491,6 +491,7 @@ const RarityColors: Record<string, string> = {
     "Legendary": "border-yellow-400 text-yellow-300",
     "Mythical": "border-red-400 text-red-300",
     "Divine": "border-pink-400 text-pink-300",
+    "Relic": "border-yellow-400 text-yellow-300",
     "Unknown": "border-gray-600 text-gray-400"
 };
 
