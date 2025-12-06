@@ -553,6 +553,8 @@ const translations = {
     
     // Trait descriptions
     "💪 Extra defense on Armor": "💪 เพิ่มเกราะ (สูงสุด 30%)",
+    "15% poison for 5s when below 35% HP": "สร้างความเสียหายพิษ 15% ศัตรูเดินหนี เป็นเวลา 5 วินาที ทำให้ศัตรูหวาดกลัว มีคูลดาวน์ 15 วินาที และจะทำงานเมื่อพลังชีวิตต่ำกว่า 15%",
+    "🟢 15% Poison Damage when Below 35% HP": "🟢 ความเสียหายพิษเมื่อพลังชีวิตต่ำกว่า 35% ศัตรูเดินหนี เป็นเวลา 5 วินาที มีคูลดาวน์ 15 วินาที (สูงสุด 15%)",
     "💥 Crit Chance on Weapons": "💥 โอกาสคริติคอลของอาวุธ (สูงสุด 20%)",
     "⚡ max HP AOE Damage on Armor": "⚡ ความเสียหาย AOE สูงสุดของ HP บนเกราะ (สูงสุด 5%)",
     "⚔️ Weapon Damage": "⚔️ ความเสียหายของอาวุธ (สูงสุด 15%)",
@@ -616,6 +618,7 @@ const translations = {
     
     // Trait descriptions
     "💪 Extra defense on Armor": "💪 Extra defense on Armor (Max 15)",
+    "🟢 Poison Damage when Below 35% HP": "🟢 Poison Damage when Below 35% HP (Max 15%)",
     "💥 Crit Chance on Weapons": "💥 Crit Chance on Weapons (Max 20%)",
     "⚡ max HP AOE Damage on Armor": "⚡ max HP AOE Damage on Armor (Max 5%)",
     "⚔️ Weapon Damage": "⚔️ Weapon Damage (Max 15)",
@@ -1633,6 +1636,28 @@ export default function Calculator() {
                         <div className="text-lg font-bold text-yellow-300">{build.multiplier?.toFixed(2)}×</div>
                       </div>
                       
+                      {/* Ore Composition */}
+                      {build.slots.filter(s => s !== null).length > 0 && (
+                        <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-2">
+                          <div className="text-xs text-zinc-400 mb-1.5">{language === 'th' ? 'องค์ประกอบแร่' : 'Ore Composition'}</div>
+                          <div className="grid grid-cols-3 gap-1">
+                            {build.slots.filter(s => s !== null).map((slot, idx) => {
+                              const oreImage = getOreImagePath(slot?.name || '');
+                              return (
+                                <div key={idx} className="flex flex-col items-center text-center">
+                                  {oreImage && (
+                                    <div className="relative w-8 h-8 mb-0.5 rounded border border-purple-500/30 bg-zinc-800/30 overflow-hidden">
+                                      <Image src={addImageVersion(oreImage)} alt={slot?.name || ''} fill className="object-cover" />
+                                    </div>
+                                  )}
+                                  <div className="text-[8px] text-purple-200 font-semibold leading-tight truncate w-full">×{slot?.count}</div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                      
                       {possibleItems.length > 0 && (() => {
                         const stats = possibleItems
                           .map(item => calculateMasterworkStat(item.name, build.multiplier || 0, build.craftType))
@@ -1647,28 +1672,13 @@ export default function Calculator() {
                                 ? `${min.toFixed(2)}-${max.toFixed(2)}`
                                 : `${Math.round(min)}-${Math.round(max)}`);
                           
-                          const price = build.predictedItem 
-                            ? calculateMasterworkPrice(build.predictedItem, build.multiplier || 0, build.craftType)
-                            : null;
-                          
                           return (
-                            <>
-                              <div className={`${build.craftType === "Weapon" ? 'bg-red-500/10 border border-red-500/30' : 'bg-blue-500/10 border border-blue-500/30'} rounded-lg p-2`}>
-                                <div className="text-xs text-zinc-400">{t(build.craftType === "Weapon" ? 'damage' : 'defense')}</div>
-                                <div className={`text-lg font-bold ${build.craftType === "Weapon" ? 'text-red-300' : 'text-blue-300'}`}>
-                                  {statDisplay}
-                                </div>
+                            <div className={`${build.craftType === "Weapon" ? 'bg-red-500/10 border border-red-500/30' : 'bg-blue-500/10 border border-blue-500/30'} rounded-lg p-2`}>
+                              <div className="text-xs text-zinc-400">{t(build.craftType === "Weapon" ? 'damage' : 'defense')}</div>
+                              <div className={`text-lg font-bold ${build.craftType === "Weapon" ? 'text-red-300' : 'text-blue-300'}`}>
+                                {statDisplay}
                               </div>
-                              
-                              {price !== null && (
-                                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-2">
-                                  <div className="text-xs text-zinc-400">{t('price')}</div>
-                                  <div className="text-lg font-bold text-green-300">
-                                    ${price >= 1000 ? price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : price.toFixed(2)}
-                                  </div>
-                                </div>
-                              )}
-                            </>
+                            </div>
                           );
                         }
                         return null;
@@ -1778,6 +1788,29 @@ export default function Calculator() {
                   <h3 className="text-green-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider">
                     {language === 'th' ? 'ไอเทมที่คาดว่าจะได้' : 'Predicted Item'}
                   </h3>
+                  
+                  {/* Item Images */}
+                  {(() => {
+                    const possibleItems = getPossibleItemImagesWithChances(build.predictedItem, build.predictedChance || 0, build.craftType);
+                    if (possibleItems.length > 0) {
+                      return (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-3">
+                          {possibleItems.map((item) => (
+                            <div key={item.image} className="flex flex-col items-center bg-zinc-800/30 rounded-lg p-2 border border-green-500/20">
+                              <div className="relative w-16 h-16 sm:w-20 sm:h-20 mb-1">
+                                <Image src={item.image} alt={item.name} fill className="object-contain" />
+                              </div>
+                              <span className="text-[10px] sm:text-xs text-white font-semibold text-center">{item.name}</span>
+                              <span className="text-[9px] text-green-400 font-bold">{item.ratio}</span>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
+                  
+                  {/* Item Info */}
                   <div className="flex justify-between items-center gap-3 flex-wrap">
                     <div className="flex items-center gap-2 min-w-0">
                       {(() => {

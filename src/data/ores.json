@@ -74,8 +74,14 @@
     "Poopite Ore": {
         "rarity": "Epic",
         "multiplier": 1.2,
-        "traitType": null,
-        "traits": []
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "🟢 15% Poison Damage when Below 35% HP",
+                "maxStat": 15,
+                "type": "Armor"
+            }
+        ]
     },
     "Cobalt Ore": {
         "rarity": "Uncommon",
