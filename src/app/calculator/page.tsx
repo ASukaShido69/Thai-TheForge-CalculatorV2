@@ -195,14 +195,14 @@ function getItemChancesWithTraits(selectedOres: Record<string, number>, craftTyp
     if (pct < 10) continue;
 
     const transferredFraction = calculateTransferredStat(pct);
-    const oreTraitParts: string[] = [];
+    const oreTraitParts: { percentage: string; description: string; mergedPercentage: string | null }[] = [];
 
     for (let i = 0; i < oreData.traits.length; i++) {
       const t1 = oreData.traits[i];
       if (typeof t1.maxStat !== "number") continue;
       const percentage = (transferredFraction * t1.maxStat).toFixed(2);
       let description = t1.description;
-      let mergedPercentage = null;
+      let mergedPercentage: string | null = null;
       
       // Don't merge AOE Explosion - keep it separate from chance
       const isAOEExplosion = t1.description.includes("💣 AOE Explosion");
