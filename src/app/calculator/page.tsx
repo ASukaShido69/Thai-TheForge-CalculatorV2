@@ -1804,9 +1804,39 @@ export default function Calculator() {
               {/* Traits */}
               {build.results?.traits && build.results.traits.length > 0 && (
                 <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-br from-purple-900/30 to-purple-800/20 rounded-lg border border-purple-500/30">
-                  <h3 className="text-purple-400 font-bold mb-3 text-xs sm:text-sm uppercase tracking-wider">
-                    {t('activeTraits')}
-                  </h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-purple-400 font-bold text-xs sm:text-sm uppercase tracking-wider">
+                      {t('activeTraits')}
+                    </h3>
+                    {(() => {
+                      const possibleItems = build.predictedItem 
+                        ? getPossibleItemImagesWithChances(build.predictedItem, build.predictedChance || 0, build.craftType)
+                        : [];
+                      
+                      if (possibleItems.length > 0) {
+                        const stats = possibleItems
+                          .map(item => calculateMasterworkStat(item.name, build.multiplier || 0, build.craftType))
+                          .filter((stat): stat is number => stat !== null);
+                        
+                        if (stats.length > 0) {
+                          const min = Math.min(...stats);
+                          const max = Math.max(...stats);
+                          const statDisplay = Math.abs(min - max) < 0.01 
+                            ? (build.craftType === "Weapon" ? min.toFixed(2) : Math.round(min).toString())
+                            : (build.craftType === "Weapon" 
+                                ? `${min.toFixed(2)}-${max.toFixed(2)}`
+                                : `${Math.round(min)}-${Math.round(max)}`);
+                          
+                          return (
+                            <div className={`text-[10px] sm:text-xs font-bold px-2 py-1 rounded ${build.craftType === "Weapon" ? 'bg-red-500/20 text-red-300' : 'bg-blue-500/20 text-blue-300'}`}>
+                              {build.craftType === "Weapon" ? 'DMG' : 'DEF'}: {statDisplay}
+                            </div>
+                          );
+                        }
+                      }
+                      return null;
+                    })()}
+                  </div>
                   <div className="space-y-3">
                     {build.results.traits.map((tr: any, idx: number) => (
                       <div key={idx} className="space-y-2 pb-3 border-b border-purple-500/20 last:border-0 last:pb-0">
