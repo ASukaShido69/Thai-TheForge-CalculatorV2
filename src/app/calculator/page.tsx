@@ -187,7 +187,7 @@ function getItemChancesWithTraits(selectedOres: Record<string, number>, craftTyp
     composition[ore] = (count / totalCount * 100);
   }
 
-  const traits: { ore: string, lines: string[] }[] = [];
+  const traits: { ore: string, lines: { percentage: string; description: string; mergedPercentage: string | null }[] }[] = [];
   for (const [oreName, pct] of Object.entries(composition)) {
     const oreData = ores[oreName];
     if (!oreData || !Array.isArray(oreData.traits)) continue;
