@@ -518,17 +518,18 @@ const translations = {
     "Heavy Chestplate": "เกราะอกแบบหนัก 🛡️",
     
     // Trait descriptions
-    "💪 Extra defense on Armor": "💪 เกราะ",
-    "💥 Crit Chance on Weapons": "💥 โอกาสคริติคอลของอาวุธ",
-    "⚡ max HP AOE Damage on Armor": "⚡ ความเสียหาย AOE สูงสุดของ HP บนเกราะหรือสะท้อน",
-    "⚔️ Weapon Damage": "⚔️ ความเสียหายของอาวุธ",
-    "❤️ Health": "❤️ ชีวิต",
-    "🔥 Burn Damage on Weapons with": "🔥 ความเสียหายเผาไหม้บนอาวุธ",
-    "🎯 chance": "🎯 โอกาส",
-    "💣 AOE Explosion on Weapons with": "💣 โอกาสระเบิด AOE บนอาวุธ",
-    "⚡ Bonus Movement Speed": "⚡ ความเร็วการเคลื่อนที่เพิ่มเติม",
-    "🔥 to Burn Enemy when Damage is Taken.": "🔥 เผาศัตรูเมื่อได้รับความเสียหาย",
-    "🏃 Chance to Dodge Damage (Negate Fully)": "🏃 โอกาสในการหลีกเลี่ยงความเสียหาย (ฮาคิ)",
+    "💪 Extra defense on Armor": "💪 เพิ่มเกราะ (สูงสุด 30%)",
+    "💥 Crit Chance on Weapons": "💥 โอกาสคริติคอลของอาวุธ (สูงสุด 20%)",
+    "⚡ max HP AOE Damage on Armor": "⚡ ความเสียหาย AOE สูงสุดของ HP บนเกราะ (สูงสุด 5%)",
+    "⚔️ Weapon Damage": "⚔️ ความเสียหายของอาวุธ (สูงสุด 15%)",
+    "❤️ Health": "❤️ ลดชีวิต (สูงสุด -10%)",
+    "🔥 Burn Damage on Weapons with": "🔥 ความเสียหายเผาไหม้บนอาวุธ (สูงสุด 20%)",
+    "🎯 chance": "🎯 โอกาส (สูงสุด 30-35%)",
+    "💣 AOE Explosion on Weapons with": "💣 ความเสียหายระเบิด AOE บนอาวุธ (สูงสุด 50%)",
+    "⚡ Bonus Movement Speed": "⚡ ความเร็วการเคลื่อนที่เพิ่มเติม (สูงสุด 15%)",
+    "🔥 to Burn Enemy when Damage is Taken.": "🔥 เผาศัตรูเมื่อได้รับความเสียหาย (สูงสุด 25%)",
+    "🏃 Chance to Dodge Damage (Negate Fully)": "🏃 โอกาสในการหลีกเลี่ยงความเสียหาย (สูงสุด 15%)",
+    "maxStatLabel": "ค่าสูงสุด",
   },
   en: {
     forgeChances: "Forge Chances",
@@ -578,17 +579,18 @@ const translations = {
     "Heavy Chestplate": "Heavy Chestplate",
     
     // Trait descriptions
-    "💪 Vitality": "💪 Vitality",
-    "💥 Crit Chance on Weapons": "💥 Crit Chance on Weapons",
-    "⚡ max HP AOE Damage on Armor": "⚡ max HP AOE Damage on Armor",
-    "⚔️ Weapon Damage": "⚔️ Weapon Damage",
-    "❤️ Health": "❤️ Health",
-    "🔥 Burn Damage on Weapons with": "🔥 Burn Damage on Weapons with",
-    "🎯 chance": "🎯 chance",
-    "💣 AOE Explosion on Weapons with": "💣 AOE Explosion on Weapons with",
-    "⚡ Bonus Movement Speed": "⚡ Bonus Movement Speed",
-    "🔥 to Burn Enemy when Damage is Taken.": "🔥 to Burn Enemy when Damage is Taken.",
-    "🏃 Chance to Dodge Damage (Negate Fully)": "🏃 Chance to Dodge Damage (Negate Fully)",
+    "💪 Extra defense on Armor": "💪 Extra defense on Armor (Max 15)",
+    "💥 Crit Chance on Weapons": "💥 Crit Chance on Weapons (Max 20%)",
+    "⚡ max HP AOE Damage on Armor": "⚡ max HP AOE Damage on Armor (Max 5%)",
+    "⚔️ Weapon Damage": "⚔️ Weapon Damage (Max 15)",
+    "❤️ Health": "❤️ Reduces Health (Max -10%)",
+    "🔥 Burn Damage on Weapons with": "🔥 Burn Damage on Weapons (Max 20%)",
+    "🎯 chance": "🎯 Chance (Max 30-35%)",
+    "💣 AOE Explosion on Weapons with": "💣 AOE Explosion Damage on Weapons (Max 50%)",
+    "⚡ Bonus Movement Speed": "⚡ Bonus Movement Speed (Max 15%)",
+    "🔥 to Burn Enemy when Damage is Taken.": "🔥 Burn Enemy when Damage is Taken (Max 25%)",
+    "🏃 Chance to Dodge Damage (Negate Fully)": "🏃 Chance to Dodge Damage (Max 15%)",
+    "maxStatLabel": "Max Value",
   }
 };
 
@@ -1017,7 +1019,7 @@ export default function Calculator() {
                 <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-4">
                   <div className="flex items-center gap-2 mb-3">
                     <SparklesIcon className="w-4 h-4 text-purple-400" />
-                    <h3 className="font-bold text-purple-300 text-sm">{language === 'th' ? 'แร่ที่มี Trait ✨' : 'Ores with Traits ✨'}</h3>
+                    <h3 className="font-bold text-purple-300 text-sm">{language === 'th' ? 'แร่ที่มีคุณสมบัติพิเศษ ✨' : 'Ores with Traits ✨'}</h3>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     {traitOres.map(oreName => {
@@ -1283,15 +1285,37 @@ export default function Calculator() {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {results.traits.map((tr: any, idx: number) => (
-                    <div key={idx} className="bg-purple-900/20 border border-purple-500/20 rounded-lg p-3">
-                      <div className="text-purple-300 font-bold mb-2 text-sm">{tr.ore}</div>
-                      <div className="space-y-1">
-                        {tr.lines.map((l: string, i: number) => (
-                          <div key={i} className="text-[11px] text-zinc-300 leading-relaxed">
-                            {t(l)}
-                          </div>
-                        ))}
+                    <div key={idx} className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 border border-purple-500/30 rounded-lg p-4">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
+                        <div className="text-purple-300 font-bold text-sm">{tr.ore}</div>
                       </div>
+                      <div className="space-y-2.5">
+                        {tr.lines.map((l: string, i: number) => {
+                          // Extract maxStat value if available
+                          const lineTranslated = t(l);
+                          return (
+                            <div key={i} className="space-y-1">
+                              <div className="text-[11px] text-purple-200 font-medium leading-relaxed">
+                                {lineTranslated}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {/* Show maxStat from ore data if available */}
+                      {ores[tr.ore]?.traits && ores[tr.ore].traits.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-purple-500/20">
+                          <div className="grid grid-cols-1 gap-1">
+                            {ores[tr.ore].traits.map((trait: any, tidx: number) => (
+                              <div key={tidx} className="text-[10px] text-purple-300/80 flex justify-between items-center">
+                                <span>สูงสุด:</span>
+                                <span className="font-semibold text-purple-400">{trait.maxStat}{typeof trait.maxStat === 'number' && trait.maxStat > -1 && !String(trait.maxStat).includes('.') ? (String(trait.maxStat).includes('%') ? '' : '') : ''}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -1597,17 +1621,28 @@ export default function Calculator() {
                       })()}
                       
                       {build.results?.traits && build.results.traits.length > 0 && (
-                        <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-2">
-                          <div className="text-xs text-purple-400 font-semibold mb-2">{t('traits')}</div>
-                          <div className="text-[9px] text-zinc-300 space-y-1.5">
+                        <div className="bg-gradient-to-br from-purple-500/15 to-purple-600/10 border border-purple-500/40 rounded-lg p-3">
+                          <div className="text-xs text-purple-400 font-semibold mb-2 uppercase tracking-wider">{t('traits')}</div>
+                          <div className="text-[9px] text-zinc-300 space-y-2">
                             {build.results.traits.map((tr: any, idx: number) => (
-                              <div key={idx} className="border-l border-purple-500/50 pl-2">
-                                <div className="font-semibold text-purple-300 mb-0.5">{tr.ore}</div>
+                              <div key={idx} className="border-l-2 border-purple-500/60 pl-2 py-1">
+                                <div className="font-semibold text-purple-300 mb-1">{tr.ore}</div>
                                 {tr.lines && tr.lines.map((line: string, lineIdx: number) => (
-                                  <div key={lineIdx} className="text-zinc-400 leading-tight">
+                                  <div key={lineIdx} className="text-zinc-400 leading-snug">
                                     • {t(line)}
                                   </div>
                                 ))}
+                                {/* Show maxStat from ore data */}
+                                {ores[tr.ore]?.traits && ores[tr.ore].traits.length > 0 && (
+                                  <div className="mt-1 pt-1 border-t border-purple-500/20">
+                                    {ores[tr.ore].traits.map((trait: any, tidx: number) => (
+                                      <div key={tidx} className="text-[8px] text-purple-300/70 flex justify-between">
+                                        <span className="font-medium">สูงสุด:</span>
+                                        <span className="text-purple-400 font-semibold">{trait.maxStat}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
                               </div>
                             ))}
                           </div>
