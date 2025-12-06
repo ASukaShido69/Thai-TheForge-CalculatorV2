@@ -13,10 +13,10 @@ const mali = Mali({
 
 export const metadata: Metadata = {
   title: {
-    default: 'The Forge Thailand | เครื่องมือคำนวณการสร้างอาวุธและเกราะ',
+    default: 'The Forge Thailand - เครื่องมือคำนวณอาวุธ เกราะ แร่ และรูน',
     template: '%s | The Forge Thailand'
   },
-  description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะอัจฉริยะ รองรับการคำนวณแร่ (Ore Calculator) และรูน (Rune Calculator) แบบมืออาชีพ สำหรับเกม The Forge - Advanced Weapon & Armor Crafting Calculator with Ore and Rune Systems',
+  description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะแบบมืออาชีพ รองรับระบบคำนวณแร่ (Ore) รูน (Rune) และ Traits ครบครัน พร้อม Multiplier Calculator สำหรับเกม The Forge | Advanced Weapon & Armor Crafting Calculator with Ore, Rune & Traits Systems',
   keywords: [
     'The Forge',
     'The Forge Thailand',
@@ -45,18 +45,18 @@ export const metadata: Metadata = {
   category: 'Gaming Tools',
   icons: {
     icon: [
-      { url: '/web.ico', sizes: 'any' },
-      { url: '/web.ico', type: 'image/x-icon' },
+      { url: './web.ico', sizes: 'any' },
+      { url: './web.ico', type: 'image/x-icon' },
     ],
-    shortcut: ['/web.ico'],
+    shortcut: ['./web.ico'],
     apple: [
-      { url: '/web.ico', sizes: '180x180' },
+      { url: './web.ico', sizes: '180x180' },
     ],
     other: [
       {
         rel: 'icon',
         type: 'image/x-icon',
-        url: '/web.ico',
+        url: './web.ico',
       },
     ],
   },
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     siteName: 'The Forge Thailand',
     images: [
       {
-        url: '/gamethumb.png',
+        url: './gamethumb.png',
         width: 1200,
         height: 630,
         alt: 'The Forge Thailand - Advanced Weapon & Armor Calculator',
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'The Forge Thailand | เครื่องมือคำนวณอาวุธและเกราะอัจฉริยะ',
     description: 'คำนวณการสร้างอาวุธและเกราะแบบมืออาชีพ พร้อมระบบ Ore และ Rune Calculator',
-    images: ['/gamethumb.png'],
+    images: ['./gamethumb.png'],
     creator: '@TheForgeThailand',
   },
   viewport: {
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
     title: 'The Forge TH',
     startupImage: [
       {
-        url: '/gamethumb.png',
+        url: './gamethumb.png',
         media: '(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)',
       },
     ],
