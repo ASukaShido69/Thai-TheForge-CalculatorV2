@@ -149,7 +149,7 @@
         "traitType": "Armor",
         "traits": [
             {
-                "description": "💪  Extra defense on Armor",
+                "description": "💪 Extra defense on Armor",
                 "maxStat": 30,
                 "type": "Armor"
             }
