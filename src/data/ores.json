@@ -341,7 +341,7 @@
     "Fichillium": {
         "rarity": "Relic",
         "multiplier": 0.0,
-        "traitType": null,
+        "traitType": "All",
         "traits": []
     }
 }
