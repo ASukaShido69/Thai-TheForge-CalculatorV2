@@ -530,6 +530,8 @@ const translations = {
     "🔥 to Burn Enemy when Damage is Taken.": "🔥 เผาศัตรูเมื่อได้รับความเสียหาย (สูงสุด 25%)",
     "🏃 Chance to Dodge Damage (Negate Fully)": "🏃 โอกาสในการหลีกเลี่ยงความเสียหาย (สูงสุด 15%)",
     "maxStatLabel": "ค่าสูงสุด",
+    "maxObtained": "ได้รับ:",
+    "maxObtainedLabel": "ได้รับ",
   },
   en: {
     forgeChances: "Forge Chances",
@@ -591,6 +593,8 @@ const translations = {
     "🔥 to Burn Enemy when Damage is Taken.": "🔥 Burn Enemy when Damage is Taken (Max 25%)",
     "🏃 Chance to Dodge Damage (Negate Fully)": "🏃 Chance to Dodge Damage (Max 15%)",
     "maxStatLabel": "Max Value",
+    "maxObtained": "Obtained:",
+    "maxObtainedLabel": "Obtained",
   }
 };
 
@@ -1294,28 +1298,26 @@ export default function Calculator() {
                         {tr.lines.map((l: string, i: number) => {
                           // Extract maxStat value if available
                           const lineTranslated = t(l);
+                          const oreData = ores[tr.ore];
+                          const trait = oreData?.traits?.[i];
+                          const maxStat = trait?.maxStat ?? 0;
+                          
                           return (
                             <div key={i} className="space-y-1">
                               <div className="text-[11px] text-purple-200 font-medium leading-relaxed">
                                 {lineTranslated}
                               </div>
+                              {/* Show obtained percentage inline */}
+                              {maxStat !== 0 && (
+                                <div className="text-[10px] text-purple-300/70 flex justify-between items-center px-1">
+                                  <span>{language === 'th' ? 'ได้รับ:' : 'Obtained:'}</span>
+                                  <span className="font-semibold text-purple-400">{(maxStat).toFixed(2)}%</span>
+                                </div>
+                              )}
                             </div>
                           );
                         })}
                       </div>
-                      {/* Show maxStat from ore data if available */}
-                      {ores[tr.ore]?.traits && ores[tr.ore].traits.length > 0 && (
-                        <div className="mt-3 pt-3 border-t border-purple-500/20">
-                          <div className="grid grid-cols-1 gap-1">
-                            {ores[tr.ore].traits.map((trait: any, tidx: number) => (
-                              <div key={tidx} className="text-[10px] text-purple-300/80 flex justify-between items-center">
-                                <span>สูงสุด:</span>
-                                <span className="font-semibold text-purple-400">{trait.maxStat}{typeof trait.maxStat === 'number' && trait.maxStat > -1 && !String(trait.maxStat).includes('.') ? (String(trait.maxStat).includes('%') ? '' : '') : ''}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
@@ -1627,22 +1629,25 @@ export default function Calculator() {
                             {build.results.traits.map((tr: any, idx: number) => (
                               <div key={idx} className="border-l-2 border-purple-500/60 pl-2 py-1">
                                 <div className="font-semibold text-purple-300 mb-1">{tr.ore}</div>
-                                {tr.lines && tr.lines.map((line: string, lineIdx: number) => (
-                                  <div key={lineIdx} className="text-zinc-400 leading-snug">
-                                    • {t(line)}
-                                  </div>
-                                ))}
-                                {/* Show maxStat from ore data */}
-                                {ores[tr.ore]?.traits && ores[tr.ore].traits.length > 0 && (
-                                  <div className="mt-1 pt-1 border-t border-purple-500/20">
-                                    {ores[tr.ore].traits.map((trait: any, tidx: number) => (
-                                      <div key={tidx} className="text-[8px] text-purple-300/70 flex justify-between">
-                                        <span className="font-medium">สูงสุด:</span>
-                                        <span className="text-purple-400 font-semibold">{trait.maxStat}</span>
+                                {tr.lines && tr.lines.map((line: string, lineIdx: number) => {
+                                  const oreData = ores[tr.ore];
+                                  const trait = oreData?.traits?.[lineIdx];
+                                  const maxStat = trait?.maxStat ?? 0;
+                                  
+                                  return (
+                                    <div key={lineIdx} className="space-y-0.5">
+                                      <div className="text-zinc-400 leading-snug">
+                                        • {t(line)}
                                       </div>
-                                    ))}
-                                  </div>
-                                )}
+                                      {maxStat !== 0 && (
+                                        <div className="text-[8px] text-purple-300/70 flex justify-between px-1">
+                                          <span className="font-medium">{language === 'th' ? 'ได้รับ:' : 'Obtained:'}</span>
+                                          <span className="text-purple-400 font-semibold">{(maxStat).toFixed(2)}%</span>
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
                               </div>
                             ))}
                           </div>
