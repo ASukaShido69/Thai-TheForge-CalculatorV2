@@ -280,6 +280,7 @@ function getOreImagePath(oreName: string): string | null {
     "Crimson Crystal Ore": "crimson_crystal", "Green Crystal Ore": "green_crystal",
     "Orange Crystal Ore": "orange_crystal", "Blue Crystal Ore": "blue_crystal",
     "Rainbow Crystal Ore": "rainbow_crystal", "Arcane Crystal Ore": "arcane_crystal",
+    "Galaxite Ore": "galaxite", "Fichillium": "fichillium",
   };
 
   const imageName = imageMap[oreName];
@@ -491,7 +492,7 @@ const RarityColors: Record<string, string> = {
     "Legendary": "border-yellow-400 text-yellow-300",
     "Mythical": "border-red-400 text-red-300",
     "Divine": "border-pink-400 text-pink-300",
-    "Relic": "border-yellow-400 text-yellow-300",
+    "Relic": "border-cyan-400 text-cyan-300",
     "Unknown": "border-gray-600 text-gray-400"
 };
 
@@ -503,7 +504,7 @@ const RarityBg: Record<string, string> = {
     "Legendary": "bg-yellow-500/10",
     "Mythical": "bg-red-500/10",
     "Divine": "bg-pink-500/10",
-    "Relic": "bg-yellow-500/10",
+    "Relic": "bg-cyan-500/10",
     "Unknown": "bg-gray-800/20"
 };
 
