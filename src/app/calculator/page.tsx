@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, memo, useRef, useCallback } from 'react';
+import { useState, useEffect, useMemo, memo, useRef, useCallback, Suspense, lazy, useTransition } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,6 +11,21 @@ import oresDataRaw from '../../data/ores.json';
 import weaponOddsRaw from '../../data/weaponOdds.json';
 import armorOddsRaw from '../../data/armorOdds.json';
 import forgeDataRaw from '../../data/forgeData.json';
+
+// Custom hook for debounced search
+function useDebouncedValue<T>(value: T, delayMs: number = 300): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delayMs);
+    
+    return () => clearTimeout(handler);
+  }, [value, delayMs]);
+  
+  return debouncedValue;
+}
 
 // Custom hook to detect mobile devices
 function useIsMobile(breakpoint: number = 1024) {
@@ -684,6 +699,57 @@ const translations = {
   }
 };
 
+// Memoized Ore Item Component for performance optimization
+const OreItem = memo(({ 
+  oreName, 
+  data, 
+  oreImage, 
+  isFavorite, 
+  onAddToSlot, 
+  onToggleFavorite 
+}: { 
+  oreName: string; 
+  data: any; 
+  oreImage: string | null; 
+  isFavorite: boolean; 
+  onAddToSlot: (name: string) => void; 
+  onToggleFavorite: (name: string) => void;
+}) => (
+  <div className="relative group">
+    <button
+      onClick={() => onAddToSlot(oreName)}
+      className={`relative w-full aspect-square border ${RarityColors[data.rarity]} ${RarityBg[data.rarity]} rounded-lg p-1 hover:brightness-125 transition-all overflow-hidden`}
+    >
+      {oreImage && (
+        <div className="absolute inset-0 opacity-60">
+          <Image src={oreImage} alt={oreName} fill className="object-cover" />
+        </div>
+      )}
+      <span className="relative z-10 text-white text-[7px] font-semibold leading-tight drop-shadow-lg block">
+        {oreName}
+      </span>
+      <span className="absolute bottom-0.5 right-0.5 z-10 text-white font-bold text-[9px] drop-shadow-lg">
+        {data.multiplier}×
+      </span>
+    </button>
+    
+    <button
+      onClick={() => onToggleFavorite(oreName)}
+      className="absolute -top-1 -right-1 z-20 w-5 h-5 bg-zinc-900 rounded-full border border-zinc-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+    >
+      <HeartIcon 
+        className={`w-3 h-3 ${isFavorite ? 'text-yellow-400' : 'text-zinc-500'}`} 
+        filled={isFavorite} 
+      />
+    </button>
+  </div>
+), (prev, next) => {
+  return prev.oreName === next.oreName && 
+         prev.isFavorite === next.isFavorite;
+});
+
+OreItem.displayName = 'OreItem';
+
 const SlotButton = memo(({ slot, index, onRemoveOne, onRemoveAll, isMobile = false, onHover }: { slot: SlotItem | null, index: number, onRemoveOne: (i: number) => void, onRemoveAll: (i: number) => void, isMobile?: boolean, onHover?: (name: string | null) => void }) => {
   const [isHolding, setIsHolding] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -798,8 +864,8 @@ export default function Calculator() {
     return translationsTyped[language]?.[key] || key;
   };
   
-  // Theme utility functions
-  const themeClasses = {
+  // Theme utility functions - memoized to prevent unnecessary recalculations
+  const themeClasses = useMemo(() => ({
     card: theme === 'dark' 
       ? 'bg-zinc-900/50 border-zinc-800/50' 
       : 'bg-white/70 border-gray-200/70 shadow-lg',
@@ -819,11 +885,12 @@ export default function Calculator() {
         ? 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700/50'
         : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
     }
-  };
+  }), [theme]);
   
   const [slots, setSlots] = useState<(SlotItem | null)[]>([null, null, null, null]);
   const [craftType, setCraftType] = useState<"Weapon" | "Armor">("Weapon");
   const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebouncedValue(searchTerm, 200); // Debounce search by 200ms
   const [favoriteOres, setFavoriteOres] = useState<string[]>([]);
   const [savedBuilds, setSavedBuilds] = useState<SavedBuild[]>([]);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
@@ -845,7 +912,7 @@ export default function Calculator() {
   const isMobile = useIsMobile();
 
   const loadBuildToCalculator = useCallback((build: SavedBuild) => {
-    setSlots([...build.slots]);
+    setSlots(build.slots);
     setCraftType(build.craftType);
     if (build.runeState) {
       setSelectedRunes([{
@@ -882,7 +949,7 @@ export default function Calculator() {
 
   const filteredOreNames = useMemo(() => {
     const names = Object.keys(ores).filter(name => {
-      if (!name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      if (!name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())) {
         return false;
       }
       return getOreImagePath(name) !== null;
@@ -898,7 +965,7 @@ export default function Calculator() {
       const diff = ores[b].multiplier - ores[a].multiplier;
       return diff !== 0 ? diff : a.localeCompare(b);
     });
-  }, [searchTerm, favoriteOres]);
+  }, [debouncedSearchTerm, favoriteOres]);
 
   const results = useMemo(() => {
     const selected: Record<string, number> = {};
@@ -1041,10 +1108,10 @@ export default function Calculator() {
             ? 'bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.05),transparent_50%)]'
             : 'bg-[radial-gradient(circle_at_50%_50%,rgba(234,179,8,0.08),transparent_50%)]'
         }`} />
-        <div className={`absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl animate-pulse ${
+        <div className={`absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl animate-pulse will-change-transform ${
           theme === 'dark' ? 'bg-yellow-500/5' : 'bg-yellow-400/10'
         }`} />
-        <div className={`absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl animate-pulse ${
+        <div className={`absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl animate-pulse will-change-transform ${
           theme === 'dark' ? 'bg-purple-500/5' : 'bg-purple-400/10'
         }`} style={{animationDelay: '1s'}} />
       </div>
@@ -2773,6 +2840,12 @@ export default function Calculator() {
       )}
 
       <style jsx global>{`
+        * {
+          backface-visibility: hidden;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
@@ -2782,6 +2855,12 @@ export default function Calculator() {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background: rgba(255, 215, 0, 0.3);
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 215, 0, 0.5);
+        }
+      `}</style>
           border-radius: 3px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
