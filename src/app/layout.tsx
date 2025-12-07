@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     default: 'The Forge Thailand - เครื่องมือคำนวณอาวุธ เกราะ แร่ และรูน',
     template: '%s | The Forge Thailand'
   },
-  description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะแบบมืออาชีพ รองรับระบบคำนวณแร่ (Ore) รูน (Rune) และ Traits ครบครัน พร้อม Multiplier Calculator สำหรับเกม The Forge | Advanced Weapon & Armor Crafting Calculator with Ore, Rune & Traits Systems',
+  description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะแบบมืออาชีพ เพิ่มระบบตี + และรองรับระบบคำนวณแร่ (Ore) รูน (Rune) และ Traits ครบครัน พร้อม Multiplier Calculator สำหรับเกม The Forge | Advanced Weapon & Armor Crafting Calculator with Ore, Rune & Traits Systems',
   keywords: [
     'The Forge',
     'The Forge Thailand',
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'The Forge Thailand | เครื่องมือคำนวณการสร้างอาวุธและเกราะอัจฉริยะ',
-    description: 'เครื่องมือคำนวณการสร้างอาวุธและเกราะแบบมืออาชีพ รองรับระบบ Ore Calculator และ Rune Calculator พร้อมฟีเจอร์ครบครัน สำหรับเกม The Forge',
+    description: 'เครื่องมือคำนวณการผลิตอาวุธและเกราะแบบมืออาชีพ ที่พัฒนาโดยคนไทยผู้มีความตั้งใจสูง Subsomboon Leo เพื่อให้เหล่าผู้เล่นเกม The Forge ทุกคนสามารถวางแผนการคราฟต์ได้อย่างแม่นยำและมีประสิทธิภาพสูงสุด',
     type: 'website',
     locale: 'th_TH',
     alternateLocale: ['en_US'],
