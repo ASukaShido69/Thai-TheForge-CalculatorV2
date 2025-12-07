@@ -17,14 +17,16 @@ export function ClientProviders({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        {mounted && (
-          <>
-            <ThemeToggle />
-            <LanguageToggle />
-            <DonationForm />
-          </>
-        )}
-        {children}
+        <>
+          {mounted && (
+            <>
+              <ThemeToggle />
+              <LanguageToggle />
+              <DonationForm />
+            </>
+          )}
+          {children}
+        </>
       </LanguageProvider>
     </ThemeProvider>
   );
