@@ -1880,6 +1880,16 @@ export default function Calculator() {
                             onMouseEnter={() => estimatedStat && setHoveredItem({name: item.name, damage: estimatedStat, type: craftType})}
                             onMouseLeave={() => setHoveredItem(null)}
                           >
+                            <div className="relative w-16 h-16 mb-1">
+                              <Image src={item.image} alt={item.name} fill className="object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                            </div>
+                            <span className="text-[10px] text-white font-semibold">{item.ratio}</span>
+                            
+                            {/* Tooltip */}
+                            {hoveredItem && hoveredItem.name === item.name && (
+                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-50 pointer-events-none">
+                                <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl min-w-[140px] animate-in fade-in duration-200">
+                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
                                   <div className={`text-xs font-semibold text-center ${craftType === "Weapon" ? 'text-red-300' : 'text-blue-300'}`}>
                                     {craftType === "Weapon" ? '⚔️ ' : '🛡️ '}
                                     {craftType === "Weapon" ? 'Damage' : 'Defense'}: {estimatedStat?.toFixed(2)}
@@ -1888,16 +1898,6 @@ export default function Calculator() {
                                     <div className={`text-[10px] text-center mt-1 ${
                                       craftType === 'Weapon' ? 'text-orange-400' : 'text-cyan-400'
                                     }`}>
-                                      +{enhancementLevel} Enhancement
-                                    </div>
-                                  )} className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl min-w-[140px] animate-in fade-in duration-200">
-                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
-                                  <div className={`text-xs font-semibold text-center ${craftType === "Weapon" ? 'text-red-300' : 'text-blue-300'}`}>
-                                    {craftType === "Weapon" ? '⚔️ ' : '🛡️ '}
-                                    {craftType === "Weapon" ? 'Damage' : 'Defense'}: {estimatedStat?.toFixed(2)}
-                                  </div>
-                                  {craftType === "Weapon" && enhancementLevel > 0 && (
-                                    <div className="text-[10px] text-orange-400 text-center mt-1">
                                       +{enhancementLevel} Enhancement
                                     </div>
                                   )}
