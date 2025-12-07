@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, memo, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import RuneCalculator from '@/components/RuneCalculator';
 
 import oresDataRaw from '../../data/ores.json';
@@ -180,8 +181,8 @@ function getItemChancesWithTraits(selectedOres: Record<string, number>, craftTyp
   const oddsDict = craftType === "Weapon" ? weaponOdds : armorOdds;
   let combinedMultiplier = calculateCombinedMultiplier(selectedOres);
   
-  // Apply enhancement multiplier for weapons
-  if (craftType === "Weapon" && enhancementLevel > 0) {
+  // Apply enhancement multiplier for both weapons and armor
+  if (enhancementLevel > 0) {
     const enhancementMultiplier = 1 + (enhancementLevel * 0.05);
     combinedMultiplier *= enhancementMultiplier;
   }
@@ -489,6 +490,25 @@ function calculateMasterworkStat(itemName: string, multiplier: number, craftType
   return finalStat;
 }
 
+// Helper function to get estimated damage/defense for tooltip
+function getItemEstimatedStat(itemName: string, multiplier: number, craftType: "Weapon" | "Armor", enhancementLevel: number = 0): number | null {
+  const statsData = craftType === "Weapon" ? forgeData.weaponStats : forgeData.armorStats;
+  if (!statsData) return null;
+  
+  const baseStat = statsData[itemName];
+  if (baseStat === undefined) return null;
+  
+  let finalStat = (baseStat * multiplier) * 2;
+  
+  // Apply enhancement for both weapons and armor
+  if (enhancementLevel > 0) {
+    const enhancementMultiplier = 1 + (enhancementLevel * 0.05);
+    finalStat *= enhancementMultiplier;
+  }
+  
+  return finalStat;
+}
+
 // --- Components ---
 
 const RarityColors: Record<string, string> = {
@@ -772,9 +792,33 @@ const SlotButton = memo(({ slot, index, onRemoveOne, onRemoveAll, isMobile = fal
 
 export default function Calculator() {
   const { language } = useLanguage();
+  const { theme } = useTheme();
   const t = (key: string) => {
     const translationsTyped = translations as any;
     return translationsTyped[language]?.[key] || key;
+  };
+  
+  // Theme utility functions
+  const themeClasses = {
+    card: theme === 'dark' 
+      ? 'bg-zinc-900/50 border-zinc-800/50' 
+      : 'bg-white/70 border-gray-200/70 shadow-lg',
+    cardGlow: theme === 'dark'
+      ? 'bg-zinc-900/60 border-zinc-700/50'
+      : 'bg-white/80 border-gray-300/60 shadow-xl',
+    input: theme === 'dark'
+      ? 'bg-zinc-800/50 border-zinc-700/50 text-white placeholder-zinc-500'
+      : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400',
+    text: {
+      primary: theme === 'dark' ? 'text-zinc-100' : 'text-gray-900',
+      secondary: theme === 'dark' ? 'text-zinc-400' : 'text-gray-600',
+      tertiary: theme === 'dark' ? 'text-zinc-500' : 'text-gray-500',
+    },
+    button: {
+      default: theme === 'dark'
+        ? 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700/50'
+        : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+    }
   };
   
   const [slots, setSlots] = useState<(SlotItem | null)[]>([null, null, null, null]);
@@ -796,6 +840,7 @@ export default function Calculator() {
   }>>([]);
   const [hoveredOreName, setHoveredOreName] = useState<string | null>(null);
   const [enhancementLevel, setEnhancementLevel] = useState<number>(0);
+  const [hoveredItem, setHoveredItem] = useState<{name: string; damage: number; type: string} | null>(null);
   
   const isMobile = useIsMobile();
 
@@ -984,12 +1029,24 @@ export default function Calculator() {
   const currentTypes = useMemo(() => craftType === "Weapon" ? WEAPON_TYPES : ARMOR_TYPES, [craftType]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100 font-mali relative overflow-hidden">
+    <div className={`min-h-screen font-mali relative overflow-hidden transition-colors duration-300 ${
+      theme === 'dark' 
+        ? 'bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100' 
+        : 'bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900'
+    }`}>
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.05),transparent_50%)]" />
-        <div className="absolute top-0 left-0 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+        <div className={`absolute inset-0 ${
+          theme === 'dark'
+            ? 'bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.05),transparent_50%)]'
+            : 'bg-[radial-gradient(circle_at_50%_50%,rgba(234,179,8,0.08),transparent_50%)]'
+        }`} />
+        <div className={`absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl animate-pulse ${
+          theme === 'dark' ? 'bg-yellow-500/5' : 'bg-yellow-400/10'
+        }`} />
+        <div className={`absolute bottom-0 right-0 w-96 h-96 rounded-full blur-3xl animate-pulse ${
+          theme === 'dark' ? 'bg-purple-500/5' : 'bg-purple-400/10'
+        }`} style={{animationDelay: '1s'}} />
       </div>
 
       {/* Main Container */}
@@ -999,7 +1056,9 @@ export default function Calculator() {
         <div className="flex items-center justify-between mb-6">
           <Link 
             href="/"
-            className="flex items-center gap-2 text-zinc-400 hover:text-yellow-400 transition-colors group"
+            className={`flex items-center gap-2 transition-colors group ${
+              theme === 'dark' ? 'text-zinc-400 hover:text-yellow-400' : 'text-gray-600 hover:text-yellow-600'
+            }`}
           >
             <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -1047,13 +1106,17 @@ export default function Calculator() {
           <div className="lg:col-span-3 space-y-4">
             
             {/* Search & Type Selector */}
-            <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-zinc-800/50 p-4 space-y-3">
+            <div className={`backdrop-blur-xl rounded-2xl border p-4 space-y-3 transition-colors ${
+              themeClasses.card
+            }`}>
               <input
                 type="text"
                 placeholder={t('searchOres')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-zinc-800/50 border border-zinc-700/50 rounded-lg px-4 py-2.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-yellow-500/50 transition-colors"
+                className={`w-full border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-yellow-500/50 transition-colors ${
+                  themeClasses.input
+                }`}
               />
               
               <div className="grid grid-cols-2 gap-2">
@@ -1062,7 +1125,7 @@ export default function Calculator() {
                   className={`py-2.5 rounded-lg font-semibold text-sm transition-all ${
                     craftType === 'Weapon'
                       ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg shadow-red-500/30'
-                      : 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700/50'
+                      : themeClasses.button.default
                   }`}
                 >
                   {t('weapon')}
@@ -1072,38 +1135,67 @@ export default function Calculator() {
                   className={`py-2.5 rounded-lg font-semibold text-sm transition-all ${
                     craftType === 'Armor'
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30'
-                      : 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700/50'
+                      : themeClasses.button.default
                   }`}
                 >
                   {t('armor')}
                 </button>
               </div>
 
-              {/* Enhancement System - Only show for Weapon */}
-              {craftType === 'Weapon' && (
-                <div className="bg-gradient-to-br from-red-900/30 to-orange-900/30 backdrop-blur-xl rounded-2xl border border-red-500/30 p-4">
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-bold text-red-300 text-sm flex items-center gap-2">
-                        <span>⚔️ {language === 'th' ? 'ระดับการเสริมอาวุธ' : 'Weapon Enhancement'}</span>
-                      </h3>
-                      <div className="text-xs text-red-300 font-semibold">
-                        Lv. {enhancementLevel} 
-                        <span className="ml-2 text-orange-400">
-                          ({(1 + enhancementLevel * 0.05).toFixed(2)}×)
-                        </span>
-                      </div>
+              {/* Enhancement System - Show for both Weapon and Armor */}
+              <div className={`backdrop-blur-xl rounded-2xl border p-4 transition-colors ${
+                craftType === 'Weapon'
+                  ? theme === 'dark'
+                    ? 'bg-gradient-to-br from-red-900/30 to-orange-900/30 border-red-500/30'
+                    : 'bg-gradient-to-br from-red-50/80 to-orange-50/80 border-red-300/50'
+                  : theme === 'dark'
+                    ? 'bg-gradient-to-br from-blue-900/30 to-cyan-900/30 border-blue-500/30'
+                    : 'bg-gradient-to-br from-blue-50/80 to-cyan-50/80 border-blue-300/50'
+              }`}>
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className={`font-bold text-sm flex items-center gap-2 ${
+                      craftType === 'Weapon'
+                        ? theme === 'dark' ? 'text-red-300' : 'text-red-700'
+                        : theme === 'dark' ? 'text-blue-300' : 'text-blue-700'
+                    }`}>
+                      <span>
+                        {craftType === 'Weapon' ? '⚔️' : '🛡️'} {language === 'th' 
+                          ? (craftType === 'Weapon' ? 'ระดับการเสริมอาวุธ' : 'ระดับการเสริมเกราะ')
+                          : (craftType === 'Weapon' ? 'Weapon Enhancement' : 'Armor Enhancement')}
+                      </span>
+                    </h3>
+                    <div className={`text-xs font-semibold ${
+                      craftType === 'Weapon'
+                        ? theme === 'dark' ? 'text-red-300' : 'text-red-600'
+                        : theme === 'dark' ? 'text-blue-300' : 'text-blue-600'
+                    }`}>
+                      Lv. {enhancementLevel} 
+                      <span className={`ml-2 ${
+                        craftType === 'Weapon'
+                          ? theme === 'dark' ? 'text-orange-400' : 'text-orange-600'
+                          : theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
+                      }`}>
+                        ({(1 + enhancementLevel * 0.05).toFixed(2)}×)
+                      </span>
                     </div>
+                  </div>
                     
                     {/* Enhancement Level Display Bar */}
                     <div className="bg-zinc-900/60 rounded-lg p-2 mb-3">
                       <div className="flex items-center justify-between text-xs mb-2">
                         <span className="text-zinc-400">{language === 'th' ? 'ระดับ' : 'Level'}: <strong className="text-white">{enhancementLevel}</strong> / 9</span>
-                        <span className="text-orange-400 font-semibold">+{(enhancementLevel * 5).toFixed(0)}% Damage</span>
+                        <span className={craftType === 'Weapon' ? 'text-orange-400' : 'text-cyan-400'}>
+                          +{(enhancementLevel * 5).toFixed(0)}% {craftType === 'Weapon' ? 'Damage' : 'Defense'}
+                        </span>
                       </div>
                       <div className="w-full bg-zinc-800 rounded-full h-2">
                         <div 
-                          className="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full transition-all duration-300"
+                          className={`h-2 rounded-full transition-all duration-300 ${
+                            craftType === 'Weapon' 
+                              ? 'bg-gradient-to-r from-red-500 to-orange-500'
+                              : 'bg-gradient-to-r from-blue-500 to-cyan-500'
+                          }`}
                           style={{ width: `${(enhancementLevel / 9) * 100}%` }}
                         />
                       </div>
@@ -1117,8 +1209,12 @@ export default function Calculator() {
                           onClick={() => setEnhancementLevel(level)}
                           className={`py-2 rounded-lg font-bold text-xs transition-all ${
                             enhancementLevel === level
-                              ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg shadow-red-500/50 scale-105'
-                              : 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700/50 hover:text-zinc-300'
+                              ? craftType === 'Weapon'
+                                ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg shadow-red-500/50 scale-105'
+                                : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/50 scale-105'
+                              : theme === 'dark'
+                                ? 'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700/50 hover:text-zinc-300'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'
                           }`}
                         >
                           +{level}
@@ -1370,24 +1466,65 @@ export default function Calculator() {
                       {results?.combinedMultiplier ? `${results.combinedMultiplier.toFixed(2)}×` : '0.00×'}
                     </div>
                     
-                    {/* Enhancement Multiplier Breakdown - Only show for Weapon with enhancement */}
-                    {craftType === 'Weapon' && enhancementLevel > 0 && results && (
-                      <div className="mt-3 pt-3 border-t border-yellow-500/20 w-full">
-                        <div className="text-xs text-zinc-400 mb-2 relative z-10">
-                          <span className="text-red-300">⚔️ Enhancement Breakdown:</span>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 text-xs relative z-10">
-                          <div className="bg-zinc-800/40 rounded px-2 py-1">
-                            <div className="text-zinc-400">{language === 'th' ? 'พื้นฐาน' : 'Base'}</div>
-                            <div className="font-bold text-yellow-300">{(results.combinedMultiplier / (1 + enhancementLevel * 0.05)).toFixed(2)}×</div>
+                    {/* Enhancement Multiplier Breakdown - Show for both Weapon and Armor with enhancement */}
+                    {enhancementLevel > 0 && results && (() => {
+                      const baseMultiplier = results.combinedMultiplier / (1 + enhancementLevel * 0.05);
+                      // Get the first item's base stat to calculate base DMG/DEF
+                      const currentTypes = Object.keys(results.odds || {}).filter(type => (results.odds[type] || 0) > 0);
+                      const sortedItems = currentTypes
+                        .map(type => ({ type, pct: results.odds[type] || 0 }))
+                        .sort((a, b) => b.pct - a.pct);
+                      const predictedItem = sortedItems[0];
+                      const possibleItems = getPossibleItemImagesWithChances(predictedItem.type, predictedItem.pct, craftType);
+                      const firstItem = possibleItems[0];
+                      
+                      let baseStat = 0;
+                      if (firstItem) {
+                        const statsData = craftType === "Weapon" ? forgeData.weaponStats : forgeData.armorStats;
+                        const itemBaseStat = statsData?.[firstItem.name];
+                        if (itemBaseStat !== undefined) {
+                          baseStat = (itemBaseStat * baseMultiplier) * 2;
+                        }
+                      }
+                      const enhancementMultiplier = 1 + (enhancementLevel * 0.05);
+                      const finalStat = baseStat * enhancementMultiplier;
+                      
+                      return (
+                        <div className="mt-3 pt-3 border-t border-yellow-500/20 w-full">
+                          <div className="text-xs text-zinc-400 mb-2 relative z-10">
+                            <span className={craftType === 'Weapon' ? 'text-red-300' : 'text-blue-300'}>
+                              {craftType === 'Weapon' ? '⚔️' : '🛡️'} Enhancement Breakdown:
+                            </span>
                           </div>
-                          <div className="bg-red-900/30 rounded px-2 py-1 border border-red-500/30">
-                            <div className="text-red-300">Enhancement Lv. {enhancementLevel}</div>
-                            <div className="font-bold text-orange-300">{(1 + enhancementLevel * 0.05).toFixed(2)}×</div>
+                          <div className="grid grid-cols-2 gap-2 text-xs relative z-10">
+                            <div className="bg-zinc-800/40 rounded px-2 py-1">
+                              <div className="text-zinc-400">{language === 'th' ? 'พื้นฐาน' : 'Base'}</div>
+                              <div className="font-bold text-yellow-300">
+                                {craftType === 'Weapon' ? baseStat.toFixed(2) : Math.round(baseStat).toString()}
+                              </div>
+                              <div className="text-[10px] text-zinc-500 mt-0.5">
+                                ({baseMultiplier.toFixed(2)}×)
+                              </div>
+                            </div>
+                            <div className={`rounded px-2 py-1 border ${
+                              craftType === 'Weapon'
+                                ? 'bg-red-900/30 border-red-500/30'
+                                : 'bg-blue-900/30 border-blue-500/30'
+                            }`}>
+                              <div className={craftType === 'Weapon' ? 'text-red-300' : 'text-blue-300'}>
+                                +{enhancementLevel} Enh.
+                              </div>
+                              <div className={`font-bold ${craftType === 'Weapon' ? 'text-orange-300' : 'text-cyan-300'}`}>
+                                {craftType === 'Weapon' ? finalStat.toFixed(2) : Math.round(finalStat).toString()}
+                              </div>
+                              <div className="text-[10px] text-zinc-500 mt-0.5">
+                                ({enhancementMultiplier.toFixed(2)}×)
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
                   </div>
                 </div>
 
@@ -1687,14 +1824,45 @@ export default function Calculator() {
                   
                   {possibleItems.length > 0 && (
                     <div className="flex items-center justify-center gap-3 mb-4">
-                      {possibleItems.map((item) => (
-                        <div key={item.image} className="flex flex-col items-center group">
-                          <div className="relative w-16 h-16 mb-1">
-                            <Image src={item.image} alt={item.name} fill className="object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                      {possibleItems.map((item) => {
+                        const estimatedStat = getItemEstimatedStat(item.name, results?.combinedMultiplier || 1, craftType, enhancementLevel);
+                        return (
+                          <div 
+                            key={item.image} 
+                            className="flex flex-col items-center group relative"
+                            onMouseEnter={() => estimatedStat && setHoveredItem({name: item.name, damage: estimatedStat, type: craftType})}
+                            onMouseLeave={() => setHoveredItem(null)}
+                          >
+                                  <div className={`text-xs font-semibold text-center ${craftType === "Weapon" ? 'text-red-300' : 'text-blue-300'}`}>
+                                    {craftType === "Weapon" ? '⚔️ ' : '🛡️ '}
+                                    {craftType === "Weapon" ? 'Damage' : 'Defense'}: {estimatedStat?.toFixed(2)}
+                                  </div>
+                                  {enhancementLevel > 0 && (
+                                    <div className={`text-[10px] text-center mt-1 ${
+                                      craftType === 'Weapon' ? 'text-orange-400' : 'text-cyan-400'
+                                    }`}>
+                                      +{enhancementLevel} Enhancement
+                                    </div>
+                                  )} className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl min-w-[140px] animate-in fade-in duration-200">
+                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
+                                  <div className={`text-xs font-semibold text-center ${craftType === "Weapon" ? 'text-red-300' : 'text-blue-300'}`}>
+                                    {craftType === "Weapon" ? '⚔️ ' : '🛡️ '}
+                                    {craftType === "Weapon" ? 'Damage' : 'Defense'}: {estimatedStat?.toFixed(2)}
+                                  </div>
+                                  {craftType === "Weapon" && enhancementLevel > 0 && (
+                                    <div className="text-[10px] text-orange-400 text-center mt-1">
+                                      +{enhancementLevel} Enhancement
+                                    </div>
+                                  )}
+                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                                    <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                          <span className="text-[10px] text-white font-semibold">{item.ratio}</span>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                   

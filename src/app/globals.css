@@ -6,23 +6,69 @@
 @import url('https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Light Mode */
+  /* Light Mode Colors */
   --bg-primary: #FFFFFF;
-  --bg-secondary: #FAFAFA;
-  --text-primary: #262626;
-  --text-secondary: #8E8E8E;
-  --border: #DBDBDB;
-  --accent: #FFD700;
+  --bg-secondary: #F5F5F5;
+  --bg-tertiary: #E5E5E5;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B7280;
+  --text-tertiary: #9CA3AF;
+  --border: #E5E7EB;
+  --border-light: #F3F4F6;
+  --accent: #EAB308;
+  --accent-hover: #CA8A04;
+  
+  /* Component Colors - Light */
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(229, 231, 235, 0.8);
+  --input-bg: #FFFFFF;
+  --input-border: #D1D5DB;
+  --button-bg: #F3F4F6;
+  --button-hover: #E5E7EB;
+  
+  /* Status Colors */
+  --success: #10B981;
+  --error: #EF4444;
+  --warning: #F59E0B;
+  --info: #3B82F6;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .dark {
-  /* Dark Mode */
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #1A1A1A;
+  /* Dark Mode Colors */
+  --bg-primary: #09090B;
+  --bg-secondary: #18181B;
+  --bg-tertiary: #27272A;
   --text-primary: #FAFAFA;
-  --text-secondary: #A8A8A8;
-  --border: #2A2A2A;
-  --accent: #FFD700;
+  --text-secondary: #A1A1AA;
+  --text-tertiary: #71717A;
+  --border: #3F3F46;
+  --border-light: #27272A;
+  --accent: #FACC15;
+  --accent-hover: #EAB308;
+  
+  /* Component Colors - Dark */
+  --card-bg: rgba(24, 24, 27, 0.8);
+  --card-border: rgba(63, 63, 70, 0.5);
+  --input-bg: #18181B;
+  --input-border: #3F3F46;
+  --button-bg: #27272A;
+  --button-hover: #3F3F46;
+  
+  /* Status Colors - Dark Mode Adjusted */
+  --success: #22C55E;
+  --error: #F87171;
+  --warning: #FBBF24;
+  --info: #60A5FA;
+  
+  /* Shadows - Dark */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
 }
 
 * {
@@ -301,6 +347,61 @@ body {
 
 .scale-in {
   animation: scaleIn 0.3s ease-out;
+}
+
+/* Theme-aware Utility Classes */
+@layer utilities {
+  .bg-theme-primary {
+    background-color: var(--bg-primary);
+  }
+  
+  .bg-theme-secondary {
+    background-color: var(--bg-secondary);
+  }
+  
+  .bg-theme-tertiary {
+    background-color: var(--bg-tertiary);
+  }
+  
+  .text-theme-primary {
+    color: var(--text-primary);
+  }
+  
+  .text-theme-secondary {
+    color: var(--text-secondary);
+  }
+  
+  .border-theme {
+    border-color: var(--border);
+  }
+  
+  .bg-theme-card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+  }
+  
+  .shadow-theme-sm {
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .shadow-theme-md {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .shadow-theme-lg {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* Smooth Theme Transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+button, a, input, select, textarea {
+  transition-duration: 150ms;
 }
 
 /* Slide Up Animation */
