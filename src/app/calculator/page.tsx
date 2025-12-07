@@ -1290,7 +1290,6 @@ export default function Calculator() {
                     </div>
                   </div>
                 </div>
-              )}
             </div>
 
             {/* Favorite Ores */}
@@ -1409,34 +1408,15 @@ export default function Calculator() {
                   const isFavorite = favoriteOres.includes(oreName);
                   
                   return (
-                    <div key={oreName} className="relative group">
-                      <button
-                        onClick={() => addOreToSlot(oreName)}
-                        className={`relative w-full aspect-square border ${RarityColors[data.rarity]} ${RarityBg[data.rarity]} rounded-lg p-1 hover:brightness-125 transition-all overflow-hidden`}
-                      >
-                        {oreImage && (
-                          <div className="absolute inset-0 opacity-60">
-                            <Image src={oreImage} alt={oreName} fill className="object-cover" />
-                          </div>
-                        )}
-                        <span className="relative z-10 text-white text-[7px] font-semibold leading-tight drop-shadow-lg block">
-                          {oreName}
-                        </span>
-                        <span className="absolute bottom-0.5 right-0.5 z-10 text-white font-bold text-[9px] drop-shadow-lg">
-                          {data.multiplier}×
-                        </span>
-                      </button>
-                      
-                      <button
-                        onClick={() => toggleFavorite(oreName)}
-                        className="absolute -top-1 -right-1 z-20 w-5 h-5 bg-zinc-900 rounded-full border border-zinc-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <HeartIcon 
-                          className={`w-3 h-3 ${isFavorite ? 'text-yellow-400' : 'text-zinc-500'}`} 
-                          filled={isFavorite} 
-                        />
-                      </button>
-                    </div>
+                    <OreItem
+                      key={oreName}
+                      oreName={oreName}
+                      data={data}
+                      oreImage={oreImage}
+                      isFavorite={isFavorite}
+                      onAddToSlot={addOreToSlot}
+                      onToggleFavorite={toggleFavorite}
+                    />
                   );
                 })}
               </div>
