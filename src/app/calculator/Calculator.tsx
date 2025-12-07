@@ -157,6 +157,7 @@ type SavedBuild = {
   predictedItem?: string;
   predictedChance?: number;
   multiplier?: number;
+  enhancementLevel?: number;
   imageUrl?: string;
   runeState?: RuneState;
   runeSecondaryTraits?: {
@@ -1076,6 +1077,7 @@ export default function Calculator() {
       predictedItem: predictedItem.type,
       predictedChance: predictedItem.pct,
       multiplier: results.combinedMultiplier,
+      enhancementLevel,
       imageUrl: firstItemImage || undefined,
       runeState: selectedRunes[0]?.runeState || undefined,
       runeSecondaryTraits: selectedRunes[0]?.secondaryTraits || undefined,
