@@ -882,13 +882,13 @@ export default function Calculator() {
   const themeClasses = useMemo(() => ({
     card: theme === 'dark' 
       ? 'bg-zinc-900/50 border-zinc-800/50' 
-      : 'bg-white/70 border-gray-200/70 shadow-lg',
+      : 'bg-white/95 border-gray-250 shadow-md',
     cardGlow: theme === 'dark'
       ? 'bg-zinc-900/60 border-zinc-700/50'
-      : 'bg-white/80 border-gray-300/60 shadow-xl',
+      : 'bg-white/95 border-gray-300 shadow-lg',
     input: theme === 'dark'
       ? 'bg-zinc-800/50 border-zinc-700/50 text-white placeholder-zinc-500'
-      : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-400',
+      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 shadow-sm',
     text: {
       primary: theme === 'dark' ? 'text-zinc-100' : 'text-gray-900',
       secondary: theme === 'dark' ? 'text-zinc-400' : 'text-gray-600',
@@ -1730,7 +1730,7 @@ export default function Calculator() {
                   </div>
                 )}
 
-                {/* Save Build Button */}
+                {/* Save Build Button - Desktop Only */}
                 {results && results.odds && Object.keys(results.odds).length > 0 && (
                   <div className="hidden sm:block mt-6 text-center">
                     <button
@@ -2045,11 +2045,22 @@ export default function Calculator() {
                         
                         <div className="flex gap-2 mb-2">
                           {category.items.map((item) => (
-                            <div key={item.name} className="flex-1 flex flex-col items-center">
+                            <div key={item.name} className="flex-1 flex flex-col items-center group relative">
                               <div className="relative w-10 h-10 mb-1">
-                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80" />
+                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
                               </div>
                               <span className="text-[8px] text-white">{item.ratio}</span>
+                              
+                              {/* Tooltip - Armor */}
+                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
+                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
+                                  <div className="text-[10px] text-green-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
+                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                                    <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -2101,11 +2112,22 @@ export default function Calculator() {
                         
                         <div className="flex gap-2 mb-2 flex-wrap">
                           {category.items.map((item) => (
-                            <div key={item.name} className="flex flex-col items-center">
+                            <div key={item.name} className="flex flex-col items-center group relative">
                               <div className="relative w-10 h-10 mb-1">
-                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80" />
+                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
                               </div>
                               <span className="text-[8px] text-white">{item.ratio}</span>
+                              
+                              {/* Tooltip - Weapon */}
+                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
+                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
+                                  <div className="text-[10px] text-red-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
+                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                                    <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -2709,6 +2731,17 @@ export default function Calculator() {
           </div>
         );
       })()}
+
+      {/* Mobile Floating Save Build Button */}
+      {results && results.odds && Object.keys(results.odds).length > 0 && (
+        <button
+          onClick={() => setShowSaveDialog(true)}
+          className="sm:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-green-500/50"
+        >
+          <SaveIcon className="w-4 h-4" />
+          {t('saveBuild')}
+        </button>
+      )}
 
       {/* Save Dialog Modal */}
       {showSaveDialog && (

@@ -7,35 +7,35 @@
 
 :root {
   /* Light Mode Colors */
-  --bg-primary: #FFFFFF;
-  --bg-secondary: #F5F5F5;
-  --bg-tertiary: #E5E5E5;
-  --text-primary: #1A1A1A;
-  --text-secondary: #6B7280;
-  --text-tertiary: #9CA3AF;
-  --border: #E5E7EB;
-  --border-light: #F3F4F6;
-  --accent: #EAB308;
-  --accent-hover: #CA8A04;
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #F0F0F0;
+  --bg-tertiary: #E8E8E8;
+  --text-primary: #0D0D0D;
+  --text-secondary: #616161;
+  --text-tertiary: #9E9E9E;
+  --border: #D0D0D0;
+  --border-light: #E8E8E8;
+  --accent: #D4A500;
+  --accent-hover: #B39300;
   
   /* Component Colors - Light */
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --card-border: rgba(229, 231, 235, 0.8);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --card-border: rgba(200, 200, 200, 0.6);
   --input-bg: #FFFFFF;
-  --input-border: #D1D5DB;
-  --button-bg: #F3F4F6;
-  --button-hover: #E5E7EB;
+  --input-border: #C0C0C0;
+  --button-bg: #E8E8E8;
+  --button-hover: #D8D8D8;
   
   /* Status Colors */
-  --success: #10B981;
-  --error: #EF4444;
-  --warning: #F59E0B;
-  --info: #3B82F6;
+  --success: #059669;
+  --error: #DC2626;
+  --warning: #D97706;
+  --info: #2563EB;
   
   /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
 }
 
 .dark {
