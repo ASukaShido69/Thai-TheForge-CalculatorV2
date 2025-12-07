@@ -72,6 +72,32 @@ const translations = {
     'rune.unobtainable': 'หาไม่ได้ในเกมปัจจุบัน',
     'rune.primaryTraits': 'คุณสมบัติหลัก',
     'rune.fixedValue': 'ค่าคงที่',
+    
+    // Trait descriptions
+    "Overall luck increase": "🍀 เพิ่มความโชคดี",
+    "Chance to drop 1 extra ore from mines": "⛏️ มีโอกาสในการดรอปแร่เพิ่มอีก 1 แร่",
+    "Faster mining": "⚡ ขุดแร่เร็วขึ้น",
+    "Extra mine damage": "💪 พลังการขุดแร่เพิ่มมากขึ้น",
+    "Freezes enemies for a short duration. Has a small chance to trigger and a short cooldown": "❄️ กักเก็บศัตรู ช่วงเวลาสั้น ๆ โอากาสเล็กน้อย คูลดาวน์ไว",
+    "Deals 5-10% of weapon damage as fire per second for 1-2 seconds. 15-25% chance on hit": "🔥 เผาไหม้ 5-10% ของพลังอาวุธต่อวินาที 1-2 วินาที โอกาส 15-25% โจมตี",
+    "Deals poison damage over time. Chance to apply on hit": "☠️ ทำดาเมจพิษโอกาสเปิดตัวเมื่อโจมตี",
+    "Slows enemy movement and attack speed. Chance on hit": "❄️ ทำให้ศัตรูช้าลงและลดความเร็วโจมตี",
+    "Cause an explosion at location of victim, dealing AOE damage": "💣 ระเบิดวงกว้างที่ตำแหน่งศัตรู สร้าง AOE ความเสียหาย",
+    "Heal % of physical damage dealt on-hit": "💚 ดูดเลือดจากการโจมตีทางกายภาพ",
+    "Reflect physical damage taken. Maximum damage given limits at 5% max health of user. 0.05 seconds cooldown": "🌿 สะท้อนความเสียหายที่รับ เสียหายสูงสุด 5% HP สูงสุด คูลดาวน์ 0.05 วินาที",
+    "Boosts physical damage and movement speed for 4-7 seconds. Has 50-60 seconds cooldown. Activates when health is below 35%": "😡 โหมดบ้าคลั่ง เพิ่มความเสียหาย + ความเร็ว 4-7 วินาที คูลดาวน์ 50-60 วินาที ทำงานเมื่อ HP < 35%",
+    "Reduces incoming damage with a chance per hit": "🛡️ บล็อคความเสียหายขาเข้า โอกาสต่อการโจมตี",
+    "Deals poison damage around the user while health is below 35%. Has a cooldown": "🦠 ทำความสามารถพิษ ขณะ HP < 35% มีคูลดาวน์",
+    "Increases attack speed": "⚡ เพิ่มความเร็วการโจมตี",
+    "Increases the weapon's damage": "🗡️ เพิ่มพลังอาวุธ",
+    "Increases the chance of landing a critical hit": "🎯 เพิ่มโอกาสคริติคอล",
+    "Increases the damage of critical hits": "💥 เพิ่มความแรงคริติคอล",
+    "Gives extra stun damage": "🔨 ยิงความเสียหายแล้งทำให้สตัน",
+    "Grants more stamina": "💪 ขยายสเตมิน่ามากขึ้น",
+    "Reduces dash cooldown": "⚡ เร่งความเร็วในการแดชอีกครั้ง",
+    "Grants extra health": "❤️ เพิ่มพลังชีวิต",
+    "Extra movement speed": "🏃 เพิ่มความเร็วเคลื่อนไหว",
+    "Increases dash invincibility duration": "👻 ฮาคิสังเกต",
   },
   en: {
     'rune.calculator': 'Rune Calculator',
@@ -95,6 +121,32 @@ const translations = {
     'rune.unobtainable': 'Currently Unobtainable',
     'rune.primaryTraits': 'Primary Traits',
     'rune.fixedValue': 'Fixed',
+    
+    // Trait descriptions
+    'Overall luck increase': 'Overall luck increase',
+    'Chance to drop 1 extra ore from mines': 'Chance to drop 1 extra ore from mines',
+    'Faster mining': 'Faster mining',
+    'Extra mine damage': 'Extra mine damage',
+    'Freezes enemies for a short duration. Has a small chance to trigger and a short cooldown': 'Freezes enemies for a short duration. Has a small chance to trigger and a short cooldown',
+    'Deals 5-10% of weapon damage as fire per second for 1-2 seconds. 15-25% chance on hit': 'Deals 5-10% of weapon damage as fire per second for 1-2 seconds. 15-25% chance on hit',
+    'Deals poison damage over time. Chance to apply on hit': 'Deals poison damage over time. Chance to apply on hit',
+    'Slows enemy movement and attack speed. Chance on hit': 'Slows enemy movement and attack speed. Chance on hit',
+    'Cause an explosion at location of victim, dealing AOE damage': 'Cause an explosion at location of victim, dealing AOE damage',
+    'Heal % of physical damage dealt on-hit': 'Heal % of physical damage dealt on-hit',
+    'Reflect physical damage taken. Maximum damage given limits at 5% max health of user. 0.05 seconds cooldown': 'Reflect physical damage taken. Maximum damage given limits at 5% max health of user. 0.05 seconds cooldown',
+    'Boosts physical damage and movement speed for 4-7 seconds. Has 50-60 seconds cooldown. Activates when health is below 35%': 'Boosts physical damage and movement speed for 4-7 seconds. Has 50-60 seconds cooldown. Activates when health is below 35%',
+    'Reduces incoming damage with a chance per hit': 'Reduces incoming damage with a chance per hit',
+    'Deals poison damage around the user while health is below 35%. Has a cooldown': 'Deals poison damage around the user while health is below 35%. Has a cooldown',
+    'Increases attack speed': 'Increases attack speed',
+    'Increases the weapon\'s damage': 'Increases the weapon\'s damage',
+    'Increases the chance of landing a critical hit': 'Increases the chance of landing a critical hit',
+    'Increases the damage of critical hits': 'Increases the damage of critical hits',
+    'Gives extra stun damage': 'Gives extra stun damage',
+    'Grants more stamina': 'Grants more stamina',
+    'Reduces dash cooldown': 'Reduces dash cooldown',
+    'Grants extra health': 'Grants extra health',
+    'Extra movement speed': 'Extra movement speed',
+    'Increases dash invincibility duration': 'Increases dash invincibility duration',
   }
 };
 
@@ -495,7 +547,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                   <div className="flex items-start justify-between gap-2">
                                     <div className="flex-1 min-w-0">
                                       <p className="font-medium text-xs sm:text-sm text-zinc-300 break-words">{trait.name}</p>
-                                      <p className="text-xs text-zinc-400 mt-1 break-words whitespace-normal">{trait.description}</p>
+                                      <p className="text-xs text-zinc-400 mt-1 break-words whitespace-normal">{t(trait.description)}</p>
                                     </div>
                                     <span className="text-zinc-500 text-xs flex-shrink-0 whitespace-nowrap">{t('rune.fixedValue')}</span>
                                   </div>
@@ -527,7 +579,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                         ⚡ {language === 'th' ? 'โอกาส' : 'Chance'}: {hasProcChance}
                                       </div>
                                     )}
-                                    <p className="text-xs text-zinc-400 break-words whitespace-normal">{trait.description}</p>
+                                    <p className="text-xs text-zinc-400 break-words whitespace-normal">{t(trait.description)}</p>
                                   </div>
                                   <div className="flex-shrink-0 text-right">
                                     <span className="text-purple-300 font-bold text-sm sm:text-base">{currentValue}</span>
@@ -603,7 +655,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                             </span>
                                           )}
                                         </div>
-                                        <p className="text-xs text-zinc-400 break-words whitespace-normal">{trait.description}</p>
+                                        <p className="text-xs text-zinc-400 break-words whitespace-normal">{t(trait.description)}</p>
                                       </div>
                                       {isEnabled && (
                                         <div className="flex-shrink-0 text-right">
@@ -666,7 +718,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
                                             </span>
                                           )}
                                         </div>
-                                        <p className="text-xs text-zinc-400 break-words whitespace-normal">{trait.description}</p>
+                                        <p className="text-xs text-zinc-400 break-words whitespace-normal">{t(trait.description)}</p>
                                       </div>
                                       {isEnabled && (
                                         <div className="flex-shrink-0 text-right">
