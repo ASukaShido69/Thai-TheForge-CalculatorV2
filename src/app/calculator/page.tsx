@@ -982,6 +982,8 @@ export default function Calculator() {
   }, []);
 
   const currentTypes = useMemo(() => craftType === "Weapon" ? WEAPON_TYPES : ARMOR_TYPES, [craftType]);
+
+  return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100 font-mali relative overflow-hidden">
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
