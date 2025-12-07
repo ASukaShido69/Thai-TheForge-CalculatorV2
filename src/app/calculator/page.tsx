@@ -2841,12 +2841,6 @@ export default function Calculator() {
           background: rgba(255, 215, 0, 0.5);
         }
       `}</style>
-          border-radius: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 215, 0, 0.5);
-        }
-      `}</style>
 
       {/* Rune Calculator */}
       <RuneCalculator 
