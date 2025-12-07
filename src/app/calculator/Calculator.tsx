@@ -753,11 +753,13 @@ const OreItem = memo(({
 
 OreItem.displayName = 'OreItem';
 
-const SlotButton = memo(({ slot, index, onRemoveOne, onRemoveAll, isMobile = false, onHover }: { slot: SlotItem | null, index: number, onRemoveOne: (i: number) => void, onRemoveAll: (i: number) => void, isMobile?: boolean, onHover?: (name: string | null) => void }) => {
+const SlotButton = memo(({ slot, index, onRemoveOne, onRemoveAll, isMobile = false }: { slot: SlotItem | null, index: number, onRemoveOne: (i: number) => void, onRemoveAll: (i: number) => void, isMobile?: boolean }) => {
   const [isHolding, setIsHolding] = useState(false);
   const [progress, setProgress] = useState(0);
   const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isPointerDownRef = useRef(false);
+  const actionCompletedRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -779,6 +781,9 @@ const SlotButton = memo(({ slot, index, onRemoveOne, onRemoveAll, isMobile = fal
   const oreImage = getOreImagePath(slot.name);
   
   const handlePointerDown = () => {
+    isPointerDownRef.current = true;
+    actionCompletedRef.current = false;
+
     holdTimeoutRef.current = setTimeout(() => {
       setIsHolding(true);
       setProgress(0);
@@ -793,6 +798,8 @@ const SlotButton = memo(({ slot, index, onRemoveOne, onRemoveAll, isMobile = fal
         
         if (newProgress >= 1) {
           if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
+          actionCompletedRef.current = true;
+          isPointerDownRef.current = false;
           setIsHolding(false);
           setProgress(0);
           onRemoveAll(index);
@@ -801,14 +808,22 @@ const SlotButton = memo(({ slot, index, onRemoveOne, onRemoveAll, isMobile = fal
     }, 150);
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (shouldRemoveOne = true) => {
     if (holdTimeoutRef.current) clearTimeout(holdTimeoutRef.current);
     if (progressIntervalRef.current) clearInterval(progressIntervalRef.current);
-    
-    if (!isHolding && progress === 0) {
-      onRemoveOne(index);
+
+    if (!isPointerDownRef.current && !isHolding) {
+      setIsHolding(false);
+      setProgress(0);
+      return;
     }
-    
+
+    if (shouldRemoveOne && isPointerDownRef.current && !isHolding && progress === 0 && !actionCompletedRef.current) {
+      onRemoveOne(index);
+      actionCompletedRef.current = true;
+    }
+
+    isPointerDownRef.current = false;
     setIsHolding(false);
     setProgress(0);
   };
@@ -816,13 +831,8 @@ const SlotButton = memo(({ slot, index, onRemoveOne, onRemoveAll, isMobile = fal
   return (
     <button
       onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={() => {
-        handlePointerUp();
-        onHover?.(null);
-      }}
-      onMouseEnter={() => onHover?.(slot.name)}
-      onMouseLeave={() => onHover?.(null)}
+      onPointerUp={() => handlePointerUp(true)}
+      onPointerLeave={() => handlePointerUp(false)}
       className={`relative border-2 ${RarityColors[ores[slot.name].rarity]} ${RarityBg[ores[slot.name].rarity]} rounded-xl backdrop-blur-sm ${
         isMobile ? 'w-full aspect-square' : 'w-20 h-20 sm:w-24 sm:h-24'
       } flex flex-col items-start justify-start p-2 group hover:brightness-125 transition-all overflow-hidden cursor-pointer`}
@@ -908,7 +918,6 @@ export default function Calculator() {
       armor?: Array<{ id: string; name: string; value: number }>;
     };
   }>>([]);
-  const [hoveredOreName, setHoveredOreName] = useState<string | null>(null);
   const [enhancementLevel, setEnhancementLevel] = useState<number>(0);
   const [hoveredItem, setHoveredItem] = useState<{name: string; damage: number; type: string} | null>(null);
   
@@ -1137,17 +1146,6 @@ export default function Calculator() {
           </Link>
           
           <div className="flex items-center gap-3">
-            {/* Save Build Button - PC Only */}
-            {results && results.odds && Object.keys(results.odds).length > 0 && (
-              <button
-                onClick={() => setShowSaveDialog(true)}
-                className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg font-semibold bg-gradient-to-r from-green-500/30 to-emerald-500/30 text-green-400 hover:from-green-500/50 hover:to-emerald-500/50 transition-all border border-green-500/50"
-              >
-                <SaveIcon className="w-4 h-4" />
-                {t('saveBuild')}
-              </button>
-            )}
-            
             <button
               onClick={() => setShowCompareMode(!showCompareMode)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
@@ -1443,40 +1441,9 @@ export default function Calculator() {
                       onRemoveOne={removeOneOreFromSlot}
                       onRemoveAll={removeAllOresFromSlot}
                       isMobile={isMobile}
-                      onHover={setHoveredOreName}
                     />
                   ))}
                 </div>
-
-                {/* Ore Tooltip */}
-                {hoveredOreName && ores[hoveredOreName] && (
-                  <div className="mb-4 p-4 bg-gradient-to-r from-blue-900/40 to-cyan-900/40 border border-blue-500/40 rounded-xl backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm sm:text-base font-bold text-blue-300 mb-1">{hoveredOreName}</h4>
-                        <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <span className={`text-xs sm:text-sm font-semibold px-2 py-1 rounded ${
-                            ores[hoveredOreName].rarity === 'Legendary' ? 'bg-orange-500/30 text-orange-300' :
-                            ores[hoveredOreName].rarity === 'Epic' ? 'bg-purple-500/30 text-purple-300' :
-                            ores[hoveredOreName].rarity === 'Rare' ? 'bg-blue-500/30 text-blue-300' :
-                            ores[hoveredOreName].rarity === 'Mythic' ? 'bg-pink-500/30 text-pink-300' :
-                            ores[hoveredOreName].rarity === 'Divine' ? 'bg-yellow-500/30 text-yellow-300' :
-                            ores[hoveredOreName].rarity === 'Relic' ? 'bg-cyan-500/30 text-cyan-300' :
-                            'bg-zinc-500/30 text-zinc-300'
-                          }`}>
-                            {ores[hoveredOreName].rarity}
-                          </span>
-                          <span className="text-xs sm:text-sm text-blue-400 font-semibold">
-                            ✨ {ores[hoveredOreName].multiplier.toFixed(2)}× Multiplier
-                          </span>
-                        </div>
-                        <p className="text-xs sm:text-sm text-zinc-300 break-words">
-                          <strong>{t('traitType')}:</strong> {ores[hoveredOreName].traitType || 'None'}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {/* Composition */}
                 {results && results.composition && Object.keys(results.composition).length > 0 && (
@@ -1508,73 +1475,18 @@ export default function Calculator() {
 
                 {/* Multiplier Display */}
                 <div className="text-center sm:text-left">
-                  <div className="inline-flex sm:inline-block sm:w-full sm:max-w-xs flex-col items-center sm:items-start justify-center p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border-2 border-yellow-500/30 relative overflow-hidden group">
+                  <div className="inline-flex sm:inline-block sm:w-full sm:max-w-xs flex-col items-center sm:items-start justify-center p-3 sm:p-4 rounded-lg sm:rounded-xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10 border border-yellow-500/30 relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <SparklesIcon className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 mb-1.5 sm:mb-2 relative z-10" />
-                    <div className="text-xs sm:text-sm text-zinc-400 mb-0.5 sm:mb-1 relative z-10 font-semibold">{t('multiplier')}</div>
-                    <div className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent relative z-10">
+                    <SparklesIcon className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 mb-1 sm:mb-1.5 relative z-10" />
+                    <div className="text-[10px] sm:text-xs text-zinc-400 mb-0.5 relative z-10 font-semibold">{t('multiplier')}</div>
+                    <div className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent relative z-10">
                       {results?.combinedMultiplier ? `${results.combinedMultiplier.toFixed(2)}×` : '0.00×'}
                     </div>
-                    
-                    {/* Enhancement Multiplier Breakdown - Show for both Weapon and Armor with enhancement */}
-                    {enhancementLevel > 0 && results && (() => {
-                      const baseMultiplier = results.combinedMultiplier / (1 + enhancementLevel * 0.05);
-                      // Get the first item's base stat to calculate base DMG/DEF
-                      const currentTypes = Object.keys(results.odds || {}).filter(type => (results.odds[type] || 0) > 0);
-                      const sortedItems = currentTypes
-                        .map(type => ({ type, pct: results.odds[type] || 0 }))
-                        .sort((a, b) => b.pct - a.pct);
-                      const predictedItem = sortedItems[0];
-                      const possibleItems = getPossibleItemImagesWithChances(predictedItem.type, predictedItem.pct, craftType);
-                      const firstItem = possibleItems[0];
-                      
-                      let baseStat = 0;
-                      if (firstItem) {
-                        const statsData = craftType === "Weapon" ? forgeData.weaponStats : forgeData.armorStats;
-                        const itemBaseStat = statsData?.[firstItem.name];
-                        if (itemBaseStat !== undefined) {
-                          baseStat = (itemBaseStat * baseMultiplier) * 2;
-                        }
-                      }
-                      const enhancementMultiplier = 1 + (enhancementLevel * 0.05);
-                      const finalStat = baseStat * enhancementMultiplier;
-                      
-                      return (
-                        <div className="mt-3 pt-3 border-t border-yellow-500/20 w-full">
-                          <div className="text-xs text-zinc-400 mb-2 relative z-10">
-                            <span className={craftType === 'Weapon' ? 'text-red-300' : 'text-blue-300'}>
-                              {craftType === 'Weapon' ? '⚔️' : '🛡️'} Enhancement Breakdown:
-                            </span>
-                          </div>
-                          <div className="grid grid-cols-2 gap-2 text-xs relative z-10">
-                            <div className="bg-zinc-800/40 rounded px-2 py-1">
-                              <div className="text-zinc-400">{language === 'th' ? 'พื้นฐาน' : 'Base'}</div>
-                              <div className="font-bold text-yellow-300">
-                                {craftType === 'Weapon' ? baseStat.toFixed(2) : Math.round(baseStat).toString()}
-                              </div>
-                              <div className="text-[10px] text-zinc-500 mt-0.5">
-                                ({baseMultiplier.toFixed(2)}×)
-                              </div>
-                            </div>
-                            <div className={`rounded px-2 py-1 border ${
-                              craftType === 'Weapon'
-                                ? 'bg-red-900/30 border-red-500/30'
-                                : 'bg-blue-900/30 border-blue-500/30'
-                            }`}>
-                              <div className={craftType === 'Weapon' ? 'text-red-300' : 'text-blue-300'}>
-                                +{enhancementLevel} Enh.
-                              </div>
-                              <div className={`font-bold ${craftType === 'Weapon' ? 'text-orange-300' : 'text-cyan-300'}`}>
-                                {craftType === 'Weapon' ? finalStat.toFixed(2) : Math.round(finalStat).toString()}
-                              </div>
-                              <div className="text-[10px] text-zinc-500 mt-0.5">
-                                ({enhancementMultiplier.toFixed(2)}×)
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })()}
+                    {enhancementLevel > 0 && (
+                      <div className="text-[10px] text-zinc-400 mt-1 relative z-10">
+                        {craftType === 'Weapon' ? '⚔️' : '🛡️'} +{enhancementLevel} ({(1 + enhancementLevel * 0.05).toFixed(2)}×)
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -2368,6 +2280,15 @@ export default function Calculator() {
                     <span className="inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
                       {build.multiplier?.toFixed(2)}× {language === 'th' ? 'ตัวคูณ' : 'Multiplier'}
                     </span>
+                    {build.enhancementLevel !== undefined && build.enhancementLevel > 0 && (
+                      <span className={`inline-block px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-semibold border ${
+                        build.craftType === 'Weapon'
+                          ? 'bg-red-500/20 text-red-300 border-red-500/30'
+                          : 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+                      }`}>
+                        {build.craftType === 'Weapon' ? '⚔️' : '🛡️'} +{build.enhancementLevel} ({(1 + (build.enhancementLevel || 0) * 0.05).toFixed(2)}×)
+                      </span>
+                    )}
                   </div>
                 </div>
                 <button
