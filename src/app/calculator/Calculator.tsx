@@ -1668,35 +1668,38 @@ export default function Calculator() {
                 </h3>
                 
                 <div className="space-y-3">
-                  {selectedRunes.map((runeData, runeIdx) => (
-                    <div key={`${runeData.id}-${runeIdx}`} className="bg-zinc-800/40 rounded-lg p-3 border border-purple-500/20">
-                      <div className="text-xs font-bold text-purple-300 mb-2">
-                        {runeIdx + 1}. {getRuneNameTranslated(runeData.id, runeData.name)}
-                      </div>
-                      
-                      {runeData.runeState?.traitValues && Object.entries(runeData.runeState.traitValues).length > 0 && (
-                        <div className="space-y-1.5">
-                          {Object.entries(runeData.runeState.traitValues).map(([name, value]) => {
-                            const runeInfo = runeDataFile.runes.primary.find(r => r.id === runeData.id);
-                            const traitInfo = runeInfo?.traits?.find((t: any) => t.name === name);
-                            
-                            return (
-                              <div key={name} className="bg-purple-500/10 p-1.5 rounded border border-purple-500/20">
-                                <div className="flex items-center justify-between gap-1.5">
-                                  <span className="text-purple-200 text-[10px] font-medium break-words flex-1">
-                                    {getTraitNameTranslated(name)}
-                                  </span>
-                                  <span className="text-purple-300 font-bold text-xs flex-shrink-0">
-                                    {value}{traitInfo?.unit || ''}
-                                  </span>
-                                </div>
-                              </div>
-                            );
-                          })}
+                  {selectedRunes.map((runeData, runeIdx) => {
+                    const rune = runeDataFile.runes.primary.find(r => r.id === runeData.runeState.runeId);
+                    
+                    return (
+                      <div key={`${runeData.runeState.runeId}-${runeIdx}`} className="bg-zinc-800/40 rounded-lg p-3 border border-purple-500/20">
+                        <div className="text-xs font-bold text-purple-300 mb-2">
+                          {runeIdx + 1}. {rune ? getRuneNameTranslated(rune.id, rune.name) : 'Unknown'}
                         </div>
-                      )}
-                    </div>
-                  ))}
+                        
+                        {runeData.runeState?.traitValues && Object.entries(runeData.runeState.traitValues).length > 0 && (
+                          <div className="space-y-1.5">
+                            {Object.entries(runeData.runeState.traitValues).map(([name, value]) => {
+                              const traitInfo = rune?.traits?.find((t: any) => t.name === name);
+                              
+                              return (
+                                <div key={name} className="bg-purple-500/10 p-1.5 rounded border border-purple-500/20">
+                                  <div className="flex items-center justify-between gap-1.5">
+                                    <span className="text-purple-200 text-[10px] font-medium break-words flex-1">
+                                      {getTraitNameTranslated(name)}
+                                    </span>
+                                    <span className="text-purple-300 font-bold text-xs flex-shrink-0">
+                                      {value}{traitInfo?.unit || ''}
+                                    </span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
