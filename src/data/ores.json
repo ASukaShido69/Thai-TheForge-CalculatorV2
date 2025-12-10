@@ -263,7 +263,7 @@
     "Demonite Ore": {
         "rarity": "Mythical",
         "multiplier": 5.5,
-        "traitType": "Armor",
+        "traitType": "All",
         "traits": [
             {
                 "description": "🔥 to Burn Enemy when Damage is Taken.",

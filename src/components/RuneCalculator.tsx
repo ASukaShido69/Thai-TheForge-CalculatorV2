@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import PickaxeCalculatorButton from './PickaxeCalculatorButton';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 import runeDataRaw from '../data/rune.json';
@@ -400,6 +401,7 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
 
   return (
     <>
+      {/* ปุ่ม SparklesIcon เดิม */}
       <button
         onMouseDown={handleMouseDown}
         onClick={() => !isDragging && setIsOpen(!isOpen)}
@@ -407,13 +409,17 @@ export default function RuneCalculator({ onRuneSelected }: RuneCalculatorProps) 
           position: 'fixed',
           top: `${position.y}px`,
           left: `${position.x}px`,
-          cursor: isDragging ? 'grabbing' : 'grab'
+          cursor: isDragging ? 'grabbing' : 'grab',
+          zIndex: 40
         }}
-        className="z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center group"
+        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center group"
         title={t('rune.calculator')}
       >
         <SparklesIcon className="w-5 h-5 sm:w-6 sm:h-6 group-hover:rotate-12 transition-transform pointer-events-none" />
       </button>
+
+      {/* ปุ่ม Pickaxe ใหม่ */}
+      <PickaxeCalculatorButton />
 
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
