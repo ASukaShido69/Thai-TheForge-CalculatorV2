@@ -49,14 +49,14 @@ const minerShardRune = (runeDataRaw as any).runes.primary.find(
 ) as Rune;
 
 const runeNamesTH: Record<string, string> = {
-  'Miner Shard': 'เศษรูนนักขุด',
+  'Miner Shard': 'รูนนักขุด',
 };
 
 const traitNamesTH: Record<string, string> = {
   'Luck': '🍀 โชค',
-  'Yield': '💎 ผลผลิตเพิ่ม',
+  'Yield': '💎 โอกาสได้แร่เพิ่ม',
   'Swift Mining': '⚡ ขุดเร็ว',
-  'Mine Power': '⛏️ พลังขุด',
+  'Mine Power': '⛏️ พลังการขุด',
 };
 
 interface PickaxeCalculatorProps {
@@ -198,12 +198,12 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
               value={selectedPickaxe?.id || ''}
             >
               <option value="">{language === 'th' ? '-- เลือกจอบ --' : '-- Select Pickaxe --'}</option>
-              <option value="">{language === 'th' ? '-- เลือกจอบ --' : '-- Select Pickaxe --'}</option>
               {pickaxeData.map((pickaxe) => (
                 <option key={pickaxe.id} value={pickaxe.id}>
                   {pickaxe.name} | MP: {pickaxe.minePower} | Luck: {pickaxe.luckBoost}% | Slots: {pickaxe.runeSlots}
                 </option>
-              ))}ect>
+              ))}
+            </select>
             {selectedPickaxe && (
               <div className="mt-3 p-3 bg-zinc-900/60 rounded-lg border border-amber-500/20">
                 <div className="flex items-center gap-3 mb-2">
