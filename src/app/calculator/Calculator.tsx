@@ -1906,55 +1906,7 @@ export default function Calculator() {
               );
             })()}
 
-            {/* Active Traits */}
-            {results && results.traits && results.traits.length > 0 && (
-              <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-3 sm:p-6">
-                <h3 className="text-purple-400 font-bold mb-3 sm:mb-4 text-center uppercase tracking-wider text-xs sm:text-sm">
-                  {t('activeTraits')}
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                  {results.traits.map((tr: any, idx: number) => (
-                    <div key={idx} className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 border border-purple-500/30 rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
-                        <div className="text-purple-300 font-bold text-xs sm:text-sm">{tr.ore}</div>
-                      </div>
-                      <div className="space-y-2">
-                        {tr.lines.map((lineData: any, i: number) => {
-                          const oreData = ores[tr.ore];
-                          const trait = oreData?.traits?.[i];
-                          const maxStat = trait?.maxStat ?? 0;
-                          
-                          // Handle both string (old format) and object (new format) for backward compatibility
-                          const isOldFormat = typeof lineData === 'string';
-                          const percentage = isOldFormat ? null : lineData.percentage;
-                          const description = isOldFormat ? lineData : lineData.description;
-                          const mergedPercentage = isOldFormat ? null : lineData.mergedPercentage;
-                          
-                          return (
-                            <div key={i} className="space-y-1 border-b border-purple-500/15 pb-1.5 last:border-0 last:pb-0">
-                              <div className="text-[9px] sm:text-[10px] text-purple-300/80 font-semibold">
-                                {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
-                              </div>
-                              <div className="text-[9px] sm:text-[11px] text-purple-200 font-medium leading-relaxed ml-2">
-                                {percentage !== null ? `${percentage}%` : ''} {t(description)}
-                                {mergedPercentage !== null ? ` ${mergedPercentage}%` : ''}
-                              </div>
-                              {maxStat !== 0 && (
-                                <div className="text-[8px] sm:text-[10px] text-purple-300/70 flex items-center gap-2 ml-2">
-                                  <span className="text-purple-400">{language === 'th' ? 'สูงสุด:' : 'Max:'}</span>
-                                  <span className="font-semibold text-purple-400">{Math.abs(maxStat).toFixed(2)}</span>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Active Traits - REMOVED (moved to left column above) */}
           </div>
 
           {/* RIGHT: Forge Chances OR Saved Builds - 3 columns */}
@@ -2053,11 +2005,11 @@ export default function Calculator() {
                 )}
               </div>
             ) : (
-              // Forge Chances
-              <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-zinc-800/50 p-4 max-h-[800px] overflow-y-auto custom-scrollbar">
+              // Forge Chances - Horizontal layout at bottom
+              <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-zinc-800/50 p-4 w-full">
                 <h3 className="font-bold text-zinc-300 mb-4 text-sm">{t('forgeChances')}</h3>
                 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {craftType === "Armor" ? (() => {
                     const armorByCategory = getArmorItemsByCategory();
                     const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
@@ -2087,23 +2039,24 @@ export default function Calculator() {
                       .sort((a, b) => b.categoryChance - a.categoryChance);
                     
                     return sortedCategories.map((category) => (
-                      <div key={category.categoryKey} className="bg-zinc-800/30 rounded-lg p-3 border border-zinc-700/30">
-                        <div className="flex justify-between items-center mb-2">
+                      <div key={category.categoryKey}>
+                        <div className="flex justify-between items-center mb-3">
                           <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
                           <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-green-400' : 'text-zinc-600'}`}>
                             {(category.categoryChance * 100).toFixed(1)}%
                           </span>
                         </div>
                         
-                        <div className="flex gap-2 mb-2">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
                           {category.items.map((item) => (
-                            <div key={item.name} className="flex-1 flex flex-col items-center group relative">
-                              <div className="relative w-10 h-10 mb-1">
-                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
+                            <div key={item.name} className="flex flex-col items-center group relative">
+                              <div className="relative w-12 h-16 mb-2 bg-zinc-800/50 rounded border border-zinc-700/30 flex items-center justify-center group-hover:border-green-500/50 transition-colors">
+                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity p-1" />
                               </div>
-                              <span className="text-[8px] text-white">{item.ratio}</span>
+                              <span className="text-[10px] text-white font-semibold text-center line-clamp-2">{item.name}</span>
+                              <span className="text-[9px] text-green-400 font-bold mt-1">{(item.chance * 100).toFixed(1)}%</span>
                               
-                              {/* Tooltip - Armor */}
+                              {/* Tooltip */}
                               <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                                 <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
                                   <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
@@ -2117,7 +2070,7 @@ export default function Calculator() {
                           ))}
                         </div>
                         
-                        <div className="h-1 bg-zinc-700/50 rounded-full overflow-hidden">
+                        <div className="h-2 bg-zinc-700/50 rounded-full overflow-hidden mb-4">
                           <div 
                             className="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300" 
                             style={{ width: `${category.categoryChance * 100}%` }} 
@@ -2154,21 +2107,22 @@ export default function Calculator() {
                       .sort((a, b) => b.categoryChance - a.categoryChance);
                     
                     return sortedCategories.map((category) => (
-                      <div key={category.categoryKey} className="bg-zinc-800/30 rounded-lg p-3 border border-zinc-700/30">
-                        <div className="flex justify-between items-center mb-2">
+                      <div key={category.categoryKey}>
+                        <div className="flex justify-between items-center mb-3">
                           <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
-                          <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-green-400' : 'text-zinc-600'}`}>
+                          <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-red-400' : 'text-zinc-600'}`}>
                             {(category.categoryChance * 100).toFixed(1)}%
                           </span>
                         </div>
                         
-                        <div className="flex gap-2 mb-2 flex-wrap">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
                           {category.items.map((item) => (
                             <div key={item.name} className="flex flex-col items-center group relative">
-                              <div className="relative w-10 h-10 mb-1">
-                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
+                              <div className="relative w-12 h-16 mb-2 bg-zinc-800/50 rounded border border-zinc-700/30 flex items-center justify-center group-hover:border-red-500/50 transition-colors">
+                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity p-1" />
                               </div>
-                              <span className="text-[8px] text-white">{item.ratio}</span>
+                              <span className="text-[10px] text-white font-semibold text-center line-clamp-2">{item.name}</span>
+                              <span className="text-[9px] text-red-400 font-bold mt-1">{(item.chance * 100).toFixed(1)}%</span>
                               
                               {/* Tooltip - Weapon */}
                               <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
@@ -2184,7 +2138,7 @@ export default function Calculator() {
                           ))}
                         </div>
                         
-                        <div className="h-1 bg-zinc-700/50 rounded-full overflow-hidden">
+                        <div className="h-2 bg-zinc-700/50 rounded-full overflow-hidden mb-4">
                           <div 
                             className="h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300" 
                             style={{ width: `${category.categoryChance * 100}%` }} 
@@ -2379,35 +2333,64 @@ export default function Calculator() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 {/* Left Column */}
                 <div className="space-y-3 sm:space-y-4">
-                  {/* Ore Composition */}
-                  <div className="p-3 sm:p-4 bg-gradient-to-br from-zinc-800/50 to-purple-900/20 rounded-lg border border-zinc-700/50 shadow-lg hover:shadow-purple-500/10 transition-all">
-                    <h3 className="text-purple-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
-                      <span className="text-2xl">💎</span>
-                      {language === 'th' ? 'องค์ประกอบของแร่' : 'Ore Composition'}
-                    </h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                      {build.slots.filter(s => s !== null).map((slot, idx) => {
-                        const oreImage = getOreImagePath(slot?.name || '');
-                        return (
-                          <div key={idx} className="flex flex-col items-center p-2 bg-gradient-to-br from-zinc-900/50 to-purple-900/10 rounded border border-purple-500/20 shadow-md hover:shadow-purple-500/20 hover:scale-105 transition-all">
-                            {oreImage && (
-                              <div className="relative w-10 h-10 sm:w-12 sm:h-12 mb-1 rounded-lg border border-purple-500/30 overflow-hidden bg-zinc-800/50">
-                                <Image src={addImageVersion(oreImage)} alt={slot?.name || ''} fill className="object-cover" />
-                              </div>
-                            )}
-                            <span className="text-zinc-300 font-medium text-[10px] sm:text-xs text-center truncate w-full">{slot?.name}</span>
-                            <span className="text-purple-400 font-bold text-xs sm:text-sm">×{slot?.count}</span>
+                  {/* Ore Composition + Multiplier Row */}
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
+                    {/* Ore Composition */}
+                    <div className="lg:col-span-2 p-3 sm:p-4 bg-gradient-to-br from-zinc-800/50 to-purple-900/20 rounded-lg border border-zinc-700/50 shadow-lg hover:shadow-purple-500/10 transition-all">
+                      <h3 className="text-purple-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
+                        <span className="text-lg sm:text-2xl">💎</span>
+                        {language === 'th' ? 'องค์ประกอบของแร่' : 'Ore Composition'}
+                      </h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
+                        {build.slots.filter(s => s !== null).map((slot, idx) => {
+                          const oreImage = getOreImagePath(slot?.name || '');
+                          return (
+                            <div key={idx} className="flex flex-col items-center p-1.5 sm:p-2 bg-gradient-to-br from-zinc-900/50 to-purple-900/10 rounded border border-purple-500/20 shadow-md hover:shadow-purple-500/20 hover:scale-105 transition-all">
+                              {oreImage && (
+                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 mb-0.5 rounded-lg border border-purple-500/30 overflow-hidden bg-zinc-800/50">
+                                  <Image src={addImageVersion(oreImage)} alt={slot?.name || ''} fill className="object-cover" />
+                                </div>
+                              )}
+                              <span className="text-zinc-300 font-medium text-[9px] sm:text-xs text-center truncate w-full">{slot?.name}</span>
+                              <span className="text-purple-400 font-bold text-[10px] sm:text-sm">×{slot?.count}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Multiplier Card - Compact */}
+                    <div className="p-3 sm:p-4 bg-gradient-to-br from-amber-900/30 to-yellow-900/20 rounded-lg border border-amber-500/30 shadow-lg flex flex-col justify-center">
+                      <h3 className="text-amber-400 font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2 mb-2">
+                        <span className="text-lg sm:text-2xl">📈</span>
+                        {language === 'th' ? 'ตัวคูณ' : 'Multiplier'}
+                      </h3>
+                      <div className="space-y-1">
+                        <div className="text-center">
+                          <div className="text-2xl sm:text-3xl font-bold text-amber-300">
+                            {build.multiplier?.toFixed(2)}×
                           </div>
-                        );
-                      })}
+                          <div className="text-[10px] sm:text-xs text-amber-300/70 mt-1">
+                            {build.multiplier && (
+                              build.multiplier >= 15 
+                                ? (language === 'th' ? '✨ สูงมาก' : '✨ Very High')
+                                : build.multiplier >= 10
+                                ? (language === 'th' ? '⭐ สูง' : '⭐ High')
+                                : build.multiplier >= 5
+                                ? (language === 'th' ? '👍 ปกติ' : '👍 Normal')
+                                : (language === 'th' ? '💪 ต่ำ' : '💪 Low')
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Predicted Item */}
+                  {/* Predicted Item - Moved up */}
                   {build.predictedItem && (
                     <div className="p-3 sm:p-4 bg-gradient-to-br from-green-900/30 to-emerald-900/20 rounded-lg border border-green-500/30 shadow-lg hover:shadow-green-500/10 transition-all">
                       <h3 className="text-green-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
-                        <span className="text-2xl">🎯</span>
+                        <span className="text-lg sm:text-2xl">🎯</span>
                         {language === 'th' ? 'ไอเทมที่คาดว่าจะได้' : 'Predicted Item'}
                       </h3>
                       
@@ -2424,14 +2407,14 @@ export default function Calculator() {
                     </div>
                   )}
 
-                  {/* All Runes Section - Bottom Left */}
+                  {/* All Runes Section - Bottom Left - Moved to bottom as Save Build */}
                   {build.allRunes && build.allRunes.length > 0 && (
                     <div className="p-3 sm:p-4 bg-gradient-to-br from-pink-900/30 to-purple-900/20 rounded-lg border border-pink-500/30 shadow-lg hover:shadow-pink-500/10 transition-all">
                       <h3 className="text-pink-400 font-bold mb-3 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
-                        <span className="text-2xl">✨</span>
+                        <span className="text-xl sm:text-2xl">✨</span>
                         {language === 'th' ? 'รูนทั้งหมด' : 'All Runes'} ({build.allRunes.length}/3)
                       </h3>
-                      <div className="space-y-3">
+                      <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
                         {build.allRunes.map((runeData, index) => {
                           const runeDataRaw = require('../../data/rune.json');
                           const runeDataFile = runeDataRaw as { runes: { primary: Array<{ id: string; name: string }> } };
@@ -2761,8 +2744,8 @@ export default function Calculator() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-zinc-700 sticky bottom-0 bg-zinc-900/95 backdrop-blur-xl">
+              {/* Action Buttons - Save Build at Bottom */}
+              <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-zinc-700">
                 <button
                   onClick={() => {
                     loadBuildToCalculator(build);
