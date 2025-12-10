@@ -71,6 +71,7 @@ const getPickaxeImage = (name: string): string => {
     'Titanium Pickaxe': 'TitaniumPick',
     'Mythril Pickaxe': 'MythrilPick',
     'Cobalt Pickaxe': 'CobaltPick',
+    'Uranium Pickaxe': 'UraniumPick',
     'Lightite Pickaxe': 'LightitePick',
     'Magma Pickaxe': 'MagmaPick',
     'Demonic Pickaxe': 'DemonicPick',
