@@ -1679,6 +1679,61 @@ export default function Calculator() {
                 } 
               };
               
+              // Helper function to get translated rune name
+              const getRuneNameTranslated = (runeId: string, defaultName: string) => {
+                const runeMap: Record<string, { th: string; en: string }> = {
+                  'miner_shard': { th: '⛏️ รูนคนขุด', en: '⛏️ Miner Shard' },
+                  'frost_speck': { th: '❄️ รูนน้ำแข็ง', en: '❄️ Frost Speck' },
+                  'flame_spark': { th: '🔥 รูนไฟ', en: '🔥 Flame Spark' },
+                  'venom_crumb': { th: '☠️ รูนพิษ', en: '☠️ Venom Crumb' },
+                  'chill_dust': { th: '🌨️ รูนหิมะ', en: '🌨️ Chill Dust' },
+                  'blast_chip': { th: '💣 รูนระเบิด', en: '💣 Blast Chip' },
+                  'drain_edge': { th: '🩸 รูนดูดเลือด', en: '🩸 Drain Edge' },
+                  'briar_notch': { th: '🌿 รูนสะท้อน', en: '🌿 Briar Notch' },
+                  'rage_mark': { th: '😡 รูนโกรธ', en: '😡 Rage Mark' },
+                  'ward_patch': { th: '🛡️ รูนโล่', en: '🛡️ Ward Patch' },
+                  'rot_stitch': { th: '🦠 รูนพิษร้าย', en: '🦠 Rot Stitch' },
+                };
+                return runeMap[runeId] ? runeMap[runeId][language] : defaultName;
+              };
+
+              // Helper function to get translated trait name
+              const getTraitNameTranslated = (traitName: string) => {
+                const traitMap: Record<string, { th: string; en: string }> = {
+                  'Luck': { th: '🍀 โชค', en: '🍀 Luck' },
+                  'Yield': { th: '⛏️ ผลผลิต', en: '⛏️ Yield' },
+                  'Swift Mining': { th: '⚡ ขุดแร่เร็ว', en: '⚡ Swift Mining' },
+                  'Mine Power': { th: '💪 พลังขุด', en: '💪 Mine Power' },
+                  'Ice': { th: '❄️ น้ำแข็ง', en: '❄️ Ice' },
+                  'Burn': { th: '🔥 เผาไหม้', en: '🔥 Burn' },
+                  'Poison': { th: '☠️ พิษ', en: '☠️ Poison' },
+                  'Snow': { th: '🌨️ หิมะ', en: '🌨️ Snow' },
+                  'Explosion': { th: '💣 ระเบิด', en: '💣 Explosion' },
+                  'Heal': { th: '💚 รักษา', en: '💚 Heal' },
+                  'Thorns': { th: '🌿 สะท้อน', en: '🌿 Thorns' },
+                  'Berserk': { th: '😡 บ้าคลั่ง', en: '😡 Berserk' },
+                  'Shield': { th: '🛡️ โล่', en: '🛡️ Shield' },
+                  'Toxic Veins': { th: '🦠 เส้นพิษ', en: '🦠 Toxic Veins' },
+                  'Attack Speed': { th: '⚡ ความเร็วโจมตี', en: '⚡ Attack Speed' },
+                  'Lethality': { th: '🗡️ ความร้ายแรง', en: '🗡️ Lethality' },
+                  'Critical Chance': { th: '🎯 โอกาสคริติคอล', en: '🎯 Critical Chance' },
+                  'Critical Damage': { th: '💥 ความเสียหายคริติคอล', en: '💥 Critical Damage' },
+                  'Fracture': { th: '🔨 ความเสียหายสตัน', en: '🔨 Fracture' },
+                  'Endurance': { th: '💪 ความอดทน', en: '💪 Endurance' },
+                  'Surge': { th: '⚡ การพุ่ง', en: '⚡ Surge' },
+                  'Vitality': { th: '❤️ พลังชีวิต', en: '❤️ Vitality' },
+                  'Swiftness': { th: '🏃 ความว่องไว', en: '🏃 Swiftness' },
+                  'Phase': { th: '👻 ระยะเวลาไร้ตัว', en: '👻 Phase' },
+                };
+                const lowerTrait = traitName.toLowerCase();
+                for (const [key, value] of Object.entries(traitMap)) {
+                  if (lowerTrait.includes(key.toLowerCase()) || key.toLowerCase() === lowerTrait) {
+                    return value[language];
+                  }
+                }
+                return traitName;
+              };
+              
               return (
                 <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-4">
                   <h3 className="font-bold text-purple-300 mb-4 text-sm flex items-center gap-2">
