@@ -165,9 +165,6 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
   const getRuneName = (name: string) => language === 'th' ? (runeNamesTH[name] || name) : name;
   const getTraitName = (name: string) => language === 'th' ? (traitNamesTH[name] || name) : name;
 
-  const getRuneName = (name: string) => language === 'th' ? (runeNamesTH[name] || name) : name;
-  const getTraitName = (name: string) => language === 'th' ? (traitNamesTH[name] || name) : name;
-
   if (isMinimized) {
     return (
       <div className="fixed bottom-24 right-24 z-40">
@@ -176,7 +173,7 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
           className="bg-gradient-to-br from-amber-600 to-yellow-700 text-white px-4 py-2 rounded-lg shadow-xl hover:shadow-2xl transition-all flex items-center gap-2 border border-yellow-400/30"
         >
           <img src="/pickaxe/pickaxe.png" alt="Pickaxe" className="w-5 h-5" />
-          <span className="font-semibold">{language === 'th' ? 'เครื่องคำนวณจอบ' : 'Pickaxe Calculator'}</span>
+          <span className="font-semibold">{language === 'th' ? 'เครื่องคำนวณ Pickaxe' : 'Pickaxe Calculator'}</span>
         </button>
       </div>
     );
@@ -189,7 +186,7 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
         <div className="flex items-center justify-between p-4 border-b border-amber-500/30 bg-gradient-to-r from-amber-900/50 to-yellow-900/50 backdrop-blur-xl">
           <h2 className="text-xl font-bold text-amber-400 flex items-center gap-2">
             <img src="/pickaxe/pickaxe.png" alt="Pickaxe" className="w-7 h-7" />
-            <span>{language === 'th' ? '⛏️ เครื่องคำนวณจอบ (รูนนักขุด)' : '⛏️ Pickaxe Calculator (Miner Shard)'}</span>
+            <span>{language === 'th' ? '⛏️ เครื่องคำนวณ Pickaxe (รูนนักขุด)' : '⛏️ Pickaxe Calculator (Miner Shard)'}</span>
           </h2>
           <div className="flex gap-2">
             <button
@@ -214,14 +211,14 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
           {/* Pickaxe Selection */}
           <div className="bg-gradient-to-br from-amber-900/30 to-zinc-800/50 rounded-xl p-4 border border-amber-500/30 shadow-lg">
             <label className="block text-amber-400 font-bold mb-3 text-sm">
-              {language === 'th' ? '⛏️ เลือกจอบ' : '⛏️ Select Pickaxe'}
+              {language === 'th' ? '⛏️ เลือก Pickaxe' : '⛏️ Select Pickaxe'}
             </label>
             <select
               className="w-full p-2.5 bg-zinc-900/80 border-2 border-amber-500/40 rounded-lg text-white focus:border-amber-400 focus:outline-none transition-colors text-sm"
               onChange={handlePickaxeChange}
               value={selectedPickaxe?.id || ''}
             >
-              <option value="">{language === 'th' ? '-- เลือกจอบ --' : '-- Select Pickaxe --'}</option>
+              <option value="">{language === 'th' ? '-- เลือก Pickaxe --' : '-- Select Pickaxe --'}</option>
               {pickaxeData.map((pickaxe) => (
                 <option key={pickaxe.id} value={pickaxe.id}>
                   {pickaxe.name} | MP: {pickaxe.minePower} | Luck: {pickaxe.luckBoost}% | Slots: {pickaxe.runeSlots}
