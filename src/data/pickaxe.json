@@ -148,9 +148,9 @@
     {
       "id": "demonic_pickaxe",
       "name": "Demonic Pickaxe",
-      "minePower": 175,
+      "minePower": 180,
       "miningSpeed": -10,
-      "luckBoost": 47.5,
+      "luckBoost": 51,
       "runeSlots": 3,
       "cost": 500000,
       "description": "A pickaxe fused with demonic power, its crimson eye and glowing veins hunger for the strongest ores.",
