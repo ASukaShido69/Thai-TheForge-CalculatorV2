@@ -1543,257 +1543,6 @@ export default function Calculator() {
                     )}
                   </div>
                 </div>
-
-                {/* Selected Runes Display */}
-                {selectedRunes.length > 0 && (
-                  <div className="mt-6 space-y-3">
-                    <div className="flex items-center gap-2">
-                      <SparklesIcon className="w-5 h-5 text-purple-400" />
-                      <h3 className="text-purple-300 font-bold text-sm">
-                        {language === 'th' ? 'รูนที่เลือก' : 'Selected Runes'} ({selectedRunes.length}/3)
-                      </h3>
-                    </div>
-                    {selectedRunes.map((runeData, index) => {
-                      const runeDataRaw = require('../../data/rune.json');
-                      const runeDataFile = runeDataRaw as { 
-                        runes: { 
-                          primary: Array<{ 
-                            id: string; 
-                            name: string;
-                            traits?: Array<{
-                              name: string;
-                              description: string;
-                              minValue: number | null;
-                              maxValue: number | null;
-                              unit: string | null;
-                              procChance?: string;
-                            }>;
-                          }>;
-                          secondary: {
-                            weapon: Array<{
-                              id: string;
-                              name: string;
-                              minValue: number | null;
-                              maxValue: number | null;
-                              unit: string | null;
-                            }>;
-                            armor: Array<{
-                              id: string;
-                              name: string;
-                              minValue: number | null;
-                              maxValue: number | null;
-                              unit: string | null;
-                            }>;
-                          };
-                        } 
-                      };
-                      const rune = runeDataFile.runes.primary.find(r => r.id === runeData.runeState.runeId);
-                      
-                      // Helper function to get translated rune name
-                      const getRuneNameTranslated = (runeId: string, defaultName: string) => {
-                        const runeMap: Record<string, { th: string; en: string }> = {
-                          'miner_shard': { th: '⛏️ รูนคนขุด', en: '⛏️ Miner Shard' },
-                          'frost_speck': { th: '❄️ รูนน้ำแข็ง', en: '❄️ Frost Speck' },
-                          'flame_spark': { th: '🔥 รูนไฟ', en: '🔥 Flame Spark' },
-                          'venom_crumb': { th: '☠️ รูนพิษ', en: '☠️ Venom Crumb' },
-                          'chill_dust': { th: '🌨️ รูนหิมะ', en: '🌨️ Chill Dust' },
-                          'blast_chip': { th: '💣 รูนระเบิด', en: '💣 Blast Chip' },
-                          'drain_edge': { th: '🩸 รูนดูดเลือด', en: '🩸 Drain Edge' },
-                          'briar_notch': { th: '🌿 รูนสะท้อน', en: '🌿 Briar Notch' },
-                          'rage_mark': { th: '😡 รูนโกรธ', en: '😡 Rage Mark' },
-                          'ward_patch': { th: '🛡️ รูนโล่', en: '🛡️ Ward Patch' },
-                          'rot_stitch': { th: '🦠 รูนพิษร้าย', en: '🦠 Rot Stitch' },
-                        };
-                        return runeMap[runeId] ? runeMap[runeId][language] : defaultName;
-                      };
-
-                      // Helper function to get translated trait name
-                      const getTraitNameTranslated = (traitName: string) => {
-                        const traitMap: Record<string, { th: string; en: string }> = {
-                          'Luck': { th: '🍀 โชค', en: '🍀 Luck' },
-                          'Yield': { th: '⛏️ ผลผลิต', en: '⛏️ Yield' },
-                          'Swift Mining': { th: '⚡ ขุดแร่เร็ว', en: '⚡ Swift Mining' },
-                          'Mine Power': { th: '💪 พลังขุด', en: '💪 Mine Power' },
-                          'Ice': { th: '❄️ น้ำแข็ง', en: '❄️ Ice' },
-                          'Burn': { th: '🔥 เผาไหม้', en: '🔥 Burn' },
-                          'Poison': { th: '☠️ พิษ', en: '☠️ Poison' },
-                          'Snow': { th: '🌨️ หิมะ', en: '🌨️ Snow' },
-                          'Explosion': { th: '💣 ระเบิด', en: '💣 Explosion' },
-                          'Heal': { th: '💚 รักษา', en: '💚 Heal' },
-                          'Thorns': { th: '🌿 สะท้อน', en: '🌿 Thorns' },
-                          'Berserk': { th: '😡 บ้าคลั่ง', en: '😡 Berserk' },
-                          'Shield': { th: '🛡️ โล่', en: '🛡️ Shield' },
-                          'Toxic Veins': { th: '🦠 เส้นพิษ', en: '🦠 Toxic Veins' },
-                          'Attack Speed': { th: '⚡ ความเร็วโจมตี', en: '⚡ Attack Speed' },
-                          'Lethality': { th: '🗡️ ความร้ายแรง', en: '🗡️ Lethality' },
-                          'Critical Chance': { th: '🎯 โอกาสคริติคอล', en: '🎯 Critical Chance' },
-                          'Critical Damage': { th: '💥 ความเสียหายคริติคอล', en: '💥 Critical Damage' },
-                          'Fracture': { th: '🔨 ความเสียหายสตัน', en: '🔨 Fracture' },
-                          'Endurance': { th: '💪 ความอดทน', en: '💪 Endurance' },
-                          'Surge': { th: '⚡ การพุ่ง', en: '⚡ Surge' },
-                          'Vitality': { th: '❤️ พลังชีวิต', en: '❤️ Vitality' },
-                          'Swiftness': { th: '🏃 ความว่องไว', en: '🏃 Swiftness' },
-                          'Phase': { th: '👻 ระยะเวลาไร้ตัว', en: '👻 Phase' },
-                        };
-                        const lowerTrait = traitName.toLowerCase();
-                        for (const [key, value] of Object.entries(traitMap)) {
-                          if (lowerTrait.includes(key.toLowerCase()) || key.toLowerCase() === lowerTrait) {
-                            return value[language];
-                          }
-                        }
-                        return traitName;
-                      };
-                      
-                      return (
-                        <div key={index} className="p-3 sm:p-4 bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-xl border border-purple-500/30">
-                          <div className="flex items-center justify-between mb-2 gap-2 min-w-0">
-                            <h4 className="text-purple-300 font-semibold text-xs sm:text-sm truncate">
-                              {index + 1}. {rune ? getRuneNameTranslated(rune.id, rune.name) : 'Unknown'}
-                            </h4>
-                            <button
-                              onClick={() => setSelectedRunes(prev => prev.filter((_, i) => i !== index))}
-                              className="text-red-400 hover:text-red-300 text-xs flex-shrink-0"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                          
-                              {/* Primary Traits */}
-                          {Object.entries(runeData.runeState.traitValues).length > 0 && (() => {
-                            const runeInfo = runeDataFile.runes.primary.find(r => r.id === runeData.runeState.runeId);
-                            return (
-                              <div className="mb-2">
-                                <div className="text-[10px] sm:text-xs text-purple-400 font-semibold mb-1">
-                                  {language === 'th' ? '🎯 คุณสมบัติหลัก' : '🎯 Primary Traits'}:
-                                </div>
-                                <div className="space-y-1.5">
-                                  {Object.entries(runeData.runeState.traitValues).map(([name, value]) => {
-                                    const traitInfo = runeInfo?.traits?.find((t: any) => t.name === name);
-                                    const hasRange = traitInfo && traitInfo.minValue !== null && traitInfo.maxValue !== null;
-                                    const hasProcChance = traitInfo && traitInfo.procChance;
-                                    
-                                    return (
-                                      <div key={name} className="bg-gradient-to-r from-purple-900/40 to-pink-900/40 p-2 rounded-lg border border-purple-500/30 backdrop-blur-sm">
-                                        <div className="flex items-start justify-between gap-2">
-                                          <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-1.5 mb-0.5">
-                                              <span className="text-purple-200 text-[10px] sm:text-xs font-semibold leading-snug break-words">
-                                                {getTraitNameTranslated(name)}
-                                              </span>
-                                              {hasRange && (
-                                                <span className="text-[9px] sm:text-[10px] text-purple-400/70 font-medium whitespace-nowrap">
-                                                  ({traitInfo.minValue}-{traitInfo.maxValue}{traitInfo.unit})
-                                                </span>
-                                              )}
-                                            </div>
-                                            {hasProcChance && (
-                                              <div className="text-[9px] sm:text-[10px] text-cyan-400 font-medium mt-0.5">
-                                                ⚡ {language === 'th' ? 'โอกาส' : 'Chance'}: {traitInfo.procChance}
-                                              </div>
-                                            )}
-                                          </div>
-                                          <div className="flex-shrink-0 text-right">
-                                            <span className="text-purple-300 font-bold text-xs sm:text-sm">{value}</span>
-                                            {traitInfo?.unit && (
-                                              <span className="text-purple-400/80 text-[9px] sm:text-[10px] ml-0.5">{traitInfo.unit}</span>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            );
-                          })()}
-
-                          {/* Secondary Traits */}
-                          {runeData.secondaryTraits && (
-                            <>
-                              {runeData.secondaryTraits.weapon && runeData.secondaryTraits.weapon.length > 0 && (() => {
-                                const weaponSecondary = runeDataFile.runes.secondary.weapon;
-                                return (
-                                  <div className="mb-2">
-                                    <div className="text-[10px] sm:text-xs text-red-400 font-semibold mb-1.5">⚔️ {language === 'th' ? 'คุณสมบัติอาวุธ' : 'Weapon Traits'}:</div>
-                                    <div className="space-y-1">
-                                      {runeData.secondaryTraits.weapon.map((trait, idx) => {
-                                        const traitInfo = weaponSecondary.find((t: any) => t.id === trait.id || t.name === trait.name);
-                                        const hasRange = traitInfo && traitInfo.minValue !== null && traitInfo.maxValue !== null;
-                                        
-                                        return (
-                                          <div key={idx} className="bg-gradient-to-r from-red-900/30 to-orange-900/30 border border-red-500/40 px-2 py-1.5 rounded-lg backdrop-blur-sm">
-                                            <div className="flex items-center justify-between gap-2">
-                                              <div className="flex items-center gap-1.5 min-w-0">
-                                                <span className="text-red-200 text-[10px] sm:text-xs font-medium break-words">
-                                                  {getTraitNameTranslated(trait.name)}
-                                                </span>
-                                                {hasRange && (
-                                                  <span className="text-[9px] text-red-400/60 font-medium whitespace-nowrap">
-                                                    ({traitInfo.minValue}-{traitInfo.maxValue}%)
-                                                  </span>
-                                                )}
-                                              </div>
-                                              <span className="text-red-300 font-bold text-xs sm:text-sm flex-shrink-0">{trait.value}%</span>
-                                            </div>
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  </div>
-                                );
-                              })()}
-                              {runeData.secondaryTraits.armor && runeData.secondaryTraits.armor.length > 0 && (() => {
-                                const armorSecondary = runeDataFile.runes.secondary.armor;
-                                return (
-                                  <div>
-                                    <div className="text-[10px] sm:text-xs text-blue-400 font-semibold mb-1.5">🛡️ {language === 'th' ? 'คุณสมบัติเกราะ' : 'Armor Traits'}:</div>
-                                    <div className="space-y-1">
-                                      {runeData.secondaryTraits.armor.map((trait, idx) => {
-                                        const traitInfo = armorSecondary.find((t: any) => t.id === trait.id || t.name === trait.name);
-                                        const hasRange = traitInfo && traitInfo.minValue !== null && traitInfo.maxValue !== null;
-                                        
-                                        return (
-                                          <div key={idx} className="bg-gradient-to-r from-blue-900/30 to-cyan-900/30 border border-blue-500/40 px-2 py-1.5 rounded-lg backdrop-blur-sm">
-                                            <div className="flex items-center justify-between gap-2">
-                                              <div className="flex items-center gap-1.5 min-w-0">
-                                                <span className="text-blue-200 text-[10px] sm:text-xs font-medium break-words">
-                                                  {getTraitNameTranslated(trait.name)}
-                                                </span>
-                                                {hasRange && (
-                                                  <span className="text-[9px] text-blue-400/60 font-medium whitespace-nowrap">
-                                                    ({traitInfo.minValue}-{traitInfo.maxValue}%)
-                                                  </span>
-                                                )}
-                                              </div>
-                                              <span className="text-blue-300 font-bold text-xs sm:text-sm flex-shrink-0">{trait.value}%</span>
-                                            </div>
-                                          </div>
-                                        );
-                                      })}
-                                    </div>
-                                  </div>
-                                );
-                              })()}
-                            </>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Save Build Button - Desktop Only */}
-                {results && results.odds && Object.keys(results.odds).length > 0 && (
-                  <div className="hidden sm:block mt-6 text-center">
-                    <button
-                      onClick={() => setShowSaveDialog(true)}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-green-500/30"
-                    >
-                      <SaveIcon className="w-4 h-4" />
-                      {t('saveBuild')}
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -1906,11 +1655,51 @@ export default function Calculator() {
               );
             })()}
 
-            {/* Active Traits - REMOVED (moved to left column above) */}
           </div>
 
-          {/* RIGHT: Forge Chances OR Saved Builds - 3 columns */}
+          {/* RIGHT: Active Traits or Saved Builds - 3 columns */}
           <div className="lg:col-span-3 space-y-4">
+            
+            {!showCompareMode && selectedRunes.length > 0 && (
+              <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-4">
+                <h3 className="font-bold text-purple-300 mb-4 text-sm flex items-center gap-2">
+                  <SparklesIcon className="w-4 h-4" />
+                  {language === 'th' ? '🎯 คุณสมบัติที่ใช้งาน' : '🎯 Active Traits'}
+                </h3>
+                
+                <div className="space-y-3">
+                  {selectedRunes.map((runeData, runeIdx) => (
+                    <div key={`${runeData.id}-${runeIdx}`} className="bg-zinc-800/40 rounded-lg p-3 border border-purple-500/20">
+                      <div className="text-xs font-bold text-purple-300 mb-2">
+                        {runeIdx + 1}. {getRuneNameTranslated(runeData.id, runeData.name)}
+                      </div>
+                      
+                      {runeData.runeState?.traitValues && Object.entries(runeData.runeState.traitValues).length > 0 && (
+                        <div className="space-y-1.5">
+                          {Object.entries(runeData.runeState.traitValues).map(([name, value]) => {
+                            const runeInfo = runeDataFile.runes.primary.find(r => r.id === runeData.id);
+                            const traitInfo = runeInfo?.traits?.find((t: any) => t.name === name);
+                            
+                            return (
+                              <div key={name} className="bg-purple-500/10 p-1.5 rounded border border-purple-500/20">
+                                <div className="flex items-center justify-between gap-1.5">
+                                  <span className="text-purple-200 text-[10px] font-medium break-words flex-1">
+                                    {getTraitNameTranslated(name)}
+                                  </span>
+                                  <span className="text-purple-300 font-bold text-xs flex-shrink-0">
+                                    {value}{traitInfo?.unit || ''}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             
             {showCompareMode ? (
               // Saved Builds for Comparison
@@ -2004,154 +1793,169 @@ export default function Calculator() {
                   </div>
                 )}
               </div>
-            ) : (
-              // Forge Chances - Horizontal layout at bottom
-              <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-zinc-800/50 p-4 w-full">
-                <h3 className="font-bold text-zinc-300 mb-4 text-sm">{t('forgeChances')}</h3>
+            ) : null}
+          </div>
+        </div>
+
+        {/* BOTTOM: Forge Chances - Full Width Horizontal Layout */}
+        {results && results.odds && Object.keys(results.odds).length > 0 && !showCompareMode && (
+          <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-zinc-800/50 p-4 w-full">
+            <h3 className="font-bold text-zinc-300 mb-4 text-sm">{t('forgeChances')}</h3>
+            
+            <div className="space-y-4">
+              {craftType === "Armor" ? (() => {
+                const armorByCategory = getArmorItemsByCategory();
+                const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
                 
-                <div className="space-y-4">
-                  {craftType === "Armor" ? (() => {
-                    const armorByCategory = getArmorItemsByCategory();
-                    const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
+                Object.values(armorByCategory).flat().forEach(item => {
+                  const categoryChance = results?.odds?.[item.categoryKey] || 0;
+                  const { chance, ratio } = getItemChance(item.name, item.categoryKey, categoryChance, "Armor");
+                  
+                  if (!categoryGroups[item.categoryKey]) {
+                    categoryGroups[item.categoryKey] = [];
+                  }
+                  
+                  categoryGroups[item.categoryKey].push({
+                    name: item.name,
+                    image: item.image,
+                    chance: chance,
+                    ratio: ratio
+                  });
+                });
+                
+                const sortedCategories = Object.entries(categoryGroups)
+                  .map(([categoryKey, items]) => ({
+                    categoryKey,
+                    categoryChance: results?.odds?.[categoryKey] || 0,
+                    items: items.sort((a, b) => b.chance - a.chance)
+                  }))
+                  .sort((a, b) => b.categoryChance - a.categoryChance);
+                
+                return sortedCategories.map((category) => (
+                  <div key={category.categoryKey}>
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
+                      <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-green-400' : 'text-zinc-600'}`}>
+                        {(category.categoryChance * 100).toFixed(1)}%
+                      </span>
+                    </div>
                     
-                    Object.values(armorByCategory).flat().forEach(item => {
-                      const categoryChance = results?.odds?.[item.categoryKey] || 0;
-                      const { chance, ratio } = getItemChance(item.name, item.categoryKey, categoryChance, "Armor");
-                      
-                      if (!categoryGroups[item.categoryKey]) {
-                        categoryGroups[item.categoryKey] = [];
-                      }
-                      
-                      categoryGroups[item.categoryKey].push({
-                        name: item.name,
-                        image: item.image,
-                        chance: chance,
-                        ratio: ratio
-                      });
-                    });
-                    
-                    const sortedCategories = Object.entries(categoryGroups)
-                      .map(([categoryKey, items]) => ({
-                        categoryKey,
-                        categoryChance: results?.odds?.[categoryKey] || 0,
-                        items: items.sort((a, b) => b.chance - a.chance)
-                      }))
-                      .sort((a, b) => b.categoryChance - a.categoryChance);
-                    
-                    return sortedCategories.map((category) => (
-                      <div key={category.categoryKey}>
-                        <div className="flex justify-between items-center mb-3">
-                          <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
-                          <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-green-400' : 'text-zinc-600'}`}>
-                            {(category.categoryChance * 100).toFixed(1)}%
-                          </span>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
-                          {category.items.map((item) => (
-                            <div key={item.name} className="flex flex-col items-center group relative">
-                              <div className="relative w-12 h-16 mb-2 bg-zinc-800/50 rounded border border-zinc-700/30 flex items-center justify-center group-hover:border-green-500/50 transition-colors">
-                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity p-1" />
-                              </div>
-                              <span className="text-[10px] text-white font-semibold text-center line-clamp-2">{item.name}</span>
-                              <span className="text-[9px] text-green-400 font-bold mt-1">{(item.chance * 100).toFixed(1)}%</span>
-                              
-                              {/* Tooltip */}
-                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
-                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
-                                  <div className="text-[10px] text-green-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
-                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
-                                    <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
-                                  </div>
-                                </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
+                      {category.items.map((item) => (
+                        <div key={item.name} className="flex flex-col items-center group relative">
+                          <div className="relative w-12 h-16 mb-2 bg-zinc-800/50 rounded border border-zinc-700/30 flex items-center justify-center group-hover:border-green-500/50 transition-colors">
+                            <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity p-1" />
+                          </div>
+                          <span className="text-[10px] text-white font-semibold text-center line-clamp-2">{item.name}</span>
+                          <span className="text-[9px] text-green-400 font-bold mt-1">{(item.chance * 100).toFixed(1)}%</span>
+                          
+                          {/* Tooltip */}
+                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                            <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
+                              <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
+                              <div className="text-[10px] text-green-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                                <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
                               </div>
                             </div>
-                          ))}
+                          </div>
                         </div>
-                        
-                        <div className="h-2 bg-zinc-700/50 rounded-full overflow-hidden mb-4">
-                          <div 
-                            className="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300" 
-                            style={{ width: `${category.categoryChance * 100}%` }} 
-                          />
-                        </div>
-                      </div>
-                    ));
-                  })() : (() => {
-                    const weaponByCategory = getWeaponItemsByCategory();
-                    const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
+                      ))}
+                    </div>
                     
-                    Object.values(weaponByCategory).flat().forEach(item => {
-                      const categoryChance = results?.odds?.[item.categoryKey] || 0;
-                      const { chance, ratio } = getItemChance(item.name, item.categoryKey, categoryChance, "Weapon");
-                      
-                      if (!categoryGroups[item.categoryKey]) {
-                        categoryGroups[item.categoryKey] = [];
-                      }
-                      
-                      categoryGroups[item.categoryKey].push({
-                        name: item.name,
-                        image: item.image,
-                        chance: chance,
-                        ratio: ratio
-                      });
-                    });
+                    <div className="h-2 bg-zinc-700/50 rounded-full overflow-hidden mb-4">
+                      <div 
+                        className="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300" 
+                        style={{ width: `${category.categoryChance * 100}%` }} 
+                      />
+                    </div>
+                  </div>
+                ));
+              })() : (() => {
+                const weaponByCategory = getWeaponItemsByCategory();
+                const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
+                
+                Object.values(weaponByCategory).flat().forEach(item => {
+                  const categoryChance = results?.odds?.[item.categoryKey] || 0;
+                  const { chance, ratio } = getItemChance(item.name, item.categoryKey, categoryChance, "Weapon");
+                  
+                  if (!categoryGroups[item.categoryKey]) {
+                    categoryGroups[item.categoryKey] = [];
+                  }
+                  
+                  categoryGroups[item.categoryKey].push({
+                    name: item.name,
+                    image: item.image,
+                    chance: chance,
+                    ratio: ratio
+                  });
+                });
+                
+                const sortedCategories = Object.entries(categoryGroups)
+                  .map(([categoryKey, items]) => ({
+                    categoryKey,
+                    categoryChance: results?.odds?.[categoryKey] || 0,
+                    items: items.sort((a, b) => b.chance - a.chance)
+                  }))
+                  .sort((a, b) => b.categoryChance - a.categoryChance);
+                
+                return sortedCategories.map((category) => (
+                  <div key={category.categoryKey}>
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
+                      <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-red-400' : 'text-zinc-600'}`}>
+                        {(category.categoryChance * 100).toFixed(1)}%
+                      </span>
+                    </div>
                     
-                    const sortedCategories = Object.entries(categoryGroups)
-                      .map(([categoryKey, items]) => ({
-                        categoryKey,
-                        categoryChance: results?.odds?.[categoryKey] || 0,
-                        items: items.sort((a, b) => b.chance - a.chance)
-                      }))
-                      .sort((a, b) => b.categoryChance - a.categoryChance);
-                    
-                    return sortedCategories.map((category) => (
-                      <div key={category.categoryKey}>
-                        <div className="flex justify-between items-center mb-3">
-                          <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
-                          <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-red-400' : 'text-zinc-600'}`}>
-                            {(category.categoryChance * 100).toFixed(1)}%
-                          </span>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
-                          {category.items.map((item) => (
-                            <div key={item.name} className="flex flex-col items-center group relative">
-                              <div className="relative w-12 h-16 mb-2 bg-zinc-800/50 rounded border border-zinc-700/30 flex items-center justify-center group-hover:border-red-500/50 transition-colors">
-                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity p-1" />
-                              </div>
-                              <span className="text-[10px] text-white font-semibold text-center line-clamp-2">{item.name}</span>
-                              <span className="text-[9px] text-red-400 font-bold mt-1">{(item.chance * 100).toFixed(1)}%</span>
-                              
-                              {/* Tooltip - Weapon */}
-                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                                <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
-                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
-                                  <div className="text-[10px] text-red-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
-                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
-                                    <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
-                                  </div>
-                                </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
+                      {category.items.map((item) => (
+                        <div key={item.name} className="flex flex-col items-center group relative">
+                          <div className="relative w-12 h-16 mb-2 bg-zinc-800/50 rounded border border-zinc-700/30 flex items-center justify-center group-hover:border-red-500/50 transition-colors">
+                            <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity p-1" />
+                          </div>
+                          <span className="text-[10px] text-white font-semibold text-center line-clamp-2">{item.name}</span>
+                          <span className="text-[9px] text-red-400 font-bold mt-1">{(item.chance * 100).toFixed(1)}%</span>
+                          
+                          {/* Tooltip - Weapon */}
+                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                            <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
+                              <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
+                              <div className="text-[10px] text-red-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                                <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
                               </div>
                             </div>
-                          ))}
+                          </div>
                         </div>
-                        
-                        <div className="h-2 bg-zinc-700/50 rounded-full overflow-hidden mb-4">
-                          <div 
-                            className="h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300" 
-                            style={{ width: `${category.categoryChance * 100}%` }} 
-                          />
-                        </div>
-                      </div>
-                    ));
-                  })()}
-                </div>
+                      ))}
+                    </div>
+                    
+                    <div className="h-2 bg-zinc-700/50 rounded-full overflow-hidden mb-4">
+                      <div 
+                        className="h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300" 
+                        style={{ width: `${category.categoryChance * 100}%` }} 
+                      />
+                    </div>
+                  </div>
+                ));
+              })()}
+            </div>
+
+            {/* Save Build Button - Bottom */}
+            {results && results.odds && Object.keys(results.odds).length > 0 && (
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => setShowSaveDialog(true)}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-green-500/30"
+                >
+                  <SaveIcon className="w-4 h-4" />
+                  {t('saveBuild')}
+                </button>
               </div>
             )}
           </div>
-        </div>
+        )}
 
         {/* Compare View - Full Width Below */}
         {showCompareMode && selectedBuildsForCompare.length > 0 && (
