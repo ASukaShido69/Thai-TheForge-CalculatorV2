@@ -1543,6 +1543,257 @@ export default function Calculator() {
                     )}
                   </div>
                 </div>
+
+                {/* Selected Runes Display */}
+                {selectedRunes.length > 0 && (
+                  <div className="mt-6 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <SparklesIcon className="w-5 h-5 text-purple-400" />
+                      <h3 className="text-purple-300 font-bold text-sm">
+                        {language === 'th' ? 'รูนที่เลือก' : 'Selected Runes'} ({selectedRunes.length}/3)
+                      </h3>
+                    </div>
+                    {selectedRunes.map((runeData, index) => {
+                      const runeDataRaw = require('../../data/rune.json');
+                      const runeDataFile = runeDataRaw as { 
+                        runes: { 
+                          primary: Array<{ 
+                            id: string; 
+                            name: string;
+                            traits?: Array<{
+                              name: string;
+                              description: string;
+                              minValue: number | null;
+                              maxValue: number | null;
+                              unit: string | null;
+                              procChance?: string;
+                            }>;
+                          }>;
+                          secondary: {
+                            weapon: Array<{
+                              id: string;
+                              name: string;
+                              minValue: number | null;
+                              maxValue: number | null;
+                              unit: string | null;
+                            }>;
+                            armor: Array<{
+                              id: string;
+                              name: string;
+                              minValue: number | null;
+                              maxValue: number | null;
+                              unit: string | null;
+                            }>;
+                          };
+                        } 
+                      };
+                      const rune = runeDataFile.runes.primary.find(r => r.id === runeData.runeState.runeId);
+                      
+                      // Helper function to get translated rune name
+                      const getRuneNameTranslated = (runeId: string, defaultName: string) => {
+                        const runeMap: Record<string, { th: string; en: string }> = {
+                          'miner_shard': { th: '⛏️ รูนคนขุด', en: '⛏️ Miner Shard' },
+                          'frost_speck': { th: '❄️ รูนน้ำแข็ง', en: '❄️ Frost Speck' },
+                          'flame_spark': { th: '🔥 รูนไฟ', en: '🔥 Flame Spark' },
+                          'venom_crumb': { th: '☠️ รูนพิษ', en: '☠️ Venom Crumb' },
+                          'chill_dust': { th: '🌨️ รูนหิมะ', en: '🌨️ Chill Dust' },
+                          'blast_chip': { th: '💣 รูนระเบิด', en: '💣 Blast Chip' },
+                          'drain_edge': { th: '🩸 รูนดูดเลือด', en: '🩸 Drain Edge' },
+                          'briar_notch': { th: '🌿 รูนสะท้อน', en: '🌿 Briar Notch' },
+                          'rage_mark': { th: '😡 รูนโกรธ', en: '😡 Rage Mark' },
+                          'ward_patch': { th: '🛡️ รูนโล่', en: '🛡️ Ward Patch' },
+                          'rot_stitch': { th: '🦠 รูนพิษร้าย', en: '🦠 Rot Stitch' },
+                        };
+                        return runeMap[runeId] ? runeMap[runeId][language] : defaultName;
+                      };
+
+                      // Helper function to get translated trait name
+                      const getTraitNameTranslated = (traitName: string) => {
+                        const traitMap: Record<string, { th: string; en: string }> = {
+                          'Luck': { th: '🍀 โชค', en: '🍀 Luck' },
+                          'Yield': { th: '⛏️ ผลผลิต', en: '⛏️ Yield' },
+                          'Swift Mining': { th: '⚡ ขุดแร่เร็ว', en: '⚡ Swift Mining' },
+                          'Mine Power': { th: '💪 พลังขุด', en: '💪 Mine Power' },
+                          'Ice': { th: '❄️ น้ำแข็ง', en: '❄️ Ice' },
+                          'Burn': { th: '🔥 เผาไหม้', en: '🔥 Burn' },
+                          'Poison': { th: '☠️ พิษ', en: '☠️ Poison' },
+                          'Snow': { th: '🌨️ หิมะ', en: '🌨️ Snow' },
+                          'Explosion': { th: '💣 ระเบิด', en: '💣 Explosion' },
+                          'Heal': { th: '💚 รักษา', en: '💚 Heal' },
+                          'Thorns': { th: '🌿 สะท้อน', en: '🌿 Thorns' },
+                          'Berserk': { th: '😡 บ้าคลั่ง', en: '😡 Berserk' },
+                          'Shield': { th: '🛡️ โล่', en: '🛡️ Shield' },
+                          'Toxic Veins': { th: '🦠 เส้นพิษ', en: '🦠 Toxic Veins' },
+                          'Attack Speed': { th: '⚡ ความเร็วโจมตี', en: '⚡ Attack Speed' },
+                          'Lethality': { th: '🗡️ ความร้ายแรง', en: '🗡️ Lethality' },
+                          'Critical Chance': { th: '🎯 โอกาสคริติคอล', en: '🎯 Critical Chance' },
+                          'Critical Damage': { th: '💥 ความเสียหายคริติคอล', en: '💥 Critical Damage' },
+                          'Fracture': { th: '🔨 ความเสียหายสตัน', en: '🔨 Fracture' },
+                          'Endurance': { th: '💪 ความอดทน', en: '💪 Endurance' },
+                          'Surge': { th: '⚡ การพุ่ง', en: '⚡ Surge' },
+                          'Vitality': { th: '❤️ พลังชีวิต', en: '❤️ Vitality' },
+                          'Swiftness': { th: '🏃 ความว่องไว', en: '🏃 Swiftness' },
+                          'Phase': { th: '👻 ระยะเวลาไร้ตัว', en: '👻 Phase' },
+                        };
+                        const lowerTrait = traitName.toLowerCase();
+                        for (const [key, value] of Object.entries(traitMap)) {
+                          if (lowerTrait.includes(key.toLowerCase()) || key.toLowerCase() === lowerTrait) {
+                            return value[language];
+                          }
+                        }
+                        return traitName;
+                      };
+                      
+                      return (
+                        <div key={index} className="p-3 sm:p-4 bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-xl border border-purple-500/30">
+                          <div className="flex items-center justify-between mb-2 gap-2 min-w-0">
+                            <h4 className="text-purple-300 font-semibold text-xs sm:text-sm truncate">
+                              {index + 1}. {rune ? getRuneNameTranslated(rune.id, rune.name) : 'Unknown'}
+                            </h4>
+                            <button
+                              onClick={() => setSelectedRunes(prev => prev.filter((_, i) => i !== index))}
+                              className="text-red-400 hover:text-red-300 text-xs flex-shrink-0"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          
+                              {/* Primary Traits */}
+                          {Object.entries(runeData.runeState.traitValues).length > 0 && (() => {
+                            const runeInfo = runeDataFile.runes.primary.find(r => r.id === runeData.runeState.runeId);
+                            return (
+                              <div className="mb-2">
+                                <div className="text-[10px] sm:text-xs text-purple-400 font-semibold mb-1">
+                                  {language === 'th' ? '🎯 คุณสมบัติหลัก' : '🎯 Primary Traits'}:
+                                </div>
+                                <div className="space-y-1.5">
+                                  {Object.entries(runeData.runeState.traitValues).map(([name, value]) => {
+                                    const traitInfo = runeInfo?.traits?.find((t: any) => t.name === name);
+                                    const hasRange = traitInfo && traitInfo.minValue !== null && traitInfo.maxValue !== null;
+                                    const hasProcChance = traitInfo && traitInfo.procChance;
+                                    
+                                    return (
+                                      <div key={name} className="bg-gradient-to-r from-purple-900/40 to-pink-900/40 p-2 rounded-lg border border-purple-500/30 backdrop-blur-sm">
+                                        <div className="flex items-start justify-between gap-2">
+                                          <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-1.5 mb-0.5">
+                                              <span className="text-purple-200 text-[10px] sm:text-xs font-semibold leading-snug break-words">
+                                                {getTraitNameTranslated(name)}
+                                              </span>
+                                              {hasRange && (
+                                                <span className="text-[9px] sm:text-[10px] text-purple-400/70 font-medium whitespace-nowrap">
+                                                  ({traitInfo.minValue}-{traitInfo.maxValue}{traitInfo.unit})
+                                                </span>
+                                              )}
+                                            </div>
+                                            {hasProcChance && (
+                                              <div className="text-[9px] sm:text-[10px] text-cyan-400 font-medium mt-0.5">
+                                                ⚡ {language === 'th' ? 'โอกาส' : 'Chance'}: {traitInfo.procChance}
+                                              </div>
+                                            )}
+                                          </div>
+                                          <div className="flex-shrink-0 text-right">
+                                            <span className="text-purple-300 font-bold text-xs sm:text-sm">{value}</span>
+                                            {traitInfo?.unit && (
+                                              <span className="text-purple-400/80 text-[9px] sm:text-[10px] ml-0.5">{traitInfo.unit}</span>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })()}
+
+                          {/* Secondary Traits */}
+                          {runeData.secondaryTraits && (
+                            <>
+                              {runeData.secondaryTraits.weapon && runeData.secondaryTraits.weapon.length > 0 && (() => {
+                                const weaponSecondary = runeDataFile.runes.secondary.weapon;
+                                return (
+                                  <div className="mb-2">
+                                    <div className="text-[10px] sm:text-xs text-red-400 font-semibold mb-1.5">⚔️ {language === 'th' ? 'คุณสมบัติอาวุธ' : 'Weapon Traits'}:</div>
+                                    <div className="space-y-1">
+                                      {runeData.secondaryTraits.weapon.map((trait, idx) => {
+                                        const traitInfo = weaponSecondary.find((t: any) => t.id === trait.id || t.name === trait.name);
+                                        const hasRange = traitInfo && traitInfo.minValue !== null && traitInfo.maxValue !== null;
+                                        
+                                        return (
+                                          <div key={idx} className="bg-gradient-to-r from-red-900/30 to-orange-900/30 border border-red-500/40 px-2 py-1.5 rounded-lg backdrop-blur-sm">
+                                            <div className="flex items-center justify-between gap-2">
+                                              <div className="flex items-center gap-1.5 min-w-0">
+                                                <span className="text-red-200 text-[10px] sm:text-xs font-medium break-words">
+                                                  {getTraitNameTranslated(trait.name)}
+                                                </span>
+                                                {hasRange && (
+                                                  <span className="text-[9px] text-red-400/60 font-medium whitespace-nowrap">
+                                                    ({traitInfo.minValue}-{traitInfo.maxValue}%)
+                                                  </span>
+                                                )}
+                                              </div>
+                                              <span className="text-red-300 font-bold text-xs sm:text-sm flex-shrink-0">{trait.value}%</span>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                              {runeData.secondaryTraits.armor && runeData.secondaryTraits.armor.length > 0 && (() => {
+                                const armorSecondary = runeDataFile.runes.secondary.armor;
+                                return (
+                                  <div>
+                                    <div className="text-[10px] sm:text-xs text-blue-400 font-semibold mb-1.5">🛡️ {language === 'th' ? 'คุณสมบัติเกราะ' : 'Armor Traits'}:</div>
+                                    <div className="space-y-1">
+                                      {runeData.secondaryTraits.armor.map((trait, idx) => {
+                                        const traitInfo = armorSecondary.find((t: any) => t.id === trait.id || t.name === trait.name);
+                                        const hasRange = traitInfo && traitInfo.minValue !== null && traitInfo.maxValue !== null;
+                                        
+                                        return (
+                                          <div key={idx} className="bg-gradient-to-r from-blue-900/30 to-cyan-900/30 border border-blue-500/40 px-2 py-1.5 rounded-lg backdrop-blur-sm">
+                                            <div className="flex items-center justify-between gap-2">
+                                              <div className="flex items-center gap-1.5 min-w-0">
+                                                <span className="text-blue-200 text-[10px] sm:text-xs font-medium break-words">
+                                                  {getTraitNameTranslated(trait.name)}
+                                                </span>
+                                                {hasRange && (
+                                                  <span className="text-[9px] text-blue-400/60 font-medium whitespace-nowrap">
+                                                    ({traitInfo.minValue}-{traitInfo.maxValue}%)
+                                                  </span>
+                                                )}
+                                              </div>
+                                              <span className="text-blue-300 font-bold text-xs sm:text-sm flex-shrink-0">{trait.value}%</span>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Save Build Button - Desktop Only */}
+                {results && results.odds && Object.keys(results.odds).length > 0 && (
+                  <div className="hidden sm:block mt-6 text-center">
+                    <button
+                      onClick={() => setShowSaveDialog(true)}
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-green-500/30"
+                    >
+                      <SaveIcon className="w-4 h-4" />
+                      {t('saveBuild')}
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1655,129 +1906,59 @@ export default function Calculator() {
               );
             })()}
 
+            {/* Active Traits */}
+            {results && results.traits && results.traits.length > 0 && (
+              <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-3 sm:p-6">
+                <h3 className="text-purple-400 font-bold mb-3 sm:mb-4 text-center uppercase tracking-wider text-xs sm:text-sm">
+                  {t('activeTraits')}
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                  {results.traits.map((tr: any, idx: number) => (
+                    <div key={idx} className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 border border-purple-500/30 rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
+                        <div className="text-purple-300 font-bold text-xs sm:text-sm">{tr.ore}</div>
+                      </div>
+                      <div className="space-y-2">
+                        {tr.lines.map((lineData: any, i: number) => {
+                          const oreData = ores[tr.ore];
+                          const trait = oreData?.traits?.[i];
+                          const maxStat = trait?.maxStat ?? 0;
+                          
+                          // Handle both string (old format) and object (new format) for backward compatibility
+                          const isOldFormat = typeof lineData === 'string';
+                          const percentage = isOldFormat ? null : lineData.percentage;
+                          const description = isOldFormat ? lineData : lineData.description;
+                          const mergedPercentage = isOldFormat ? null : lineData.mergedPercentage;
+                          
+                          return (
+                            <div key={i} className="space-y-1 border-b border-purple-500/15 pb-1.5 last:border-0 last:pb-0">
+                              <div className="text-[9px] sm:text-[10px] text-purple-300/80 font-semibold">
+                                {language === 'th' ? 'ได้รับ:' : 'Obtained:'}
+                              </div>
+                              <div className="text-[9px] sm:text-[11px] text-purple-200 font-medium leading-relaxed ml-2">
+                                {percentage !== null ? `${percentage}%` : ''} {t(description)}
+                                {mergedPercentage !== null ? ` ${mergedPercentage}%` : ''}
+                              </div>
+                              {maxStat !== 0 && (
+                                <div className="text-[8px] sm:text-[10px] text-purple-300/70 flex items-center gap-2 ml-2">
+                                  <span className="text-purple-400">{language === 'th' ? 'สูงสุด:' : 'Max:'}</span>
+                                  <span className="font-semibold text-purple-400">{Math.abs(maxStat).toFixed(2)}</span>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* RIGHT: Active Traits or Saved Builds - 3 columns */}
+          {/* RIGHT: Forge Chances OR Saved Builds - 3 columns */}
           <div className="lg:col-span-3 space-y-4">
-            
-            {!showCompareMode && selectedRunes.length > 0 && (() => {
-              const runeDataRaw = require('../../data/rune.json');
-              const runeDataFile = runeDataRaw as { 
-                runes: { 
-                  primary: Array<{ 
-                    id: string; 
-                    name: string;
-                    traits?: Array<{
-                      name: string;
-                      description: string;
-                      minValue: number | null;
-                      maxValue: number | null;
-                      unit: string | null;
-                      procChance?: string;
-                    }>;
-                  }>;
-                } 
-              };
-              
-              // Helper function to get translated rune name
-              const getRuneNameTranslated = (runeId: string, defaultName: string) => {
-                const runeMap: Record<string, { th: string; en: string }> = {
-                  'miner_shard': { th: '⛏️ รูนคนขุด', en: '⛏️ Miner Shard' },
-                  'frost_speck': { th: '❄️ รูนน้ำแข็ง', en: '❄️ Frost Speck' },
-                  'flame_spark': { th: '🔥 รูนไฟ', en: '🔥 Flame Spark' },
-                  'venom_crumb': { th: '☠️ รูนพิษ', en: '☠️ Venom Crumb' },
-                  'chill_dust': { th: '🌨️ รูนหิมะ', en: '🌨️ Chill Dust' },
-                  'blast_chip': { th: '💣 รูนระเบิด', en: '💣 Blast Chip' },
-                  'drain_edge': { th: '🩸 รูนดูดเลือด', en: '🩸 Drain Edge' },
-                  'briar_notch': { th: '🌿 รูนสะท้อน', en: '🌿 Briar Notch' },
-                  'rage_mark': { th: '😡 รูนโกรธ', en: '😡 Rage Mark' },
-                  'ward_patch': { th: '🛡️ รูนโล่', en: '🛡️ Ward Patch' },
-                  'rot_stitch': { th: '🦠 รูนพิษร้าย', en: '🦠 Rot Stitch' },
-                };
-                return runeMap[runeId] ? runeMap[runeId][language] : defaultName;
-              };
-
-              // Helper function to get translated trait name
-              const getTraitNameTranslated = (traitName: string) => {
-                const traitMap: Record<string, { th: string; en: string }> = {
-                  'Luck': { th: '🍀 โชค', en: '🍀 Luck' },
-                  'Yield': { th: '⛏️ ผลผลิต', en: '⛏️ Yield' },
-                  'Swift Mining': { th: '⚡ ขุดแร่เร็ว', en: '⚡ Swift Mining' },
-                  'Mine Power': { th: '💪 พลังขุด', en: '💪 Mine Power' },
-                  'Ice': { th: '❄️ น้ำแข็ง', en: '❄️ Ice' },
-                  'Burn': { th: '🔥 เผาไหม้', en: '🔥 Burn' },
-                  'Poison': { th: '☠️ พิษ', en: '☠️ Poison' },
-                  'Snow': { th: '🌨️ หิมะ', en: '🌨️ Snow' },
-                  'Explosion': { th: '💣 ระเบิด', en: '💣 Explosion' },
-                  'Heal': { th: '💚 รักษา', en: '💚 Heal' },
-                  'Thorns': { th: '🌿 สะท้อน', en: '🌿 Thorns' },
-                  'Berserk': { th: '😡 บ้าคลั่ง', en: '😡 Berserk' },
-                  'Shield': { th: '🛡️ โล่', en: '🛡️ Shield' },
-                  'Toxic Veins': { th: '🦠 เส้นพิษ', en: '🦠 Toxic Veins' },
-                  'Attack Speed': { th: '⚡ ความเร็วโจมตี', en: '⚡ Attack Speed' },
-                  'Lethality': { th: '🗡️ ความร้ายแรง', en: '🗡️ Lethality' },
-                  'Critical Chance': { th: '🎯 โอกาสคริติคอล', en: '🎯 Critical Chance' },
-                  'Critical Damage': { th: '💥 ความเสียหายคริติคอล', en: '💥 Critical Damage' },
-                  'Fracture': { th: '🔨 ความเสียหายสตัน', en: '🔨 Fracture' },
-                  'Endurance': { th: '💪 ความอดทน', en: '💪 Endurance' },
-                  'Surge': { th: '⚡ การพุ่ง', en: '⚡ Surge' },
-                  'Vitality': { th: '❤️ พลังชีวิต', en: '❤️ Vitality' },
-                  'Swiftness': { th: '🏃 ความว่องไว', en: '🏃 Swiftness' },
-                  'Phase': { th: '👻 ระยะเวลาไร้ตัว', en: '👻 Phase' },
-                };
-                const lowerTrait = traitName.toLowerCase();
-                for (const [key, value] of Object.entries(traitMap)) {
-                  if (lowerTrait.includes(key.toLowerCase()) || key.toLowerCase() === lowerTrait) {
-                    return value[language];
-                  }
-                }
-                return traitName;
-              };
-              
-              return (
-                <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-xl rounded-2xl border border-purple-500/30 p-4">
-                  <h3 className="font-bold text-purple-300 mb-4 text-sm flex items-center gap-2">
-                    <SparklesIcon className="w-4 h-4" />
-                    {language === 'th' ? '🎯 คุณสมบัติที่ใช้งาน' : '🎯 Active Traits'}
-                  </h3>
-                  
-                  <div className="space-y-3">
-                    {selectedRunes.map((runeData, runeIdx) => {
-                      const rune = runeDataFile.runes.primary.find(r => r.id === runeData.runeState.runeId);
-                      
-                      return (
-                        <div key={`${runeData.runeState.runeId}-${runeIdx}`} className="bg-zinc-800/40 rounded-lg p-3 border border-purple-500/20">
-                          <div className="text-xs font-bold text-purple-300 mb-2">
-                            {runeIdx + 1}. {rune ? getRuneNameTranslated(rune.id, rune.name) : 'Unknown'}
-                          </div>
-                          
-                          {runeData.runeState?.traitValues && Object.entries(runeData.runeState.traitValues).length > 0 && (
-                            <div className="space-y-1.5">
-                              {Object.entries(runeData.runeState.traitValues).map(([name, value]) => {
-                                const traitInfo = rune?.traits?.find((t: any) => t.name === name);
-                                
-                                return (
-                                  <div key={name} className="bg-purple-500/10 p-1.5 rounded border border-purple-500/20">
-                                    <div className="flex items-center justify-between gap-1.5">
-                                      <span className="text-purple-200 text-[10px] font-medium break-words flex-1">
-                                        {getTraitNameTranslated(name)}
-                                      </span>
-                                      <span className="text-purple-300 font-bold text-xs flex-shrink-0">
-                                        {value}{traitInfo?.unit || ''}
-                                      </span>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })()}
             
             {showCompareMode ? (
               // Saved Builds for Comparison
@@ -1871,169 +2052,152 @@ export default function Calculator() {
                   </div>
                 )}
               </div>
-            ) : null}
-          </div>
-        </div>
-
-        {/* BOTTOM: Forge Chances - Full Width Horizontal Layout */}
-        {results && results.odds && Object.keys(results.odds).length > 0 && !showCompareMode && (
-          <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-zinc-800/50 p-4 w-full">
-            <h3 className="font-bold text-zinc-300 mb-4 text-sm">{t('forgeChances')}</h3>
-            
-            <div className="space-y-4">
-              {craftType === "Armor" ? (() => {
-                const armorByCategory = getArmorItemsByCategory();
-                const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
+            ) : (
+              // Forge Chances
+              <div className="bg-zinc-900/50 backdrop-blur-xl rounded-2xl border border-zinc-800/50 p-4 max-h-[800px] overflow-y-auto custom-scrollbar">
+                <h3 className="font-bold text-zinc-300 mb-4 text-sm">{t('forgeChances')}</h3>
                 
-                Object.values(armorByCategory).flat().forEach(item => {
-                  const categoryChance = results?.odds?.[item.categoryKey] || 0;
-                  const { chance, ratio } = getItemChance(item.name, item.categoryKey, categoryChance, "Armor");
-                  
-                  if (!categoryGroups[item.categoryKey]) {
-                    categoryGroups[item.categoryKey] = [];
-                  }
-                  
-                  categoryGroups[item.categoryKey].push({
-                    name: item.name,
-                    image: item.image,
-                    chance: chance,
-                    ratio: ratio
-                  });
-                });
-                
-                const sortedCategories = Object.entries(categoryGroups)
-                  .map(([categoryKey, items]) => ({
-                    categoryKey,
-                    categoryChance: results?.odds?.[categoryKey] || 0,
-                    items: items.sort((a, b) => b.chance - a.chance)
-                  }))
-                  .sort((a, b) => b.categoryChance - a.categoryChance);
-                
-                return sortedCategories.map((category) => (
-                  <div key={category.categoryKey}>
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
-                      <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-green-400' : 'text-zinc-600'}`}>
-                        {(category.categoryChance * 100).toFixed(1)}%
-                      </span>
-                    </div>
+                <div className="space-y-3">
+                  {craftType === "Armor" ? (() => {
+                    const armorByCategory = getArmorItemsByCategory();
+                    const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
                     
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
-                      {category.items.map((item) => (
-                        <div key={item.name} className="flex flex-col items-center group relative">
-                          <div className="relative w-12 h-16 mb-2 bg-zinc-800/50 rounded border border-zinc-700/30 flex items-center justify-center group-hover:border-green-500/50 transition-colors">
-                            <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity p-1" />
-                          </div>
-                          <span className="text-[10px] text-white font-semibold text-center line-clamp-2">{item.name}</span>
-                          <span className="text-[9px] text-green-400 font-bold mt-1">{(item.chance * 100).toFixed(1)}%</span>
-                          
-                          {/* Tooltip */}
-                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                            <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
-                              <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
-                              <div className="text-[10px] text-green-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
-                                <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
+                    Object.values(armorByCategory).flat().forEach(item => {
+                      const categoryChance = results?.odds?.[item.categoryKey] || 0;
+                      const { chance, ratio } = getItemChance(item.name, item.categoryKey, categoryChance, "Armor");
+                      
+                      if (!categoryGroups[item.categoryKey]) {
+                        categoryGroups[item.categoryKey] = [];
+                      }
+                      
+                      categoryGroups[item.categoryKey].push({
+                        name: item.name,
+                        image: item.image,
+                        chance: chance,
+                        ratio: ratio
+                      });
+                    });
+                    
+                    const sortedCategories = Object.entries(categoryGroups)
+                      .map(([categoryKey, items]) => ({
+                        categoryKey,
+                        categoryChance: results?.odds?.[categoryKey] || 0,
+                        items: items.sort((a, b) => b.chance - a.chance)
+                      }))
+                      .sort((a, b) => b.categoryChance - a.categoryChance);
+                    
+                    return sortedCategories.map((category) => (
+                      <div key={category.categoryKey} className="bg-zinc-800/30 rounded-lg p-3 border border-zinc-700/30">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
+                          <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-green-400' : 'text-zinc-600'}`}>
+                            {(category.categoryChance * 100).toFixed(1)}%
+                          </span>
+                        </div>
+                        
+                        <div className="flex gap-2 mb-2">
+                          {category.items.map((item) => (
+                            <div key={item.name} className="flex-1 flex flex-col items-center group relative">
+                              <div className="relative w-10 h-10 mb-1">
+                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
+                              </div>
+                              <span className="text-[8px] text-white">{item.ratio}</span>
+                              
+                              {/* Tooltip - Armor */}
+                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
+                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
+                                  <div className="text-[10px] text-green-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
+                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                                    <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                        
+                        <div className="h-1 bg-zinc-700/50 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300" 
+                            style={{ width: `${category.categoryChance * 100}%` }} 
+                          />
+                        </div>
+                      </div>
+                    ));
+                  })() : (() => {
+                    const weaponByCategory = getWeaponItemsByCategory();
+                    const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
                     
-                    <div className="h-2 bg-zinc-700/50 rounded-full overflow-hidden mb-4">
-                      <div 
-                        className="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300" 
-                        style={{ width: `${category.categoryChance * 100}%` }} 
-                      />
-                    </div>
-                  </div>
-                ));
-              })() : (() => {
-                const weaponByCategory = getWeaponItemsByCategory();
-                const categoryGroups: Record<string, Array<{name: string, image: string, chance: number, ratio: string}>> = {};
-                
-                Object.values(weaponByCategory).flat().forEach(item => {
-                  const categoryChance = results?.odds?.[item.categoryKey] || 0;
-                  const { chance, ratio } = getItemChance(item.name, item.categoryKey, categoryChance, "Weapon");
-                  
-                  if (!categoryGroups[item.categoryKey]) {
-                    categoryGroups[item.categoryKey] = [];
-                  }
-                  
-                  categoryGroups[item.categoryKey].push({
-                    name: item.name,
-                    image: item.image,
-                    chance: chance,
-                    ratio: ratio
-                  });
-                });
-                
-                const sortedCategories = Object.entries(categoryGroups)
-                  .map(([categoryKey, items]) => ({
-                    categoryKey,
-                    categoryChance: results?.odds?.[categoryKey] || 0,
-                    items: items.sort((a, b) => b.chance - a.chance)
-                  }))
-                  .sort((a, b) => b.categoryChance - a.categoryChance);
-                
-                return sortedCategories.map((category) => (
-                  <div key={category.categoryKey}>
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
-                      <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-red-400' : 'text-zinc-600'}`}>
-                        {(category.categoryChance * 100).toFixed(1)}%
-                      </span>
-                    </div>
+                    Object.values(weaponByCategory).flat().forEach(item => {
+                      const categoryChance = results?.odds?.[item.categoryKey] || 0;
+                      const { chance, ratio } = getItemChance(item.name, item.categoryKey, categoryChance, "Weapon");
+                      
+                      if (!categoryGroups[item.categoryKey]) {
+                        categoryGroups[item.categoryKey] = [];
+                      }
+                      
+                      categoryGroups[item.categoryKey].push({
+                        name: item.name,
+                        image: item.image,
+                        chance: chance,
+                        ratio: ratio
+                      });
+                    });
                     
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-3">
-                      {category.items.map((item) => (
-                        <div key={item.name} className="flex flex-col items-center group relative">
-                          <div className="relative w-12 h-16 mb-2 bg-zinc-800/50 rounded border border-zinc-700/30 flex items-center justify-center group-hover:border-red-500/50 transition-colors">
-                            <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity p-1" />
-                          </div>
-                          <span className="text-[10px] text-white font-semibold text-center line-clamp-2">{item.name}</span>
-                          <span className="text-[9px] text-red-400 font-bold mt-1">{(item.chance * 100).toFixed(1)}%</span>
-                          
-                          {/* Tooltip - Weapon */}
-                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                            <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
-                              <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
-                              <div className="text-[10px] text-red-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
-                                <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
+                    const sortedCategories = Object.entries(categoryGroups)
+                      .map(([categoryKey, items]) => ({
+                        categoryKey,
+                        categoryChance: results?.odds?.[categoryKey] || 0,
+                        items: items.sort((a, b) => b.chance - a.chance)
+                      }))
+                      .sort((a, b) => b.categoryChance - a.categoryChance);
+                    
+                    return sortedCategories.map((category) => (
+                      <div key={category.categoryKey} className="bg-zinc-800/30 rounded-lg p-3 border border-zinc-700/30">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-zinc-300 text-xs font-semibold">{t(category.categoryKey)}</span>
+                          <span className={`text-xs font-bold ${category.categoryChance > 0 ? 'text-green-400' : 'text-zinc-600'}`}>
+                            {(category.categoryChance * 100).toFixed(1)}%
+                          </span>
+                        </div>
+                        
+                        <div className="flex gap-2 mb-2 flex-wrap">
+                          {category.items.map((item) => (
+                            <div key={item.name} className="flex flex-col items-center group relative">
+                              <div className="relative w-10 h-10 mb-1">
+                                <Image src={item.image} alt={item.name} fill className="object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
+                              </div>
+                              <span className="text-[8px] text-white">{item.ratio}</span>
+                              
+                              {/* Tooltip - Weapon */}
+                              <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                <div className="bg-zinc-900/95 backdrop-blur-md border border-zinc-700 rounded-lg px-3 py-2 shadow-xl whitespace-nowrap animate-in fade-in duration-200">
+                                  <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
+                                  <div className="text-[10px] text-red-400 font-semibold text-center">{(item.chance * 100).toFixed(1)}%</div>
+                                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                                    <div className="w-2 h-2 bg-zinc-900 border-b border-r border-zinc-700 transform rotate-45"></div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                    
-                    <div className="h-2 bg-zinc-700/50 rounded-full overflow-hidden mb-4">
-                      <div 
-                        className="h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300" 
-                        style={{ width: `${category.categoryChance * 100}%` }} 
-                      />
-                    </div>
-                  </div>
-                ));
-              })()}
-            </div>
-
-            {/* Save Build Button - Bottom */}
-            {results && results.odds && Object.keys(results.odds).length > 0 && (
-              <div className="mt-6 text-center">
-                <button
-                  onClick={() => setShowSaveDialog(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl font-semibold transition-all shadow-lg shadow-green-500/30"
-                >
-                  <SaveIcon className="w-4 h-4" />
-                  {t('saveBuild')}
-                </button>
+                        
+                        <div className="h-1 bg-zinc-700/50 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300" 
+                            style={{ width: `${category.categoryChance * 100}%` }} 
+                          />
+                        </div>
+                      </div>
+                    ));
+                  })()}
+                </div>
               </div>
             )}
           </div>
-        )}
+        </div>
 
         {/* Compare View - Full Width Below */}
         {showCompareMode && selectedBuildsForCompare.length > 0 && (
@@ -2215,64 +2379,35 @@ export default function Calculator() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 {/* Left Column */}
                 <div className="space-y-3 sm:space-y-4">
-                  {/* Ore Composition + Multiplier Row */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
-                    {/* Ore Composition */}
-                    <div className="lg:col-span-2 p-3 sm:p-4 bg-gradient-to-br from-zinc-800/50 to-purple-900/20 rounded-lg border border-zinc-700/50 shadow-lg hover:shadow-purple-500/10 transition-all">
-                      <h3 className="text-purple-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
-                        <span className="text-lg sm:text-2xl">💎</span>
-                        {language === 'th' ? 'องค์ประกอบของแร่' : 'Ore Composition'}
-                      </h3>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
-                        {build.slots.filter(s => s !== null).map((slot, idx) => {
-                          const oreImage = getOreImagePath(slot?.name || '');
-                          return (
-                            <div key={idx} className="flex flex-col items-center p-1.5 sm:p-2 bg-gradient-to-br from-zinc-900/50 to-purple-900/10 rounded border border-purple-500/20 shadow-md hover:shadow-purple-500/20 hover:scale-105 transition-all">
-                              {oreImage && (
-                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 mb-0.5 rounded-lg border border-purple-500/30 overflow-hidden bg-zinc-800/50">
-                                  <Image src={addImageVersion(oreImage)} alt={slot?.name || ''} fill className="object-cover" />
-                                </div>
-                              )}
-                              <span className="text-zinc-300 font-medium text-[9px] sm:text-xs text-center truncate w-full">{slot?.name}</span>
-                              <span className="text-purple-400 font-bold text-[10px] sm:text-sm">×{slot?.count}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    {/* Multiplier Card - Compact */}
-                    <div className="p-3 sm:p-4 bg-gradient-to-br from-amber-900/30 to-yellow-900/20 rounded-lg border border-amber-500/30 shadow-lg flex flex-col justify-center">
-                      <h3 className="text-amber-400 font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2 mb-2">
-                        <span className="text-lg sm:text-2xl">📈</span>
-                        {language === 'th' ? 'ตัวคูณ' : 'Multiplier'}
-                      </h3>
-                      <div className="space-y-1">
-                        <div className="text-center">
-                          <div className="text-2xl sm:text-3xl font-bold text-amber-300">
-                            {build.multiplier?.toFixed(2)}×
-                          </div>
-                          <div className="text-[10px] sm:text-xs text-amber-300/70 mt-1">
-                            {build.multiplier && (
-                              build.multiplier >= 15 
-                                ? (language === 'th' ? '✨ สูงมาก' : '✨ Very High')
-                                : build.multiplier >= 10
-                                ? (language === 'th' ? '⭐ สูง' : '⭐ High')
-                                : build.multiplier >= 5
-                                ? (language === 'th' ? '👍 ปกติ' : '👍 Normal')
-                                : (language === 'th' ? '💪 ต่ำ' : '💪 Low')
+                  {/* Ore Composition */}
+                  <div className="p-3 sm:p-4 bg-gradient-to-br from-zinc-800/50 to-purple-900/20 rounded-lg border border-zinc-700/50 shadow-lg hover:shadow-purple-500/10 transition-all">
+                    <h3 className="text-purple-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
+                      <span className="text-2xl">💎</span>
+                      {language === 'th' ? 'องค์ประกอบของแร่' : 'Ore Composition'}
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {build.slots.filter(s => s !== null).map((slot, idx) => {
+                        const oreImage = getOreImagePath(slot?.name || '');
+                        return (
+                          <div key={idx} className="flex flex-col items-center p-2 bg-gradient-to-br from-zinc-900/50 to-purple-900/10 rounded border border-purple-500/20 shadow-md hover:shadow-purple-500/20 hover:scale-105 transition-all">
+                            {oreImage && (
+                              <div className="relative w-10 h-10 sm:w-12 sm:h-12 mb-1 rounded-lg border border-purple-500/30 overflow-hidden bg-zinc-800/50">
+                                <Image src={addImageVersion(oreImage)} alt={slot?.name || ''} fill className="object-cover" />
+                              </div>
                             )}
+                            <span className="text-zinc-300 font-medium text-[10px] sm:text-xs text-center truncate w-full">{slot?.name}</span>
+                            <span className="text-purple-400 font-bold text-xs sm:text-sm">×{slot?.count}</span>
                           </div>
-                        </div>
-                      </div>
+                        );
+                      })}
                     </div>
                   </div>
 
-                  {/* Predicted Item - Moved up */}
+                  {/* Predicted Item */}
                   {build.predictedItem && (
                     <div className="p-3 sm:p-4 bg-gradient-to-br from-green-900/30 to-emerald-900/20 rounded-lg border border-green-500/30 shadow-lg hover:shadow-green-500/10 transition-all">
                       <h3 className="text-green-400 font-bold mb-2 sm:mb-3 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
-                        <span className="text-lg sm:text-2xl">🎯</span>
+                        <span className="text-2xl">🎯</span>
                         {language === 'th' ? 'ไอเทมที่คาดว่าจะได้' : 'Predicted Item'}
                       </h3>
                       
@@ -2289,14 +2424,14 @@ export default function Calculator() {
                     </div>
                   )}
 
-                  {/* All Runes Section - Bottom Left - Moved to bottom as Save Build */}
+                  {/* All Runes Section - Bottom Left */}
                   {build.allRunes && build.allRunes.length > 0 && (
                     <div className="p-3 sm:p-4 bg-gradient-to-br from-pink-900/30 to-purple-900/20 rounded-lg border border-pink-500/30 shadow-lg hover:shadow-pink-500/10 transition-all">
                       <h3 className="text-pink-400 font-bold mb-3 text-xs sm:text-sm uppercase tracking-wider flex items-center gap-2">
-                        <span className="text-xl sm:text-2xl">✨</span>
+                        <span className="text-2xl">✨</span>
                         {language === 'th' ? 'รูนทั้งหมด' : 'All Runes'} ({build.allRunes.length}/3)
                       </h3>
-                      <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+                      <div className="space-y-3">
                         {build.allRunes.map((runeData, index) => {
                           const runeDataRaw = require('../../data/rune.json');
                           const runeDataFile = runeDataRaw as { runes: { primary: Array<{ id: string; name: string }> } };
@@ -2626,8 +2761,8 @@ export default function Calculator() {
                 </div>
               </div>
 
-              {/* Action Buttons - Save Build at Bottom */}
-              <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-zinc-700">
+              {/* Action Buttons */}
+              <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-zinc-700 sticky bottom-0 bg-zinc-900/95 backdrop-blur-xl">
                 <button
                   onClick={() => {
                     loadBuildToCalculator(build);
