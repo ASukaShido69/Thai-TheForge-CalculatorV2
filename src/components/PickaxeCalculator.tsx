@@ -59,6 +59,27 @@ const traitNamesTH: Record<string, string> = {
   'Mine Power': '⛏️ พลังการขุด',
 };
 
+// Map pickaxe names to image files
+const getPickaxeImage = (name: string): string => {
+  const imageMap: Record<string, string> = {
+    'Stone Pickaxe': 'StonePick',
+    'Bronze Pickaxe': 'BronzePick',
+    'Iron Pickaxe': 'IronPick',
+    'Golden Pickaxe': 'GoldenPick',
+    "Stonewake's Pickaxe": 'StoneWakePick',
+    'Platinum Pickaxe': 'PlatinumPick',
+    'Titanium Pickaxe': 'TitaniumPick',
+    'Mythril Pickaxe': 'MythrilPick',
+    'Cobalt Pickaxe': 'CobaltPick',
+    'Lightite Pickaxe': 'LightitePick',
+    'Magma Pickaxe': 'MagmaPick',
+    'Demonic Pickaxe': 'DemonicPick',
+    'Arcane Pickaxe': 'ArcanePick',
+  };
+  const imageName = imageMap[name];
+  return imageName ? `/pickaxe/${imageName}.png` : '/pickaxe/pickaxe.png';
+};
+
 interface PickaxeCalculatorProps {
   onClose: () => void;
 }
@@ -144,6 +165,9 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
   const getRuneName = (name: string) => language === 'th' ? (runeNamesTH[name] || name) : name;
   const getTraitName = (name: string) => language === 'th' ? (traitNamesTH[name] || name) : name;
 
+  const getRuneName = (name: string) => language === 'th' ? (runeNamesTH[name] || name) : name;
+  const getTraitName = (name: string) => language === 'th' ? (traitNamesTH[name] || name) : name;
+
   if (isMinimized) {
     return (
       <div className="fixed bottom-24 right-24 z-40">
@@ -207,7 +231,7 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
             {selectedPickaxe && (
               <div className="mt-3 p-3 bg-zinc-900/60 rounded-lg border border-amber-500/20">
                 <div className="flex items-center gap-3 mb-2">
-                  <img src="/pickaxe/pickaxe.png" alt="Pickaxe" className="w-10 h-10" />
+                  <img src={getPickaxeImage(selectedPickaxe.name)} alt={selectedPickaxe.name} className="w-16 h-16 object-contain" />
                   <div>
                     <p className="text-amber-300 font-bold text-sm">{selectedPickaxe.name}</p>
                     <p className="text-xs text-zinc-400">
