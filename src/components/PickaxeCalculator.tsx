@@ -34,6 +34,12 @@ type Pickaxe = {
   location: string;
 };
 
+type RuneSlot = {
+  id: number;
+  selectedRune: Rune | null;
+  traitValues: Record<string, number>;
+};
+
 // Flatten pickaxe data
 const pickaxeData: Pickaxe[] = Object.values(pickaxeDataRaw).flat() as Pickaxe[];
 
@@ -42,25 +48,62 @@ const minerShardRune = (runeDataRaw as any).runes.primary.find(
   (r: any) => r.id === 'miner_shard'
 ) as Rune;
 
+const runeNamesTH: Record<string, string> = {
+  'Miner Shard': 'เศษรูนนักขุด',
+};
+
+const traitNamesTH: Record<string, string> = {
+  'Luck': '🍀 โชค',
+  'Yield': '💎 ผลผลิตเพิ่ม',
+  'Swift Mining': '⚡ ขุดเร็ว',
+  'Mine Power': '⛏️ พลังขุด',
+};
+
 interface PickaxeCalculatorProps {
   onClose: () => void;
 }
 
 export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
   const [selectedPickaxe, setSelectedPickaxe] = useState<Pickaxe | null>(null);
-  const [selectedTraits, setSelectedTraits] = useState<Record<string, number>>({});
+  const [runeSlots, setRuneSlots] = useState<RuneSlot[]>([]);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   const handlePickaxeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const pickaxe = pickaxeData.find((p) => p.id === e.target.value);
     setSelectedPickaxe(pickaxe || null);
+    
+    // Initialize rune slots based on pickaxe's runeSlots
+    if (pickaxe) {
+      const slots: RuneSlot[] = Array.from({ length: pickaxe.runeSlots }, (_, i) => ({
+        id: i,
+        selectedRune: i === 0 ? minerShardRune : null,
+        traitValues: {},
+      }));
+      setRuneSlots(slots);
+    } else {
+      setRuneSlots([]);
+    }
   };
 
-  const handleTraitValueChange = (traitName: string, value: number) => {
-    setSelectedTraits((prev) => ({
-      ...prev,
-      [traitName]: value,
-    }));
+  const handleRuneChange = (slotId: number, runeId: string | null) => {
+    setRuneSlots((prev) =>
+      prev.map((slot) =>
+        slot.id === slotId
+          ? { ...slot, selectedRune: runeId ? minerShardRune : null, traitValues: {} }
+          : slot
+      )
+    );
+  };
+
+  const handleTraitValueChange = (slotId: number, traitName: string, value: number) => {
+    setRuneSlots((prev) =>
+      prev.map((slot) =>
+        slot.id === slotId
+          ? { ...slot, traitValues: { ...slot.traitValues, [traitName]: value } }
+          : slot
+      )
+    );
   };
 
   const calculateStats = () => {
@@ -71,16 +114,20 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
     let totalSwiftMining = selectedPickaxe.miningSpeed;
     let totalMinePower = selectedPickaxe.minePower;
 
-    // Apply trait bonuses
-    Object.entries(selectedTraits).forEach(([traitName, value]) => {
-      if (traitName === 'Luck') {
-        totalLuck += value;
-      } else if (traitName === 'Yield') {
-        totalYield += value;
-      } else if (traitName === 'Swift Mining') {
-        totalSwiftMining += value;
-      } else if (traitName === 'Mine Power') {
-        totalMinePower += Math.round((selectedPickaxe.minePower * value) / 100);
+    // Apply trait bonuses from all rune slots
+    runeSlots.forEach((slot) => {
+      if (slot.selectedRune) {
+        Object.entries(slot.traitValues).forEach(([traitName, value]) => {
+          if (traitName === 'Luck') {
+            totalLuck += value as number;
+          } else if (traitName === 'Yield') {
+            totalYield += value as number;
+          } else if (traitName === 'Swift Mining') {
+            totalSwiftMining += value as number;
+          } else if (traitName === 'Mine Power') {
+            totalMinePower += Math.round((selectedPickaxe.minePower * (value as number)) / 100);
+          }
+        });
       }
     });
 
@@ -94,117 +141,181 @@ export default function PickaxeCalculator({ onClose }: PickaxeCalculatorProps) {
 
   const stats = calculateStats();
 
+  const getRuneName = (name: string) => language === 'th' ? (runeNamesTH[name] || name) : name;
+  const getTraitName = (name: string) => language === 'th' ? (traitNamesTH[name] || name) : name;
+
+  if (isMinimized) {
+    return (
+      <div className="fixed bottom-24 right-24 z-40">
+        <button
+          onClick={() => setIsMinimized(false)}
+          className="bg-gradient-to-br from-amber-600 to-yellow-700 text-white px-4 py-2 rounded-lg shadow-xl hover:shadow-2xl transition-all flex items-center gap-2 border border-yellow-400/30"
+        >
+          <img src="/pickaxe/pickaxe.png" alt="Pickaxe" className="w-5 h-5" />
+          <span className="font-semibold">{language === 'th' ? 'เครื่องคำนวณจอบ' : 'Pickaxe Calculator'}</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-gradient-to-br from-zinc-900 via-yellow-900/20 to-zinc-900 rounded-2xl border border-yellow-500/30 w-full max-w-4xl max-h-[90vh] shadow-2xl flex flex-col">
+    <div className="fixed bottom-4 right-4 z-40 w-full max-w-2xl">
+      <div className="bg-gradient-to-br from-zinc-900 via-amber-900/20 to-zinc-900 rounded-2xl border-2 border-amber-500/40 shadow-2xl flex flex-col max-h-[85vh]">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-yellow-500/20 bg-zinc-900/80 backdrop-blur-xl">
-          <h2 className="text-2xl font-bold text-yellow-400 flex items-center gap-2">
-            <img src="/pickaxe/pickaxe.png" alt="Pickaxe" className="w-8 h-8" />
-            <span>Pickaxe Calculator (Miner Shard)</span>
+        <div className="flex items-center justify-between p-4 border-b border-amber-500/30 bg-gradient-to-r from-amber-900/50 to-yellow-900/50 backdrop-blur-xl">
+          <h2 className="text-xl font-bold text-amber-400 flex items-center gap-2">
+            <img src="/pickaxe/pickaxe.png" alt="Pickaxe" className="w-7 h-7" />
+            <span>{language === 'th' ? '⛏️ เครื่องคำนวณจอบ (รูนนักขุด)' : '⛏️ Pickaxe Calculator (Miner Shard)'}</span>
           </h2>
-          <button
-            onClick={onClose}
-            className="text-zinc-400 hover:text-white transition-colors text-2xl"
-          >
-            ×
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setIsMinimized(true)}
+              className="text-amber-400 hover:text-white transition-colors text-xl px-2"
+              title="Minimize"
+            >
+              −
+            </button>
+            <button
+              onClick={onClose}
+              className="text-amber-400 hover:text-white transition-colors text-xl px-2"
+              title="Close"
+            >
+              ×
+            </button>
+          </div>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
           {/* Pickaxe Selection */}
-          <div className="bg-zinc-800/50 rounded-lg p-4 border border-yellow-500/20">
-            <label className="block text-yellow-400 font-semibold mb-2">Select Pickaxe</label>
+          <div className="bg-gradient-to-br from-amber-900/30 to-zinc-800/50 rounded-xl p-4 border border-amber-500/30 shadow-lg">
+            <label className="block text-amber-400 font-bold mb-3 text-sm">
+              {language === 'th' ? '⛏️ เลือกจอบ' : '⛏️ Select Pickaxe'}
+            </label>
             <select
-              className="w-full p-3 bg-zinc-900 border border-yellow-500/30 rounded-lg text-white focus:border-yellow-500 focus:outline-none"
+              className="w-full p-2.5 bg-zinc-900/80 border-2 border-amber-500/40 rounded-lg text-white focus:border-amber-400 focus:outline-none transition-colors text-sm"
               onChange={handlePickaxeChange}
               value={selectedPickaxe?.id || ''}
             >
-              <option value="">เลือก Pickaxe</option>
+              <option value="">{language === 'th' ? '-- เลือกจอบ --' : '-- Select Pickaxe --'}</option>
+              <option value="">{language === 'th' ? '-- เลือกจอบ --' : '-- Select Pickaxe --'}</option>
               {pickaxeData.map((pickaxe) => (
                 <option key={pickaxe.id} value={pickaxe.id}>
-                  {pickaxe.name} (MP: {pickaxe.minePower}, Luck: {pickaxe.luckBoost}%, Slots: {pickaxe.runeSlots})
+                  {pickaxe.name} | MP: {pickaxe.minePower} | Luck: {pickaxe.luckBoost}% | Slots: {pickaxe.runeSlots}
                 </option>
-              ))}
-            </select>
+              ))}ect>
             {selectedPickaxe && (
-              <div className="mt-3 text-sm text-zinc-300">
-                <p className="text-yellow-400 font-semibold">{selectedPickaxe.name}</p>
-                <p className="text-xs mt-1">{selectedPickaxe.description}</p>
-                <p className="text-xs mt-1 text-zinc-400">Location: {selectedPickaxe.location}</p>
+              <div className="mt-3 p-3 bg-zinc-900/60 rounded-lg border border-amber-500/20">
+                <div className="flex items-center gap-3 mb-2">
+                  <img src="/pickaxe/pickaxe.png" alt="Pickaxe" className="w-10 h-10" />
+                  <div>
+                    <p className="text-amber-300 font-bold text-sm">{selectedPickaxe.name}</p>
+                    <p className="text-xs text-zinc-400">
+                      {language === 'th' ? 'สล็อตรูน' : 'Rune Slots'}: {selectedPickaxe.runeSlots} | 
+                      {language === 'th' ? ' ราคา' : ' Price'}: {selectedPickaxe.cost} 💰
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-zinc-300 leading-relaxed">{selectedPickaxe.description}</p>
               </div>
             )}
           </div>
 
-          {/* Rune Info */}
-          <div className="bg-zinc-800/50 rounded-lg p-4 border border-yellow-500/20">
-            <h3 className="text-yellow-400 font-semibold mb-3">Rune: {minerShardRune.name}</h3>
-            <p className="text-sm text-zinc-300 mb-4">
-              Type: <span className="text-purple-400">{minerShardRune.type}</span> | Rarity: <span className="text-orange-400">{minerShardRune.rarity}</span>
-            </p>
-
-            {/* Traits */}
+          {/* Rune Slots */}
+          {selectedPickaxe && runeSlots.length > 0 && (
             <div className="space-y-3">
-              {minerShardRune.traits.map((trait) => (
-                <div key={trait.name} className="bg-zinc-900/50 rounded-lg p-3 border border-yellow-500/10">
-                  <div className="flex justify-between items-center mb-2">
-                    <div>
-                      <p className="text-white font-medium">{trait.name}</p>
-                      <p className="text-xs text-zinc-400">{trait.description}</p>
-                    </div>
-                    {trait.minValue !== null && trait.maxValue !== null && (
-                      <span className="text-xs text-yellow-400">
-                        {trait.minValue}-{trait.maxValue}{trait.unit}
-                      </span>
-                    )}
+              {runeSlots.map((slot) => (
+                <div key={slot.id} className="bg-gradient-to-br from-purple-900/30 to-zinc-800/50 rounded-xl p-4 border border-purple-500/30 shadow-lg">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-purple-400 font-bold text-sm flex items-center gap-2">
+                      <img src="/rune/MinerShard.png" alt="Rune" className="w-6 h-6" />
+                      {language === 'th' ? `รูนช่องที่ ${slot.id + 1}` : `Rune Slot ${slot.id + 1}`}
+                    </h3>
+                    <select
+                      className="px-3 py-1 bg-zinc-900/80 border border-purple-500/40 rounded-lg text-white text-xs focus:border-purple-400 focus:outline-none"
+                      value={slot.selectedRune ? 'miner_shard' : ''}
+                      onChange={(e) => handleRuneChange(slot.id, e.target.value || null)}
+                    >
+                      <option value="">{language === 'th' ? '-- ไม่มี --' : '-- None --'}</option>
+                      <option value="miner_shard">{getRuneName('Miner Shard')}</option>
+                    </select>
                   </div>
-                  {trait.minValue !== null && trait.maxValue !== null && (
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="range"
-                        min={trait.minValue}
-                        max={trait.maxValue}
-                        value={selectedTraits[trait.name] || trait.minValue}
-                        onChange={(e) => handleTraitValueChange(trait.name, Number(e.target.value))}
-                        className="flex-1 h-2 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-yellow-500"
-                      />
-                      <input
-                        type="number"
-                        min={trait.minValue}
-                        max={trait.maxValue}
-                        value={selectedTraits[trait.name] || trait.minValue}
-                        onChange={(e) => handleTraitValueChange(trait.name, Number(e.target.value))}
-                        className="w-16 p-1 bg-zinc-900 border border-yellow-500/30 rounded text-center text-white text-sm"
-                      />
-                      <span className="text-xs text-yellow-400 w-8">{trait.unit}</span>
-                    </div>
+
+                  {slot.selectedRune && (
+                    <>
+                      <div className="text-xs text-zinc-300 mb-3 flex items-center gap-2">
+                        <span className="px-2 py-0.5 bg-purple-500/30 rounded">{language === 'th' ? 'หลัก' : 'Primary'}</span>
+                        <span className="px-2 py-0.5 bg-orange-500/30 rounded">{language === 'th' ? 'หายาก' : 'Rare'}</span>
+                      </div>
+
+                      {/* Traits */}
+                      <div className="space-y-2">
+                        {minerShardRune.traits.map((trait) => (
+                          <div key={trait.name} className="bg-zinc-900/60 rounded-lg p-2.5 border border-purple-500/20">
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex-1">
+                                <p className="text-white font-semibold text-xs">{getTraitName(trait.name)}</p>
+                                <p className="text-xs text-zinc-400 mt-0.5">{trait.description}</p>
+                              </div>
+                              {trait.minValue !== null && trait.maxValue !== null && (
+                                <span className="text-xs text-amber-400 font-mono ml-2">
+                                  {trait.minValue}-{trait.maxValue}{trait.unit}
+                                </span>
+                              )}
+                            </div>
+                            {trait.minValue !== null && trait.maxValue !== null && (
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="range"
+                                  min={trait.minValue}
+                                  max={trait.maxValue}
+                                  value={slot.traitValues[trait.name] || trait.minValue}
+                                  onChange={(e) => handleTraitValueChange(slot.id, trait.name, Number(e.target.value))}
+                                  className="flex-1 h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                                />
+                                <input
+                                  type="number"
+                                  min={trait.minValue}
+                                  max={trait.maxValue}
+                                  value={slot.traitValues[trait.name] || trait.minValue}
+                                  onChange={(e) => handleTraitValueChange(slot.id, trait.name, Number(e.target.value))}
+                                  className="w-14 p-1 bg-zinc-900 border border-amber-500/40 rounded text-center text-white text-xs"
+                                />
+                                <span className="text-xs text-amber-400 w-6">{trait.unit}</span>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </>
                   )}
                 </div>
               ))}
             </div>
-          </div>
+          )}
 
           {/* Results */}
           {stats && selectedPickaxe && (
-            <div className="bg-gradient-to-br from-yellow-900/20 to-zinc-900/50 rounded-lg p-4 border border-yellow-500/30">
-              <h3 className="text-yellow-400 font-bold text-lg mb-3">📊 Total Stats</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-zinc-900/50 rounded p-3">
-                  <p className="text-xs text-zinc-400">Total Mine Power</p>
-                  <p className="text-2xl font-bold text-white">{stats.totalMinePower}</p>
+            <div className="bg-gradient-to-br from-emerald-900/30 to-zinc-900/50 rounded-xl p-4 border-2 border-emerald-500/40 shadow-lg">
+              <h3 className="text-emerald-400 font-bold text-base mb-3 flex items-center gap-2">
+                📊 {language === 'th' ? 'สถิติรวม' : 'Total Stats'}
+              </h3>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-zinc-900/60 rounded-lg p-2.5 border border-amber-500/20">
+                  <p className="text-xs text-zinc-400">{language === 'th' ? 'พลังขุดรวม' : 'Total Mine Power'}</p>
+                  <p className="text-xl font-bold text-amber-400">⛏️ {stats.totalMinePower}</p>
                 </div>
-                <div className="bg-zinc-900/50 rounded p-3">
-                  <p className="text-xs text-zinc-400">Total Luck Boost</p>
-                  <p className="text-2xl font-bold text-green-400">{stats.totalLuck}%</p>
+                <div className="bg-zinc-900/60 rounded-lg p-2.5 border border-green-500/20">
+                  <p className="text-xs text-zinc-400">{language === 'th' ? 'โชครวม' : 'Total Luck'}</p>
+                  <p className="text-xl font-bold text-green-400">🍀 {stats.totalLuck}%</p>
                 </div>
-                <div className="bg-zinc-900/50 rounded p-3">
-                  <p className="text-xs text-zinc-400">Total Yield Chance</p>
-                  <p className="text-2xl font-bold text-blue-400">{stats.totalYield}%</p>
+                <div className="bg-zinc-900/60 rounded-lg p-2.5 border border-blue-500/20">
+                  <p className="text-xs text-zinc-400">{language === 'th' ? 'ผลผลิตเพิ่ม' : 'Yield Bonus'}</p>
+                  <p className="text-xl font-bold text-blue-400">💎 {stats.totalYield}%</p>
                 </div>
-                <div className="bg-zinc-900/50 rounded p-3">
-                  <p className="text-xs text-zinc-400">Swift Mining Bonus</p>
-                  <p className="text-2xl font-bold text-purple-400">{stats.totalSwiftMining}%</p>
+                <div className="bg-zinc-900/60 rounded-lg p-2.5 border border-purple-500/20">
+                  <p className="text-xs text-zinc-400">{language === 'th' ? 'ขุดเร็วขึ้น' : 'Swift Mining'}</p>
+                  <p className="text-xl font-bold text-purple-400">⚡ {stats.totalSwiftMining}%</p>
                 </div>
               </div>
             </div>
