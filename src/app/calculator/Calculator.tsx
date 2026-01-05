@@ -411,9 +411,9 @@ function getArmorItemsByCategory(): Record<string, Array<{name: string, image: s
     "Dark Knight Helmet": "dark_knight_helmet",
     "Dark Knight Leggings": "dark_knight_leggings",
     "Dark Knight Chestplate": "dark_knight_chestplate",
-    "Wolf Helmet": "WolfHelmet",
-    "Wolf Leggings": "Wolf_Leggings",
-    "Wolf Chestplate": "Wolf_Chestplate",
+    "Wolf Helmet": "wolf_helmet",
+    "Wolf Leggings": "wolf_leggings",
+    "Wolf Chestplate": "wolf_chestplate",
   };
 
   const createArmorItem = (name: string, imageKey: string, categoryKey: string) => ({
@@ -435,9 +435,9 @@ function getArmorItemsByCategory(): Record<string, Array<{name: string, image: s
       createArmorItem("Samurai Helmet", "samurai_helmet", "Medium Helmet"),
       createArmorItem("Samurai Leggings", "samurai_leggings", "Medium Leggings"),
       createArmorItem("Samurai Chestplate", "samurai_chestplate", "Medium Chestplate"),
-      createArmorItem("Viking Helmet", "VikingHelmet", "Medium Helmet"),
-      createArmorItem("Viking Leggings", "VikingLeggings", "Medium Leggings"),
-      createArmorItem("Viking Chestplate", "VikingChestplate", "Medium Chestplate"),
+      createArmorItem("Viking Helmet", "viking_helmet", "Medium Helmet"),
+      createArmorItem("Viking Leggings", "viking_leggings", "Medium Leggings"),
+      createArmorItem("Viking Chestplate", "viking_chestplate", "Medium Chestplate"),
     ],
     "Heavy": [
       createArmorItem("Knight Helmet", "knight_helmet", "Heavy Helmet"),
