@@ -413,7 +413,7 @@ function getArmorItemsByCategory(): Record<string, Array<{name: string, image: s
     "Dark Knight Chestplate": "dark_knight_chestplate",
     "Wolf Helmet": "WolfHelmet",
     // No dedicated leggings asset shipped; reuse chestplate art to avoid broken images
-    "Wolf Leggings": "WolfLeggings",
+    "Wolf Leggings": "Wolf_Leggings",
     "Wolf Chestplate": "Wolf_Chestplate",
   };
 
@@ -764,7 +764,7 @@ const RarityBg: Record<string, string> = {
 };
 
 const WEAPON_TYPES = [
-    "Dagger", "Straight Sword", "Gauntlet", "Mace", "Axe", "Katana", "Great Sword", "Spear", "Great Axe", "Colossal Sword"
+    "Dagger", "Straight Sword", "Mace", "Axe", "Katana", "Great Sword", "Spear", "Great Axe", "Colossal Sword"
 ];
 
 const ARMOR_TYPES = [
