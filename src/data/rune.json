@@ -1,0 +1,359 @@
+{
+  "runes": {
+    "primary": [
+      {
+        "id": "miner_shard",
+        "name": "Miner Shard",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Delver, Zombie, Bomber",
+        "traits": [
+          {
+            "name": "Luck",
+            "description": "Overall luck increase",
+            "minValue": 5,
+            "maxValue": 16,
+            "unit": "%"
+          },
+          {
+            "name": "Yield",
+            "description": "Chance to drop 1 extra ore from mines",
+            "minValue": 3,
+            "maxValue": 10,
+            "unit": "%"
+          },
+          {
+            "name": "Swift Mining",
+            "description": "Faster mining",
+            "minValue": 4,
+            "maxValue": 12,
+            "unit": "%"
+          },
+          {
+            "name": "Mine Power",
+            "description": "Extra mine damage",
+            "minValue": 8,
+            "maxValue": 15,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "frost_speck",
+        "name": "Frost Speck",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
+        "traits": [
+          {
+            "name": "Ice",
+            "description": "Freezes enemies for 1-2 seconds with a 10-20% chance on hit. Has a cooldown of 15-20 seconds.",
+            "minValue": 10,
+            "maxValue": 20,
+            "unit": "seconds"
+          }
+        ]
+      },
+      {
+        "id": "flame_spark",
+        "name": "Flame Spark",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Deathaxe Skeleton, Elite Deathaxe Skeleton, Blazing Slime, Reaper",
+        "traits": [
+          {
+            "name": "Burn",
+            "description": "Deals 5-10% of weapon damage as fire per second for 1-2 seconds. 15-25% chance on hit",
+            "minValue": 5,
+            "maxValue": 10,
+            "unit": "% of weapon damage per second"
+          }
+        ]
+      },
+      {
+        "id": "venom_crumb",
+        "name": "Venom Crumb",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Blight Pyromancer",
+        "traits": [
+          {
+            "name": "Poison",
+            "description": "Deals 4-7% of weapon damage as poison per second for 3-6 seconds, 25-35% chance on hit",
+            "minValue": null,
+            "maxValue": null,
+            "unit": null
+          }
+        ]
+      },
+      {
+        "id": "chill_dust",
+        "name": "Chill Dust",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
+        "traits": [
+          {
+            "name": "Snow",
+            "description": "Slows enemy movement and attack speed. Chance on hit",
+            "minValue": null,
+            "maxValue": null,
+            "unit": null
+          }
+        ]
+      },
+      {
+        "id": "blast_chip",
+        "name": "Blast Chip",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Bomber",
+        "traits": [
+          {
+            "name": "Explosion",
+            "description": "Cause an explosion at location of victim, dealing AOE damage",
+            "minValue": 20,
+            "maxValue": 40,
+            "unit": "% of weapon damage",
+            "procChance": "8-20%"
+          }
+        ]
+      },
+      {
+        "id": "drain_edge",
+        "name": "Drain Edge",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Reaper",
+        "traits": [
+          {
+            "name": "Heal",
+            "description": "Heal % of physical damage dealt on-hit",
+            "minValue": 5,
+            "maxValue": 13,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "briar_notch",
+        "name": "Briar Notch",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Deathaxe Skeleton, Elite Deathaxe Skeleton",
+        "traits": [
+          {
+            "name": "Thorns",
+            "description": "Reflect physical damage taken. Maximum damage given limits at 5% max health of user. 0.05 seconds cooldown",
+            "minValue": 2,
+            "maxValue": 10,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "rage_mark",
+        "name": "Rage Mark",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Elite Rogue Skeleton",
+        "traits": [
+          {
+            "name": "Berserk",
+            "description": "Boosts physical damage and movement speed for 4-7 seconds. Has 50-60 seconds cooldown. Activates when health is below 35%",
+            "minValue": 12,
+            "maxValue": 26,
+            "unit": "%"
+          }
+        ]
+      },
+      {
+        "id": "ward_patch",
+        "name": "Ward Patch",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
+        "traits": [
+          {
+            "name": "Shield",
+            "description": "Reduces incoming damage with a chance per hit",
+            "minValue": 6,
+            "maxValue": 14,
+            "unit": "%",
+            "procChance": "5-15%"
+          }
+        ]
+      },
+      {
+        "id": "rot_stitch",
+        "name": "Rot Stitch",
+        "type": "primary",
+        "rarity": "Rare",
+        "obtainment": "Unobtainable",
+        "traits": [
+          {
+            "name": "Toxic Veins",
+            "description": "Deals poison damage around the user while health is below 35%. Has a cooldown",
+            "minValue": null,
+            "maxValue": null,
+            "unit": null
+          }
+        ]
+      }
+    ],
+    "secondary": {
+      "weapon": [
+        {
+          "id": "attack_speed",
+          "name": "Attack Speed",
+          "type": "weapon_secondary",
+          "description": "Increases attack speed",
+          "minValue": 5,
+          "maxValue": 18,
+          "unit": "%"
+        },
+        {
+          "id": "lethality",
+          "name": "Lethality",
+          "type": "weapon_secondary",
+          "description": "Increases the weapon's damage",
+          "minValue": 5,
+          "maxValue": 15,
+          "unit": "%"
+        },
+        {
+          "id": "critical_chance",
+          "name": "Critical Chance",
+          "type": "weapon_secondary",
+          "description": "Increases the chance of landing a critical hit",
+          "minValue": 6,
+          "maxValue": 15,
+          "unit": "%"
+        },
+        {
+          "id": "critical_damage",
+          "name": "Critical Damage",
+          "type": "weapon_secondary",
+          "description": "Increases the damage of critical hits",
+          "minValue": 5,
+          "maxValue": 15,
+          "unit": "%"
+        },
+        {
+          "id": "fracture",
+          "name": "Fracture",
+          "type": "weapon_secondary",
+          "description": "Gives extra stun damage",
+          "minValue": 5,
+          "maxValue": 20,
+          "unit": "%"
+        }
+      ],
+      "armor": [
+        {
+          "id": "endurance",
+          "name": "Endurance",
+          "type": "armor_secondary",
+          "description": "Grants more stamina",
+          "minValue": 4,
+          "maxValue": 10,
+          "unit": "%"
+        },
+        {
+          "id": "surge",
+          "name": "Surge",
+          "type": "armor_secondary",
+          "description": "Reduces dash cooldown",
+          "minValue": 3,
+          "maxValue": 11,
+          "unit": "%"
+        },
+        {
+          "id": "vitality",
+          "name": "Vitality",
+          "type": "armor_secondary",
+          "description": "Grants extra health",
+          "minValue": 5,
+          "maxValue": 10,
+          "unit": "%"
+        },
+        {
+          "id": "swiftness",
+          "name": "Swiftness",
+          "type": "armor_secondary",
+          "description": "Extra movement speed",
+          "minValue": 4,
+          "maxValue": 10,
+          "unit": "%"
+        },
+        {
+          "id": "phase",
+          "name": "Phase",
+          "type": "armor_secondary",
+          "description": "Increases dash invincibility duration",
+          "minValue": 4,
+          "maxValue": 11,
+          "unit": "%"
+        }
+      ]
+    },
+    "third": {
+      "universal": [
+        {
+          "id": "bonus_damage",
+          "name": "Bonus Damage",
+          "type": "third_universal",
+          "description": "Increases overall damage output",
+          "minValue": 3,
+          "maxValue": 12,
+          "unit": "%"
+        },
+        {
+          "id": "elemental_resistance",
+          "name": "Elemental Resistance",
+          "type": "third_universal",
+          "description": "Reduces elemental damage taken",
+          "minValue": 5,
+          "maxValue": 15,
+          "unit": "%"
+        },
+        {
+          "id": "cooldown_reduction",
+          "name": "Cooldown Reduction",
+          "type": "third_universal",
+          "description": "Reduces ability cooldowns",
+          "minValue": 4,
+          "maxValue": 10,
+          "unit": "%"
+        },
+        {
+          "id": "resource_gain",
+          "name": "Resource Gain",
+          "type": "third_universal",
+          "description": "Increases resource generation",
+          "minValue": 5,
+          "maxValue": 15,
+          "unit": "%"
+        },
+        {
+          "id": "experience_boost",
+          "name": "Experience Boost",
+          "type": "third_universal",
+          "description": "Increases experience gained",
+          "minValue": 8,
+          "maxValue": 20,
+          "unit": "%"
+        },
+        {
+          "id": "gold_find",
+          "name": "Gold Find",
+          "type": "third_universal",
+          "description": "Increases gold dropped by enemies",
+          "minValue": 10,
+          "maxValue": 25,
+          "unit": "%"
+        }
+      ]
+    }
+  }
+}

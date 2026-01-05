@@ -1,0 +1,251 @@
+{
+  "stonewakesCross": [
+    {
+      "id": "stone_pickaxe",
+      "name": "Stone Pickaxe",
+      "minePower": 4,
+      "miningSpeed": 0,
+      "luckBoost": 0,
+      "runeSlots": 0,
+      "cost": 0,
+      "description": "A sturdy pickaxe made of stone for beginners. Reliable for basic mining tasks.",
+      "location": "Upon joining the game for the first time."
+    },
+    {
+      "id": "bronze_pickaxe",
+      "name": "Bronze Pickaxe",
+      "minePower": 7,
+      "miningSpeed": 0,
+      "luckBoost": 0,
+      "runeSlots": 0,
+      "cost": 150,
+      "description": "Sturdier than stone with improved durability. Mines resources at a moderate speed.",
+      "location": "Miner Fred's Pickaxe Shop (Stonewake's Cross)"
+    },
+    {
+      "id": "iron_pickaxe",
+      "name": "Iron Pickaxe",
+      "minePower": 10,
+      "miningSpeed": 0,
+      "luckBoost": 5,
+      "runeSlots": 0,
+      "cost": 500,
+      "description": "A professional-grade tool that balances speed and strength. The standard choice for serious miners.",
+      "location": "Miner Fred's Pickaxe Shop (Stonewake's Cross)"
+    },
+    {
+      "id": "golden_pickaxe",
+      "name": "Golden Pickaxe",
+      "minePower": 16,
+      "miningSpeed": 0,
+      "luckBoost": 15,
+      "runeSlots": 1,
+      "cost": 1500,
+      "description": "Shiny and eye-catching, glimmers with every swing. Slightly fragile, but boosts your luck at finding rare ores.",
+      "location": "Miner Fred's Pickaxe Shop (Stonewake's Cross)"
+    },
+    {
+      "id": "stonewakes_pickaxe",
+      "name": "Stonewake's Pickaxe",
+      "minePower": 33,
+      "miningSpeed": -30,
+      "luckBoost": 10,
+      "runeSlots": 1,
+      "cost": 3333,
+      "description": "A heavy tool carved from boulders. Slow to swing, but strong enough to break nearly anything.",
+      "location": "Inner Cave, in the middle of the main inner cave."
+    },
+    {
+      "id": "platinum_pickaxe",
+      "name": "Platinum Pickaxe",
+      "minePower": 24,
+      "miningSpeed": 0,
+      "luckBoost": 25,
+      "runeSlots": 2,
+      "cost": 5000,
+      "description": "A perfect tool to finish off your chores here, and demolish every rock you see nearby!",
+      "location": "Miner Fred's Pickaxe Shop (Stonewake's Cross)"
+    },
+    {
+      "id": "arcane_pickaxe",
+      "name": "Arcane Pickaxe",
+      "minePower": 115,
+      "miningSpeed": 10,
+      "luckBoost": 50,
+      "runeSlots": 3,
+      "cost": 125000,
+      "description": "A pickaxe charged with arcane energy, said to draw rare ores straight from the stone.",
+      "location": "Fallen Angel's Cave"
+    }
+  ],
+  "forgottenKingdom": [
+    {
+      "id": "cobalt_pickaxe",
+      "name": "Cobalt Pickaxe",
+      "minePower": 40,
+      "miningSpeed": 0,
+      "luckBoost": 35,
+      "runeSlots": 2,
+      "cost": 10000,
+      "description": "Carved from solid cobalt, its rocky blades hit hard and stay strong.",
+      "location": "Miner Fred's Pickaxe Shop (Forgotten Kingdom)"
+    },
+    {
+      "id": "titanium_pickaxe",
+      "name": "Titanium Pickaxe",
+      "minePower": 55,
+      "miningSpeed": 0,
+      "luckBoost": 38,
+      "runeSlots": 2,
+      "cost": 22500,
+      "description": "Packed with sharp titanium edges and top spikes, build to tear through tough stone.",
+      "location": "Miner Fred's Pickaxe Shop (Forgotten Kingdom)"
+    },
+    {
+      "id": "uranium_pickaxe",
+      "name": "Uranium Pickaxe",
+      "minePower": 67,
+      "miningSpeed": 0,
+      "luckBoost": 41,
+      "runeSlots": 2,
+      "cost": 37500,
+      "description": "A radioactive tool pulsing with unstable energy, striking rocks with explosive force.",
+      "location": "Miner Fred's Pickaxe Shop (Forgotten Kingdom)"
+    },
+    {
+      "id": "mythril_pickaxe",
+      "name": "Mythril Pickaxe",
+      "minePower": 80,
+      "miningSpeed": 0,
+      "luckBoost": 43,
+      "runeSlots": 2,
+      "cost": 67500,
+      "description": "Forged from shimmering mythril, incredibly light yet powerful with every swing.",
+      "location": "Miner Fred's Pickaxe Shop (Forgotten Kingdom)"
+    },
+    {
+      "id": "lightite_pickaxe",
+      "name": "Lightite Pickaxe",
+      "minePower": 100,
+      "miningSpeed": 30,
+      "luckBoost": 45,
+      "runeSlots": 1,
+      "cost": 98500, 
+      "description": "Glowing with pure lightite energy, its radiant blades cut through stone effortlessly.",
+      "location": "Miner Fred's Pickaxe Shop (Forgotten Kingdom)"
+    },
+    {
+      "id": "magma_pickaxe",
+      "name": "Magma Pickaxe",
+      "minePower": 135,
+      "miningSpeed": 0,
+      "luckBoost": 46,
+      "runeSlots": 2,
+      "cost": 150000,
+      "description": "Created by forging volcanic rocks to mine volcanic rocks. Absolute cinema.",
+      "location": "Beside Amber, in Ashen Passage, next to the entrance of the Volcanic Depths."
+    },
+    {
+      "id": "demonic_pickaxe",
+      "name": "Demonic Pickaxe",
+      "minePower": 180,
+      "miningSpeed": -10,
+      "luckBoost": 51,
+      "runeSlots": 3,
+      "cost": 500000,
+      "description": "A pickaxe fused with demonic power, its crimson eye and glowing veins hunger for the strongest ores.",
+      "location": "Demonic Pickaxe Alter, in Volcanic Depths"
+    }
+  ],
+  "frostspireExpanse": [
+    {
+      "id": "tungsten_pickaxe",
+      "name": "Tungsten Pickaxe",
+      "minePower": 150,
+      "miningSpeed": -15,
+      "luckBoost": 48,
+      "runeSlots": 2,
+      "cost": 200000,
+      "description": "Extremely dense and heavy, built for relentless mining in frozen lands.",
+      "location": "Miner Fred's Pickaxe Shop (Frostspire Expanse)"
+    },
+    {
+      "id": "aqua_pickaxe",
+      "name": "Aqua Pickaxe",
+      "minePower": 200,
+      "miningSpeed": 5,
+      "luckBoost": 52,
+      "runeSlots": 2,
+      "cost": 375000,
+      "description": "Infused with oceanic essence, flowing smoothly through even the hardest stone.",
+      "location": "Miner Fred's Pickaxe Shop (Frostspire Expanse)"
+    },
+    {
+      "id": "mist_pickaxe",
+      "name": "Mist Pickaxe",
+      "minePower": 250,
+      "miningSpeed": 15,
+      "luckBoost": 55,
+      "runeSlots": 2,
+      "cost": 500000,
+      "description": "Ethereal and elusive, phases through stone as if it weren't there.",
+      "location": "Miner Fred's Pickaxe Shop (Frostspire Expanse)"
+    },
+    {
+      "id": "snow_pickaxe",
+      "name": "Snow Pickaxe",
+      "minePower": 320,
+      "miningSpeed": 10,
+      "luckBoost": 58,
+      "runeSlots": 3,
+      "cost": 750000,
+      "description": "A chilled tool forged from eternal frost, designed to slice through frozen earth with ease.",
+      "location": "Miner Fred's Pickaxe Shop (Frostspire Expanse)"
+    },
+    {
+      "id": "frost_pickaxe",
+      "name": "Frost Pickaxe",
+      "minePower": 420,
+      "miningSpeed": 5,
+      "luckBoost": 62,
+      "runeSlots": 3,
+      "cost": 1000000,
+      "description": "Cold to the touch, freezing stone before it shatters apart.",
+      "location": "Miner Fred's Pickaxe Shop (Frostspire Expanse)"
+    },
+    {
+      "id": "void_pickaxe",
+      "name": "Void Pickaxe",
+      "minePower": 550,
+      "miningSpeed": -5,
+      "luckBoost": 68,
+      "runeSlots": 3,
+      "cost": 1350000,
+      "description": "A heavy, abyssal tool that draws power from the vacuum. Though slow to swing, its luck is unmatched.",
+      "location": "Miner Fred's Pickaxe Shop (Frostspire Expanse)"
+    },
+    {
+      "id": "prismatic_pickaxe",
+      "name": "Prismatic Pickaxe",
+      "minePower": 650,
+      "miningSpeed": 10,
+      "luckBoost": 72,
+      "runeSlots": 4,
+      "cost": 2000000,
+      "description": "Refracting infinite light, it adapts to strike any material perfectly.",
+      "location": "Obtain in the Mosasaursit fossilized skeleton"
+    },
+    {
+      "id": "dragonhead_pickaxe",
+      "name": "Dragon Head Pickaxe",
+      "minePower": 750,
+      "miningSpeed": 10,
+      "luckBoost": 78,
+      "runeSlots": 4,
+      "cost": 2750000,
+      "description": "Forged from the head of an ancient ice dragon, its power is as legendary as the creature itself.",
+      "location": "Secrect"
+    }
+  ]
+}
+

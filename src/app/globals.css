@@ -1,0 +1,451 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Fonts - Mali for Thai */
+@import url('https://fonts.googleapis.com/css2?family=Mali:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Light Mode Colors */
+  --bg-primary: #FAFAFA;
+  --bg-secondary: #F0F0F0;
+  --bg-tertiary: #E8E8E8;
+  --text-primary: #0D0D0D;
+  --text-secondary: #616161;
+  --text-tertiary: #9E9E9E;
+  --border: #D0D0D0;
+  --border-light: #E8E8E8;
+  --accent: #D4A500;
+  --accent-hover: #B39300;
+  
+  /* Component Colors - Light */
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --card-border: rgba(200, 200, 200, 0.6);
+  --input-bg: #FFFFFF;
+  --input-border: #C0C0C0;
+  --button-bg: #E8E8E8;
+  --button-hover: #D8D8D8;
+  
+  /* Status Colors */
+  --success: #059669;
+  --error: #DC2626;
+  --warning: #D97706;
+  --info: #2563EB;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+}
+
+.dark {
+  /* Dark Mode Colors */
+  --bg-primary: #09090B;
+  --bg-secondary: #18181B;
+  --bg-tertiary: #27272A;
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --text-tertiary: #71717A;
+  --border: #3F3F46;
+  --border-light: #27272A;
+  --accent: #FACC15;
+  --accent-hover: #EAB308;
+  
+  /* Component Colors - Dark */
+  --card-bg: rgba(24, 24, 27, 0.8);
+  --card-border: rgba(63, 63, 70, 0.5);
+  --input-bg: #18181B;
+  --input-border: #3F3F46;
+  --button-bg: #27272A;
+  --button-hover: #3F3F46;
+  
+  /* Status Colors - Dark Mode Adjusted */
+  --success: #22C55E;
+  --error: #F87171;
+  --warning: #FBBF24;
+  --info: #60A5FA;
+  
+  /* Shadows - Dark */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-mali), 'Mali', system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Smooth Transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Thai Gradient Text */
+.gradient-thai-text {
+  background: linear-gradient(135deg, #FFD700 0%, #ED1C24 50%, #2E3192 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card Hover Effect */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(255, 215, 0, 0.2);
+}
+
+/* Button Animation */
+.btn-primary {
+  @apply relative overflow-hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Ore Slot Animations */
+@keyframes oreAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.ore-appear {
+  animation: oreAppear 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes oreRemove {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8) rotate(10deg);
+  }
+}
+
+.ore-remove {
+  animation: oreRemove 0.2s ease-out forwards;
+}
+
+/* Slot Click Effect */
+@keyframes slotClick {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.slot-click {
+  animation: slotClick 0.15s ease-out;
+}
+
+/* Progress Bar Animation */
+@keyframes progressPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.progress-pulse {
+  animation: progressPulse 1.5s ease-in-out infinite;
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 0%,
+    var(--border) 50%,
+    var(--bg-secondary) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Rarity Colors */
+.rarity-common {
+  @apply border-gray-400 text-gray-400;
+}
+
+.rarity-uncommon {
+  @apply border-green-400 text-green-400;
+}
+
+.rarity-rare {
+  @apply border-blue-400 text-blue-400;
+}
+
+.rarity-epic {
+  @apply border-purple-400 text-purple-400;
+}
+
+.rarity-legendary {
+  @apply border-yellow-400 text-yellow-400;
+}
+
+.rarity-mythical {
+  @apply border-red-400 text-red-400;
+}
+
+.rarity-divine {
+  @apply border-pink-400 text-pink-400;
+}
+
+/* Glass Morphism */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Mali Font - Thai Display */
+.font-mali {
+  font-family: 'Mali', system-ui, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* Scale In Animation */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+/* Theme-aware Utility Classes */
+@layer utilities {
+  .bg-theme-primary {
+    background-color: var(--bg-primary);
+  }
+  
+  .bg-theme-secondary {
+    background-color: var(--bg-secondary);
+  }
+  
+  .bg-theme-tertiary {
+    background-color: var(--bg-tertiary);
+  }
+  
+  .text-theme-primary {
+    color: var(--text-primary);
+  }
+  
+  .text-theme-secondary {
+    color: var(--text-secondary);
+  }
+  
+  .border-theme {
+    border-color: var(--border);
+  }
+  
+  .bg-theme-card {
+    background-color: var(--card-bg);
+    border-color: var(--card-border);
+  }
+  
+  .shadow-theme-sm {
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .shadow-theme-md {
+    box-shadow: var(--shadow-md);
+  }
+  
+  .shadow-theme-lg {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* Smooth Theme Transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+button, a, input, select, textarea {
+  transition-duration: 150ms;
+}
+
+/* Slide Up Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* Glow Effect */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+  }
+}
+
+.glow-animation {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}

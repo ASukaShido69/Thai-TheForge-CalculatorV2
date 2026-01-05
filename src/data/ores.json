@@ -1,0 +1,808 @@
+{
+    "Stone Ore": {
+        "rarity": "Common",
+        "multiplier": 0.2,
+        "traitType": null,
+        "traits": []
+    },
+    "Sand Stone": {
+        "rarity": "Common",
+        "multiplier": 0.25,
+        "traitType": null,
+        "traits": []
+    },
+    "Copper Ore": {
+        "rarity": "Common",
+        "multiplier": 0.3,
+        "traitType": null,
+        "traits": []
+    },
+    "Iron Ore": {
+        "rarity": "Common",
+        "multiplier": 0.35,
+        "traitType": null,
+        "traits": []
+    },
+    "Tin Ore": {
+        "rarity": "Uncommon",
+        "multiplier": 0.425,
+        "traitType": null,
+        "traits": []
+    },
+    "Silver Ore": {
+        "rarity": "Uncommon",
+        "multiplier": 0.5,
+        "traitType": null,
+        "traits": []
+    },
+    "Gold Ore": {
+        "rarity": "Uncommon",
+        "multiplier": 0.65,
+        "traitType": null,
+        "traits": []
+    },
+    "Mushroomite Ore": {
+        "rarity": "Rare",
+        "multiplier": 0.8,
+        "traitType": null,
+        "traits": []
+    },
+    "Platinum Ore": {
+        "rarity": "Rare",
+        "multiplier": 0.8,
+        "traitType": null,
+        "traits": []
+    },
+    "Bananite Ore": {
+        "rarity": "Uncommon",
+        "multiplier": 0.85,
+        "traitType": null,
+        "traits": []
+    },
+    "Cardboardite Ore": {
+        "rarity": "Common",
+        "multiplier": 0.7,
+        "traitType": null,
+        "traits": []
+    },
+    "Aite Ore": {
+        "rarity": "Epic",
+        "multiplier": 1.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Poopite Ore": {
+        "rarity": "Epic",
+        "multiplier": 1.2,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "🟢 15% Poison Damage when Below 35% HP",
+                "maxStat": 15,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Cobalt Ore": {
+        "rarity": "Uncommon",
+        "multiplier": 1.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Titanium Ore": {
+        "rarity": "Uncommon",
+        "multiplier": 1.15,
+        "traitType": null,
+        "traits": []
+    },
+    "Lapis Lazuli Ore": {
+        "rarity": "Uncommon",
+        "multiplier": 1.3,
+        "traitType": null,
+        "traits": []
+    },
+    "Volcanic Rock": {
+        "rarity": "Rare",
+        "multiplier": 1.55,
+        "traitType": null,
+        "traits": []
+    },
+    "Quartz Ore": {
+        "rarity": "Rare",
+        "multiplier": 1.5,
+        "traitType": null,
+        "traits": []
+    },
+    "Amethyst Ore": {
+        "rarity": "Rare",
+        "multiplier": 1.65,
+        "traitType": null,
+        "traits": []
+    },
+    "Topaz Ore": {
+        "rarity": "Rare",
+        "multiplier": 1.75,
+        "traitType": null,
+        "traits": []
+    },
+    "Diamond Ore": {
+        "rarity": "Rare",
+        "multiplier": 2.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Sapphire Ore": {
+        "rarity": "Rare",
+        "multiplier": 2.25,
+        "traitType": null,
+        "traits": []
+    },
+    "Cuprite Ore": {
+        "rarity": "Epic",
+        "multiplier": 2.43,
+        "traitType": null,
+        "traits": []
+    },
+    "Obsidian Ore": {
+        "rarity": "Epic",
+        "multiplier": 2.35,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "💪 Extra defense on Armor",
+                "maxStat": 30,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Emerald Ore": {
+        "rarity": "Epic",
+        "multiplier": 2.55,
+        "traitType": null,
+        "traits": []
+    },
+    "Ruby Ore": {
+        "rarity": "Epic",
+        "multiplier": 2.95,
+        "traitType": null,
+        "traits": []
+    },
+    "Rivalite Ore": {
+        "rarity": "Epic",
+        "multiplier": 3.33,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "💥 Crit Chance on Weapons",
+                "maxStat": 20,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Uranium Ore": {
+        "rarity": "Legendary",
+        "multiplier": 3.0,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "⚡ max HP AOE Damage on Armor",
+                "maxStat": 5,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Mythril Ore": {
+        "rarity": "Legendary",
+        "multiplier": 3.5,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "💪 Extra defense on Armor",
+                "maxStat": 15,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Eye Ore": {
+        "rarity": "Legendary",
+        "multiplier": 4.0,
+        "traitType": "All",
+        "traits": [
+            {
+                "description": "⚔️ Weapon Damage",
+                "maxStat": 15
+            },
+            {
+                "description": "❤️ Health",
+                "maxStat": -10
+            }
+        ]
+    },
+    "Fireite Ore": {
+        "rarity": "Legendary",
+        "multiplier": 4.5,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "🔥 Burn Damage on Weapons with 🎯",
+                "maxStat": 20
+            },
+            {
+                "description": "🎯 chance",
+                "maxStat": 30
+            }
+        ]
+    },
+    "Magmaite Ore": {
+        "rarity": "Legendary",
+        "multiplier": 5.0,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "💣 AOE Explosion on Weapons with",
+                "maxStat": 50
+            },
+            {
+                "description": "🎯 chance",
+                "maxStat": 35
+            }
+        ]
+    },
+    "Lightite Ore": {
+        "rarity": "Legendary",
+        "multiplier": 4.6,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "⚡ Bonus Movement Speed",
+                "maxStat": 15,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Demonite Ore": {
+        "rarity": "Mythical",
+        "multiplier": 5.5,
+        "traitType": "All",
+        "traits": [
+            {
+                "description": "🔥 to Burn Enemy when Damage is Taken.",
+                "maxStat": 25,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Darkryte Ore": {
+        "rarity": "Mythical",
+        "multiplier": 6.3,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "🏃 Chance to Dodge Damage (Negate Fully)",
+                "maxStat": 15,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Magenta Crystal Ore": {
+        "rarity": "Epic",
+        "multiplier": 3.1,
+        "traitType": null,
+        "traits": []
+    },
+    "Crimson Crystal Ore": {
+        "rarity": "Epic",
+        "multiplier": 3.3,
+        "traitType": null,
+        "traits": []
+    },
+    "Green Crystal Ore": {
+        "rarity": "Epic",
+        "multiplier": 3.2,
+        "traitType": null,
+        "traits": []
+    },
+    "Orange Crystal Ore": {
+        "rarity": "Epic",
+        "multiplier": 3.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Blue Crystal Ore": {
+        "rarity": "Epic",
+        "multiplier": 3.4,
+        "traitType": null,
+        "traits": []
+    },
+    "Rainbow Crystal Ore": {
+        "rarity": "Legendary",
+        "multiplier": 5.25,
+        "traitType": null,
+        "traits": []
+    },
+    "Arcane Crystal Ore": {
+        "rarity": "Epic",
+        "multiplier": 7.5,
+        "traitType": null,
+        "traits": []
+    },
+    "Galaxite Ore": {
+        "rarity": "Divine",
+        "multiplier": 11.5,
+        "traitType": null,
+        "traits": []
+    },
+    "Vooite Ore": {
+        "rarity": null,
+        "multiplier": 0.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Fichillium": {
+        "rarity": "Relic",
+        "multiplier": 0.0,
+        "traitType": "All",
+        "traits": []
+    },
+    "Slimlite": {
+        "rarity": "Epic",
+        "multiplier": 2.25,
+        "traitType": "All",
+        "traits": []
+    },
+    "Tungsten Ore": {
+        "rarity": "Common",
+        "multiplier": 2.6,
+        "traitType": null,
+        "traits": []
+    },
+    "Sulfur Ore": {
+        "rarity": "Uncommon",
+        "multiplier": 2.75,
+        "traitType": null,
+        "traits": []
+    },
+    "Pumice Ore": {
+        "rarity": "Rare",
+        "multiplier": 2.9,
+        "traitType": null,
+        "traits": []
+    },
+    "Graphite Ore": {
+        "rarity": "Rare",
+        "multiplier": 3.1,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "💚 +5% Vitality",
+                "maxStat": 5,
+                "type": "Armor"
+            },
+            {
+                "description": "🛡️ +12% Damage Reduction (20% Chance)",
+                "maxStat": 12,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Aetherit Ore": {
+        "rarity": "Rare",
+        "multiplier": 3.4,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "⚡ +5% Speed",
+                "maxStat": 5,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Scheelite Ore": {
+        "rarity": "Rare",
+        "multiplier": 3.7,
+        "traitType": null,
+        "traits": []
+    },
+    "Larimar Ore": {
+        "rarity": "Epic",
+        "multiplier": 4.1,
+        "traitType": null,
+        "traits": []
+    },
+    "Neurotite Ore": {
+        "rarity": "Epic",
+        "multiplier": 4.3,
+        "traitType": null,
+        "traits": []
+    },
+    "Frost Fossil Ore": {
+        "rarity": "Epic",
+        "multiplier": 4.5,
+        "traitType": "All",
+        "traits": [
+            {
+                "description": "⚔️ +17.5% Physical Damage",
+                "maxStat": 17.5
+            },
+            {
+                "description": "🐌 -5 Speed",
+                "maxStat": -5
+            }
+        ]
+    },
+    "Tide Carve Ore": {
+        "rarity": "Epic",
+        "multiplier": 4.7,
+        "traitType": null,
+        "traits": []
+    },
+    "Velchire Ore": {
+        "rarity": "Legendary",
+        "multiplier": 5.5,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "⚡ +20% Speed",
+                "maxStat": 20,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Sanctis Ore": {
+        "rarity": "Legendary",
+        "multiplier": 6.0,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "💪 +18% Stamina",
+                "maxStat": 18,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Snowite Ore": {
+        "rarity": "Legendary",
+        "multiplier": 8.0,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "⚡ +15% Attack Speed",
+                "maxStat": 15,
+                "type": "Weapon"
+            },
+            {
+                "description": "🐌 Movement Speed reduction for 3 seconds (30% chance)",
+                "maxStat": 30,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Iceite Ore": {
+        "rarity": "Mythical",
+        "multiplier": 10.5,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "❄️ Freeze enemies for 2 seconds (25% Chance) (12 Second Cooldown)",
+                "maxStat": 25,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Mistvein Ore": {
+        "rarity": "Rare",
+        "multiplier": 7.2,
+        "traitType": null,
+        "traits": []
+    },
+    "Lgarite Ore": {
+        "rarity": "Rare",
+        "multiplier": 7.5,
+        "traitType": null,
+        "traits": []
+    },
+    "Voidfractal Ore": {
+        "rarity": "Rare",
+        "multiplier": 8.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Moltenfrost Ore": {
+        "rarity": "Epic",
+        "multiplier": 8.3,
+        "traitType": null,
+        "traits": []
+    },
+    "Crimsonite Ore": {
+        "rarity": "Epic",
+        "multiplier": 8.5,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "⚔️ +20% Physical Damage",
+                "maxStat": 20,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Malachite Ore": {
+        "rarity": "Epic",
+        "multiplier": 8.8,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "☠️ +10% weapon damage as poison per second for 3 seconds (33% chance)",
+                "maxStat": 10,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Aqujade Ore": {
+        "rarity": "Epic",
+        "multiplier": 9.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Cryptex Ore": {
+        "rarity": "Epic",
+        "multiplier": 9.3,
+        "traitType": null,
+        "traits": []
+    },
+    "Galestor Ore": {
+        "rarity": "Epic",
+        "multiplier": 9.5,
+        "traitType": null,
+        "traits": []
+    },
+    "Voidstar Ore": {
+        "rarity": "Legendary",
+        "multiplier": 10.0,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "💥 +33% Crit Chance",
+                "maxStat": 33,
+                "type": "Weapon"
+            },
+            {
+                "description": "⚔️ +15% Crit Damage",
+                "maxStat": 15,
+                "type": "Weapon"
+            },
+            {
+                "description": "❤️ -15% Vitality",
+                "maxStat": -15,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Etherealite Ore": {
+        "rarity": "Mythical",
+        "multiplier": 11.1,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "💚 +35% Vitality",
+                "maxStat": 35,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Suryafal Ore": {
+        "rarity": "Relic",
+        "multiplier": 15.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Heavenite": {
+        "rarity": "Divine",
+        "multiplier": 20.0,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "⚡ Call upon Smite dealing 30% of physical damage (50% chance)",
+                "maxStat": 30,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Gargantuan Ore": {
+        "rarity": "Divine",
+        "multiplier": 25.0,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "🔥 20% weapon damage as fire per second for 2 seconds (20% chance)",
+                "maxStat": 20,
+                "type": "Weapon"
+            },
+            {
+                "description": "💣 50% weapon damage as AOE Explosion (35% chance)",
+                "maxStat": 50,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Boneite Ore": {
+        "rarity": "Rare",
+        "multiplier": 1.2,
+        "traitType": null,
+        "traits": []
+    },
+    "Dark Boneite Ore": {
+        "rarity": "Rare",
+        "multiplier": 2.25,
+        "traitType": null,
+        "traits": []
+    },
+    "Mosasaursit Ore": {
+        "rarity": "Exotic",
+        "multiplier": 7.0,
+        "traitType": "All",
+        "traits": [
+            {
+                "description": "🐌 -25% Swiftness",
+                "maxStat": -25,
+                "type": "All"
+            },
+            {
+                "description": "💚 +35% Vitality",
+                "maxStat": 35,
+                "type": "All"
+            }
+        ]
+    },
+    "Frogite Ore": {
+        "rarity": "Epic",
+        "multiplier": 8.5,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "🦘 +12.5% Jump Height and 7.5% Stride",
+                "maxStat": 12.5,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Moon Stone": {
+        "rarity": "Legendary",
+        "multiplier": 9.5,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "🌙 +25% damage at night",
+                "maxStat": 25,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Gulabite Ore": {
+        "rarity": "Legendary",
+        "multiplier": 9.99,
+        "traitType": null,
+        "traits": []
+    },
+    "Coinite Ore": {
+        "rarity": "Legendary",
+        "multiplier": 1.0,
+        "traitType": null,
+        "traits": []
+    },
+    "Duranite Ore": {
+        "rarity": "Mythical",
+        "multiplier": 12.0,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "🛡️ Shield to Reduce incoming physical damage by 25% (25% chance)",
+                "maxStat": 25
+            },
+            {
+                "description": "💚 +20% Vitality",
+                "maxStat": 20
+            }
+        ]
+    },
+    "Evil Eye": {
+        "rarity": "Mythical",
+        "multiplier": 13.3,
+        "traitType": null,
+        "traits": []
+    },
+    "Stolen Heart": {
+        "rarity": "Divine",
+        "multiplier": 15.4,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "💉 7% Lifesteal Per hit (20% chance)",
+                "maxStat": 7,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Heart of The Island": {
+        "rarity": "Legendary",
+        "multiplier": 18.5,
+        "traitType": "Armor",
+        "traits": [
+            {
+                "description": "💚 +30% Vitality",
+                "maxStat": 30,
+                "type": "Armor"
+            },
+            {
+                "description": "💚 Heal 50% HP if under 20% Max HP (2 min cooldown)",
+                "maxStat": 50,
+                "type": "Armor"
+            }
+        ]
+    },
+    "Prismatic Heart": {
+        "rarity": "Legendary",
+        "multiplier": 5.5,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "💥 +20% Crit Chance",
+                "maxStat": 20,
+                "type": "Weapon"
+            },
+            {
+                "description": "⚔️ +5% Crit Damage",
+                "maxStat": 5,
+                "type": "Weapon"
+            },
+            {
+                "description": "❄️ 15% Chance to Freeze enemies for 2 seconds (18 sec cooldown)",
+                "maxStat": 15,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Yeti Heart": {
+        "rarity": "Mythical",
+        "multiplier": 7.7,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "💥 +30% Crit Chance",
+                "maxStat": 30,
+                "type": "Weapon"
+            },
+            {
+                "description": "⚔️ +10% Crit Damage",
+                "maxStat": 10,
+                "type": "Weapon"
+            },
+            {
+                "description": "⚡ +10% Attack Speed",
+                "maxStat": 10,
+                "type": "Weapon"
+            }
+        ]
+    },
+    "Golem Heart": {
+        "rarity": "Divine",
+        "multiplier": 10.0,
+        "traitType": "Weapon",
+        "traits": [
+            {
+                "description": "💥 +40% Crit Chance",
+                "maxStat": 40,
+                "type": "Weapon"
+            },
+            {
+                "description": "⚔️ +15% Crit Damage",
+                "maxStat": 15,
+                "type": "Weapon"
+            },
+            {
+                "description": "🐌 25% Chance to deal 25% DMG and Slow enemies for 3 seconds",
+                "maxStat": 25,
+                "type": "Weapon"
+            }
+        ]
+    }
+}
