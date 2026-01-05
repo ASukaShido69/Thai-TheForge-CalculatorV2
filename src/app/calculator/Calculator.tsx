@@ -402,9 +402,9 @@ function getArmorItemsByCategory(): Record<string, Array<{name: string, image: s
     "Samurai Helmet": "samurai_helmet",
     "Samurai Leggings": "samurai_leggings",
     "Samurai Chestplate": "samurai_chestplate",
-    "Viking Helmet": "VikingHelmet",
-    "Viking Leggings": "VikingLeggings",
-    "Viking Chestplate": "VikingChestplate",
+    "Viking Helmet": "viking_helmet",
+    "Viking Leggings": "viking_leggings",
+    "Viking Chestplate": "viking_chestplate",
     "Knight Helmet": "knight_helmet",
     "Knight Leggings": "knight_leggings",
     "Knight Chestplate": "knight_chestplate",
@@ -412,7 +412,6 @@ function getArmorItemsByCategory(): Record<string, Array<{name: string, image: s
     "Dark Knight Leggings": "dark_knight_leggings",
     "Dark Knight Chestplate": "dark_knight_chestplate",
     "Wolf Helmet": "WolfHelmet",
-    // No dedicated leggings asset shipped; reuse chestplate art to avoid broken images
     "Wolf Leggings": "Wolf_Leggings",
     "Wolf Chestplate": "Wolf_Chestplate",
   };
