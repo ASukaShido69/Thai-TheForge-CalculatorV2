@@ -414,6 +414,10 @@ function getArmorItemsByCategory(): Record<string, Array<{name: string, image: s
     "Wolf Helmet": "wolf_helmet",
     "Wolf Leggings": "wolf_leggings",
     "Wolf Chestplate": "wolf_chestplate",
+    "Goblin's Crown": "goblins_crown",
+    "Raven's Helmet": "ravens_helmet",
+    "Raven's Chestplate": "ravens_chestplate",
+    "Raven's Leggings": "ravens_leggings",
   };
 
   const createArmorItem = (name: string, imageKey: string, categoryKey: string) => ({
@@ -449,6 +453,10 @@ function getArmorItemsByCategory(): Record<string, Array<{name: string, image: s
       createArmorItem("Wolf Helmet", "wolf_helmet", "Heavy Helmet"),
       createArmorItem("Wolf Leggings", "wolf_leggings", "Heavy Leggings"),
       createArmorItem("Wolf Chestplate", "wolf_chestplate", "Heavy Chestplate"),
+      createArmorItem("Goblin's Crown", "goblins_crown", "Heavy Helmet"),
+      createArmorItem("Raven's Helmet", "ravens_helmet", "Heavy Helmet"),
+      createArmorItem("Raven's Leggings", "ravens_leggings", "Heavy Leggings"),
+      createArmorItem("Raven's Chestplate", "ravens_chestplate", "Heavy Chestplate"),
     ],
   };
 }
@@ -582,14 +590,21 @@ function getItemChance(itemName: string, categoryKey: string, categoryChance: nu
       "Dark Knight Helmet", "Dark Knight Leggings", "Dark Knight Chestplate"
     ];
     
+    const sixthChanceItems = [
+      "Goblin's Crown"
+    ];
+    
     const eighthChanceItems = [
-      "Wolf Helmet", "Wolf Leggings", "Wolf Chestplate"
+      "Wolf Helmet", "Wolf Leggings", "Wolf Chestplate",
+      "Raven's Helmet", "Raven's Leggings", "Raven's Chestplate"
     ];
     
     if (fullChanceItems.includes(itemName)) {
       return { chance: categoryChance * 1.0, ratio: "1/1" };
     } else if (halfChanceItems.includes(itemName)) {
       return { chance: categoryChance * 0.5, ratio: "1/2" };
+    } else if (sixthChanceItems.includes(itemName)) {
+      return { chance: categoryChance * 0.166667, ratio: "1/6" };
     } else if (eighthChanceItems.includes(itemName)) {
       return { chance: categoryChance * 0.125, ratio: "1/8" };
     }
