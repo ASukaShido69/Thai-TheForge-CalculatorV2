@@ -12,6 +12,8 @@ const RuneCalculator = dynamic(() => import('@/components/RuneCalculator'), { ss
 
 import oresDataRaw from '../../data/ores.json';
 import weaponOddsRaw from '../../data/weaponOdds.json';
+import weaponOddsWorld2Raw from '../../data/weaponOddsWorld2.json';
+import weaponOddsWorld3Raw from '../../data/weaponOddsWorld3.json';
 import armorOddsRaw from '../../data/armorOdds.json';
 import forgeDataRaw from '../../data/forgeData.json';
 
@@ -175,6 +177,8 @@ type SavedBuild = {
 
 const ores: OresData = oresDataRaw as unknown as OresData;
 const weaponOdds: OddsData = weaponOddsRaw;
+const weaponOddsWorld2: OddsData = weaponOddsWorld2Raw;
+const weaponOddsWorld3: OddsData = weaponOddsWorld3Raw;
 const armorOdds: OddsData = armorOddsRaw;
 const forgeData: ForgeData = forgeDataRaw as ForgeData;
 
@@ -196,8 +200,13 @@ function calculateTransferredStat(x: number) {
   return y / 100;
 }
 
-function getItemChancesWithTraits(selectedOres: Record<string, number>, craftType: string = "Weapon", enhancementLevel: number = 0) {
-  const oddsDict = craftType === "Weapon" ? weaponOdds : armorOdds;
+function getItemChancesWithTraits(selectedOres: Record<string, number>, craftType: string = "Weapon", enhancementLevel: number = 0, worldVersion: number = 3) {
+  let oddsDict: OddsData;
+  if (craftType === "Weapon") {
+    oddsDict = worldVersion === 2 ? weaponOddsWorld2 : weaponOddsWorld3;
+  } else {
+    oddsDict = armorOdds;
+  }
   let combinedMultiplier = calculateCombinedMultiplier(selectedOres);
   
   // Apply enhancement multiplier for both weapons and armor
@@ -1296,6 +1305,7 @@ export default function Calculator() {
   
   const [slots, setSlots] = useState<(SlotItem | null)[]>([null, null, null, null]);
   const [craftType, setCraftType] = useState<"Weapon" | "Armor">("Weapon");
+  const [worldVersion, setWorldVersion] = useState<number>(3);
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearchTerm = useDebouncedValue(searchTerm, 200); // Debounce search by 200ms
   const [favoriteOres, setFavoriteOres] = useState<string[]>([]);
@@ -1391,8 +1401,8 @@ export default function Calculator() {
         return null;
     }
 
-    return getItemChancesWithTraits(selected, craftType, enhancementLevel);
-  }, [slots, craftType, enhancementLevel]);
+    return getItemChancesWithTraits(selected, craftType, enhancementLevel, worldVersion);
+  }, [slots, craftType, enhancementLevel, worldVersion]);
 
   const addOreToSlot = useCallback((oreName: string) => {
     setSlots(prev => {
@@ -1647,6 +1657,37 @@ export default function Calculator() {
                   {t('armor')}
                 </button>
               </div>
+
+              {/* World Selector - Only for Weapons */}
+              {craftType === 'Weapon' && (
+                <div className="space-y-2">
+                  <div className={`text-xs font-medium ${themeClasses.text.secondary}`}>
+                    {language === 'th' ? '🌍 เลือกโลก' : '🌍 Select World'}
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => setWorldVersion(2)}
+                      className={`py-2 rounded-lg font-medium text-xs transition-all ${
+                        worldVersion === 2
+                          ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/30'
+                          : themeClasses.button.default
+                      }`}
+                    >
+                      {language === 'th' ? 'โลก 2 (ไม่มี Mace, Spear)' : 'World 2 (No Mace, Spear)'}
+                    </button>
+                    <button
+                      onClick={() => setWorldVersion(3)}
+                      className={`py-2 rounded-lg font-medium text-xs transition-all ${
+                        worldVersion === 3
+                          ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg shadow-emerald-500/30'
+                          : themeClasses.button.default
+                      }`}
+                    >
+                      {language === 'th' ? 'โลก 3 (มี Mace, Spear)' : 'World 3 (Has Mace, Spear)'}
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Enhancement System - Show for both Weapon and Armor */}
               <div className={`backdrop-blur-xl rounded-2xl border p-4 transition-colors ${

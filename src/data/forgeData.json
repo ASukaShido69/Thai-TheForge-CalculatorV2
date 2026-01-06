@@ -2,9 +2,12 @@
   "weapons": {
     "Dagger": 68,
     "Straight Sword": 120,
+    "Mace": 160,
     "Gauntlet": 205,
+    "Axe": 220,
     "Katana": 324,
     "Great Sword": 485,
+    "Spear": 375,
     "Great Axe": 850,
     "Colossal Sword": 1355
   },
