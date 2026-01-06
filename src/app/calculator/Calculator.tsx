@@ -747,7 +747,7 @@ function getItemEstimatedStat(itemName: string, multiplier: number, craftType: "
   const baseStat = statsData[itemName];
   if (baseStat === undefined) return null;
 
-  const finalStat = baseStat * (1 + enhancementLevel * 0.05) * multiplier * 2;
+  const finalStat = baseStat * (1 + enhancementLevel * 0.05);
   
   return finalStat;
 }
