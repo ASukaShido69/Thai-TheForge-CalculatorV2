@@ -747,15 +747,11 @@ function getItemEstimatedStat(itemName: string, multiplier: number, craftType: "
   const baseStat = statsData[itemName];
   if (baseStat === undefined) return null;
 
+  // คำนวณ enhancement จาก base ก่อน
   const enhancementBonus = baseStat * (enhancementLevel * 0.05);
   
-  let finalStat = (baseStat * multiplier) * 2;
-  
-  // Apply enhancement for both weapons and armor
-  if (enhancementLevel > 0) {
-    const enhancementMultiplier = 1 + (enhancementLevel * 0.05);
-    finalStat *= enhancementMultiplier;
-  }
+  // นำ base + enhancement มาคูณกับ multiplier และ 2
+  let finalStat = (baseStat + enhancementBonus) * multiplier * 2;
   
   return finalStat;
 }
