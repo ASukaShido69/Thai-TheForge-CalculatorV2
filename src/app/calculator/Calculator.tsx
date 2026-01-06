@@ -747,11 +747,7 @@ function getItemEstimatedStat(itemName: string, multiplier: number, craftType: "
   const baseStat = statsData[itemName];
   if (baseStat === undefined) return null;
 
-  // คำนวณ enhancement จาก base ก่อน
-  const enhancementBonus = baseStat * (enhancementLevel * 0.05);
-  
-  // นำ base + enhancement มาคูณกับ multiplier และ 2
-  let finalStat = (baseStat + enhancementBonus) * multiplier * 2;
+  const finalStat = baseStat * (1 + enhancementLevel * 0.05) * multiplier;
   
   return finalStat;
 }
