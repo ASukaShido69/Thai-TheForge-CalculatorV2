@@ -834,9 +834,12 @@ const translations = {
     // Weapon types
     "Dagger": "มีดสั้น 🗡️",
     "Straight Sword": "ดาบตรง 🗡️",
+    "Mace": "คทา 🔨",
     "Gauntlet": "สนับมือ/ถุงมือ 🥊",
+    "Axe": "ขวาน 🪓",
     "Katana": "ดาบคาตานะ 🗡️",
     "Great Sword": "ดาบใหญ่ 🗡️",
+    "Spear": "หอก 🔱",
     "Great Axe": "ขวานใหญ่ 🪓",
     "Colossal Sword": "ดาบยักษ์ ⚔️",
     
@@ -966,9 +969,12 @@ const translations = {
     // Keep English names as is
     "Dagger": "Dagger",
     "Straight Sword": "Straight Sword",
+    "Mace": "Mace",
     "Gauntlet": "Gauntlet",
+    "Axe": "Axe",
     "Katana": "Katana",
     "Great Sword": "Great Sword",
+    "Spear": "Spear",
     "Great Axe": "Great Axe",
     "Colossal Sword": "Colossal Sword",
     "Light Helmet": "Light Helmet",
