@@ -747,7 +747,7 @@ function getItemEstimatedStat(itemName: string, multiplier: number, craftType: "
   const baseStat = statsData[itemName];
   if (baseStat === undefined) return null;
 
-  const finalStat = baseStat * (1 + enhancementLevel * 0.05) * multiplier;
+  const finalStat = baseStat * (1 + enhancementLevel * 0.05) * multiplier * 2;
   
   return finalStat;
 }
@@ -2225,7 +2225,7 @@ export default function Calculator() {
                                   <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
                                   <div className={`text-xs font-semibold text-center ${craftType === "Weapon" ? 'text-red-300' : 'text-blue-300'}`}>
                                     {craftType === "Weapon" ? '⚔️ ' : '🛡️ '}
-                                    {craftType === "Weapon" ? 'Damage' : 'Defense'}: {estimatedStat ? (estimatedStat * 2).toFixed(2) : '0.00'}
+                                    {craftType === "Weapon" ? 'Damage' : 'Defense'}: {estimatedStat?.toFixed(2)}
                                   </div>
                                   {enhancementLevel > 0 && (
                                     <div className={`text-[10px] text-center mt-1 ${
