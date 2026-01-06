@@ -2225,7 +2225,7 @@ export default function Calculator() {
                                   <div className="text-xs font-bold text-white mb-1 text-center">{item.name}</div>
                                   <div className={`text-xs font-semibold text-center ${craftType === "Weapon" ? 'text-red-300' : 'text-blue-300'}`}>
                                     {craftType === "Weapon" ? '⚔️ ' : '🛡️ '}
-                                    {craftType === "Weapon" ? 'Damage' : 'Defense'}: {estimatedStat?.toFixed(2)}
+                                    {craftType === "Weapon" ? 'Damage' : 'Defense'}: {estimatedStat ? (estimatedStat * 2).toFixed(2) : '0.00'}
                                   </div>
                                   {enhancementLevel > 0 && (
                                     <div className={`text-[10px] text-center mt-1 ${
